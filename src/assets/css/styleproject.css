@@ -1,0 +1,10 @@
+:root{
+    --WhiteColor:#FAF3DD;
+    --darkwhite:#C8D5B9;
+    --LightGreen:#8FC0A9;
+    --GreenOpacity:#68B0AB;
+    --GreenColor:#4A7C59;
+}
+body{
+    height: 100%;
+}

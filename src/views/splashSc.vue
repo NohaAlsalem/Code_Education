@@ -1,0 +1,57 @@
+<template>
+    <div>
+      <div>
+  <nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img  src="@/assets/images/logoo.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
+      <codeEdu></codeEdu>
+    </a>
+    
+  </div>
+  </nav></div>
+<!-- <TopBar></TopBar> -->
+
+<div class="landing text-center justify-content-cnter align-items-center">
+    <img  src="@/assets/images/logoo.png" alt="Logo"  class="d-inline-block align-text-top">
+    <div>
+    <h2 class="code d-inline pe-2 ">Code</h2>
+    <h2 class="edu d-inline">Education</h2>
+</div>
+
+<div class="spinner-border text-success" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+</div>
+    </div>
+</template>
+
+<script>
+import TopBar from'@/components/TopBar.vue'
+import codeEdu from '@/components/codeEdu.vue'
+export default{
+    components:{
+        TopBar,
+        codeEdu
+    },
+    created(){
+      setTimeout( () => this.$router.push({ path: '/login'}), 2000);
+
+    }
+
+}
+
+</script>
+
+<style scoped>
+
+.landing {
+min-height: calc(100vh-72px);
+}
+.code{
+  color: var(--GreenColor);
+}
+.edu{
+  color: var(--GreenOpacity);
+}
+</style>
