@@ -1,24 +1,48 @@
 <template>
-  <div class="card-body" >
+  <div class="card-body">
     <!-- <h5 class="card-title">1. Two Sum</h5>
         <h6 class="card-title" style="color: var(--GreenColor)">Easy</h6> -->
-    <p class="card-text">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, amet
-      dolor? Ab neque quam reprehenderit vero, fugiat laudantium doloribus unde
-      necessitatibus, consequuntur nisi dolorem? Dolor accusamus vero autem, sit
-      culpa nam repellendus minima optio rerum dolore qui a deleniti minus illo
-      iure sed facilis et veritatis recusandae consequuntur! Itaque omnis
-      voluptas modi facere, enim, non, maxime rem obcaecati exercitationem quasi
-      suscipit placeat doloremque. Ut, quis quasi? Hic enim distinctio sequi
-      perspiciatis molestiae, vel vero. Pariatur, tempora ratione est obcaecati
-      quasi amet magnam veniam temporibus nostrum laboriosam, consectetur, iste
-      a odio et. Laborum quia placeat neque suscipit autem dolores nam ipsam.
+    <p class="card-text" ref="codeContainer">
+      
+        <pre><code class="language-cpp">
+          <prism language="java">
+            #include &lt;iostream&gt;
+             int main() {
+             std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
+             return 0;
+}
+</prism>
+</code></pre>
+    
     </p>
   </div>
 </template>
-
 <script>
-export default {};
+import "prismjs/prism";
+import "prismjs/themes/prism.css";
+import "prismjs/components/prism-java";
+// import 'prismjs/components/prism-cpp';
+// import "prismjs/components/prism-cpp";
+// import "prismjs/components/prism-cpp.min.js";
+import Prism from "vue-prism-component";
+
+export default {
+  components: {
+    Prism,
+  },
+  data() {
+    return {
+      code: "",
+    };
+  },
+  mounted() {
+    this.code = `#include <iostream>
+int main() {
+  std::cout << "Hello, World!" << std::endl;
+  return 0;
+}`;
+  },
+};
 </script>
 
 <style></style>

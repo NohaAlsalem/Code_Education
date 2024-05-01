@@ -11,8 +11,8 @@ import StudentMarks from "@/views/StudentMarks.vue";
 import TestDetails from "@/views/Tests/TestDetails.vue";
 import ModifyGrades from "@/views/ModifyGrades.vue";
 import CreateTest from "../views/Tests/CreateProblem.vue";
-import AddManuallyTest from "../views/Tests/AddManuallyTest.vue";
-import GenerateTest from "../views/Tests/GenerateTest.vue";
+import AddManuallyTest from "../components/AddManuallyTest.vue";
+import GenerateTest from "../components/GenerateTest.vue";
 const routes = [
   {
     name: "topbar",

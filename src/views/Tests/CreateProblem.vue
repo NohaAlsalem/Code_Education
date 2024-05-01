@@ -167,11 +167,15 @@
 <script>
 import TopBar from "@/components/TopBar.vue";
 import codeEdu from "@/components/codeEdu.vue";
+import AddManuallyTest from "@/components/AddManuallyTest.vue";
+import GenerateTest from "@/components/GenerateTest.vue";
 import router from "@/router";
 export default {
   components: {
     TopBar,
     codeEdu,
+    AddManuallyTest,
+    GenerateTest,
   },
   data() {
     return {

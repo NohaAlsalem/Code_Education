@@ -93,6 +93,16 @@
             <button type="button" class="btn btn-success">Edit</button>
           </td>
         </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+
+          <td><input type="text" value="Mark" /></td>
+          <td>
+            <button type="button" class="btn btn-success">Edit</button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
