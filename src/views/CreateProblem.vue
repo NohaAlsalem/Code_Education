@@ -172,7 +172,7 @@
       <AddManuallyTest
         v-if="selectedOption === 'addManuallyTest'"
       ></AddManuallyTest>
-      <GenerateTest v-if="selectedOption === 'generateTest'"></GenerateTest>
+      <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
     </div>
   </div>
 </template>
@@ -183,12 +183,13 @@ import codeEdu from "@/components/codeEdu.vue";
 import AddManuallyTest from "@/components/AddManuallyTest.vue";
 import GenerateTest from "@/components/GenerateTest.vue";
 import NavBar from "@/components/NavBar.vue";
+import Generate2 from '@/components/Generate2.vue';
 export default {
   components: {
     TopBar,
     codeEdu,
     AddManuallyTest,
-    GenerateTest,
+    Generate2,
     NavBar,
   },
   data() {

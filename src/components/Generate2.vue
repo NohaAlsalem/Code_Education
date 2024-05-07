@@ -475,68 +475,64 @@
             <div class="card text-start">
               <div class="card-header">Your test:</div>
               <div class="card-body">
-                <div v-for="test in tests" :key="test.id" class="row">
-                  <h6 class="col-md-9">
-                    Test{{ test.id }}:
-                    <div>
-                      <p>{{ test.selectInputType }}</p>
+                <div v-for="(test, index) in tests" :key="index">
+                  <div class="row custom-card">
+                    <div class="col-md-9">
+                      <p class="custom-p">Test {{ index + 1 }}:</p>
+                      <p>Type: {{ test.type }}</p>
                       <p
-                        v-if="
-                          (selectedInputType === 'Integer' ||
-                            selectedInputType === 'Double' ||
-                            selectedInputType === 'String') &&
-                          (showInteger || showDouble || showString)
-                        "
+                        v-if="test.type === 'Integer' || test.type === 'Double'"
                       >
-                        <span>Minimum value: {{ test.minimumValue }}</span
-                        ><span>Maximum value: {{ test.maximumValue }}</span>
+                        Minimum Value: {{ test.minimumValue }}
+                      </p>
+                      <p
+                        v-if="test.type === 'Integer' || test.type === 'Double'"
+                      >
+                        Maximum Value: {{ test.maximumValue }}
                       </p>
                       <p
                         v-if="
-                          (selectedInputType === 'String Array' ||
-                            selectedInputType === 'Double Array') &&
-                          (showArrayString || showArrayDouble)
+                          test.type === 'String' || test.type === 'String Array'
                         "
                       >
-                        <span>colMinimumValue: {{ test.colMinimumValue }}</span
-                        ><span
-                          >colMaximumValue: {{ test.colMaximumValue }}</span
-                        >
+                        First Character Range: {{ test.FirstCharacterRange }}
                       </p>
                       <p
                         v-if="
-                          (selectedInputType === 'String Array' ||
-                            selectedInputType === 'Double Array') &&
-                          (showArrayDouble || showArrayString)
+                          test.type === 'String' || test.type === 'String Array'
                         "
                       >
-                        <span>rowMinimumValue: {{ test.rowMinimumValue }}</span
-                        ><span
-                          >rowMaximumValue: {{ test.rowMaximumValue }}</span
-                        >
+                        Last Character Range: {{ test.LastCharacterRange }}
                       </p>
                       <p
                         v-if="
-                          selectedInputType === 'String' && showString === true
+                          test.type === 'String Array' ||
+                          test.type === 'Integer Array' ||
+                          test.type === 'Double Array'
                         "
                       >
-                        <span
-                          >FirstCharacterRange:
-                          {{ test.FirstCharacterRange }}</span
-                        ><span
-                          >LastCharacterRange:
-                          {{ test.LastCharacterRange }}</span
-                        >
+                        Number of Rows: {{ test.rowMinimumValue }} -
+                        {{ test.rowMaximumValue }}
+                      </p>
+                      <p
+                        v-if="
+                          test.type === 'String Array' ||
+                          test.type === 'Integer Array' ||
+                          test.type === 'Double Array'
+                        "
+                      >
+                        Number of Columns: {{ test.colMinimumValue }} -
+                        {{ test.colMaximumValue }}
                       </p>
                     </div>
-                  </h6>
-                  <button
-                    type="button"
-                    class="btn col-md-2"
-                    style="background: var(--GreenColor); color: white"
-                  >
-                    Delete
-                  </button>
+                    <button
+                      type="button"
+                      class="btn col-md-2"
+                      style="background: var(--GreenColor); color: white"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -587,21 +583,37 @@ export default {
     };
   },
   methods: {
+    addTestCase() {
+      // Push the entered test data to the tests array
+      this.tests.push({
+        type: this.selectedInputType,
+        minimumValue: this.MinimumValue,
+        maximumValue: this.MaximumValue,
+        FirstCharacterRange: this.FirstCharacterRange,
+        LastCharacterRange: this.LastCharacterRange,
+        rowMinimumValue: this.rowMinimumValue,
+        rowMaximumValue: this.rowMaximumValue,
+        colMinimumValue: this.colMinimumValue,
+        colMaximumValue: this.colMaximumValue,
+      });
+
+      // Reset input fields after adding the test case
+      this.resetInputFields();
+    },
+    resetInputFields() {
+      // Reset all input fields
+      this.selectedInputType = "Integer";
+      this.MinimumValue = 1;
+      this.MaximumValue = 1;
+      this.FirstCharacterRange = "A";
+      this.LastCharacterRange = "A";
+      this.rowMinimumValue = 1;
+      this.rowMaximumValue = 1;
+      this.colMinimumValue = 1;
+      this.colMaximumValue = 1;
+    },
     selectInputType(inputType) {
       this.selectedInputType = inputType.name;
-      if (this.selectedInputType === "Integer") {
-        this.showInteger === true;
-      } else if (this.selectedInputType === "Double") {
-        this.showDouble === false;
-      } else if (this.selectedInputType === "String") {
-        this.showString === false;
-      } else if (this.selectedInputType === "String Array") {
-        this.showArrayString === false;
-      } else if (this.selectedInputType === "Integer Array") {
-        this.showArrayInteger === false;
-      } else {
-        this.showArrayDouble === false;
-      }
     },
     FirstCharacterRangeMethod(inputType) {
       this.FirstCharacterRange = inputType.name;
@@ -633,19 +645,6 @@ export default {
       this.colMinimumValue = 1;
       this.rowMinimumValue = 1;
       this.rowMaximumValue = 1;
-      if (this.selectedInputType === "Integer") {
-        this.showInteger === true;
-      } else if (this.selectedInputType === "Double") {
-        this.showDouble === true;
-      } else if (this.selectedInputType === "String") {
-        this.showString === true;
-      } else if (this.selectedInputType === "String Array") {
-        this.showArrayString === true;
-      } else if (this.selectedInputType === "Integer Array") {
-        this.showArrayInteger === true;
-      } else {
-        this.showArrayDouble === true;
-      }
     },
   },
 };
@@ -655,6 +654,13 @@ export default {
 .r {
   background: var(--WhiteColor);
   height: 100vh;
+}
+.custom-card {
+  border: solid 1px var(--LightGreen);
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  background: var(--WhiteColor);
 }
 .btn {
   height: 30px;
@@ -667,7 +673,7 @@ export default {
 .dropdown-item:hover {
   cursor: pointer;
 }
-.dropdown-item:clic {
+.dropdown-item:click {
   background: var(--LightGreen);
 }
 .selected {
@@ -676,5 +682,9 @@ export default {
 }
 .screen {
   margin-bottom: 10px;
+}
+.custom-p {
+  color: var(--GreenColor);
+  font-weight: bold;
 }
 </style>
