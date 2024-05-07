@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div>
+      <!-- <div>
   <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
@@ -9,8 +9,8 @@
     </a>
     
   </div>
-  </nav></div>
-<!-- <TopBar></TopBar> -->
+  </nav></div> -->
+<TopBar></TopBar>
 
 <div class="landing text-center justify-content-cnter align-items-center">
     <img  src="@/assets/images/logoo.png" alt="Logo"  class="d-inline-block align-text-top">

@@ -2,15 +2,18 @@
   <div>
     <nav class="navbar navbar-expand-lg sticky-top">
       <div class="container-fluid">
-        <div>
+        <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+        <div class="d-flex">
           <img
-            src="@/assets/images/logoo.png"
+            src="../assets/images/logoo.png"
             alt="Logo"
-            width="30"
-            height="30"
+            width="40"
+            height="40"
+            class="d-inline-block align-text-top ps-0 ms-0"
           />
-          <codeEdu></codeEdu>
+          <codeEdu class="mt-1"></codeEdu>
         </div>
+
         <button
           class="navbar-toggler"
           type="button"
@@ -24,15 +27,20 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav me-auto mb-0 mb-lg-0 mt-2">
             <router-link
               to="/problems"
               style="text-decoration: none; color: inherit"
             >
               <li class="nav-item">
-                <h5 class="nav-link p-2 p-lg-3 active" aria-current="page">
-                  Problems
+                <h5
+                  class="nav-link p-2 p-lg-3"
+                  aria-current="page"
+                  :class="{ active: $route.path === '/problems' }"
+                >
+                  My problems
                 </h5>
+                <!-- <a class="nav-link active" aria-current="page" href="#">Problems</a> -->
               </li>
             </router-link>
 
@@ -41,7 +49,32 @@
               style="text-decoration: none; color: inherit"
             >
               <li class="nav-item">
-                <h5 class="nav-link p-2 p-lg-3">Classes</h5>
+                <h5
+                  class="nav-link p-2 p-lg-3"
+                  :class="{
+                    active:
+                      $route.path === '/classes' ||
+                      $route.path === '/showtests' ||
+                      /^\/classdetails\//.test($route.path),
+                  }"
+                >
+                  Classes
+                </h5>
+              </li>
+            </router-link>
+            <router-link
+              to="/createproblem"
+              style="text-decoration: none; color: inherit"
+            >
+              <li class="nav-item">
+                <h5
+                  class="nav-link p-2 p-lg-3"
+                  :class="{
+                    active: $route.path === '/createproblem',
+                  }"
+                >
+                  Create problem
+                </h5>
               </li>
             </router-link>
           </ul>
@@ -61,15 +94,20 @@
       aria-labelledby="offcanvasRightLabel"
       :class="{ show: isDrawerOpen }"
     >
-      <div class="offcanvas-header">
-        <button
-          type="button"
-          class="btn-close text-reset"
-          @click="closeDrawer"
-          aria-label="Close"
-        ></button>
+      <div class="offcanvas-header row">
+        <div class="container d-flex justify-content-end">
+          <font-awesome-icon
+            icon="fa-solid fa-pen"
+            class="edit-icon"
+            @click="toggleEditMode"
+          ></font-awesome-icon>
+        </div>
       </div>
-      <div class="offcanvas-body">
+      <div
+        class="offcanvas-body"
+        @click="closeDrawer($event)"
+        style="cursor: pointer"
+      >
         <div class="container">
           <div class="row">
             <div>
@@ -77,23 +115,26 @@
                 <div class="profile-details">
                   <div class="d-grid gap-2">
                     <font-awesome-icon
+                      @click.stop
                       icon="fa-solid fa-user"
                       id="toggleDrawerIcon"
                       class="profile-icon"
                     />
-                    <label>Name:</label>
+                    <label @click.stop>Name:</label>
                     <input
+                      @click.stop
                       class="form-control"
                       type="text"
                       placeholder="loujain"
-                      readonly
+                      :readonly="!editMode"
                     />
-                    <label>Email address:</label>
+                    <label @click.stop>Email address:</label>
                     <input
+                      @click.stop
                       class="form-control custom-input"
                       type="text"
                       placeholder="lolo@gmail.com"
-                      readonly
+                      :readonly="!editMode"
                     />
 
                     <button
@@ -107,6 +148,7 @@
                     </button>
 
                     <button
+                      v-if="editMode"
                       type="button"
                       class="btn btn-secondary btn-sm btn-block"
                       style="background: var(--GreenColor)"
@@ -182,19 +224,23 @@ export default {
   data() {
     return {
       isDrawerOpen: false,
+      editMode: false,
     };
   },
   methods: {
     toggleDrawer() {
       this.isDrawerOpen = !this.isDrawerOpen;
     },
-    closeDrawer() {
+    closeDrawer(event) {
+      event.stopPropagation();
       this.isDrawerOpen = false;
+    },
+    toggleEditMode() {
+      this.editMode = !this.editMode;
     },
   },
 };
 </script>
-
 <style>
 :root {
   --WhiteColor: #faf3dd;
@@ -202,23 +248,14 @@ export default {
   --LightGreen: #8fc0a9;
   --GreenOpacity: #68b0ab;
   --GreenColor: #4a7c59;
+  --borderColor: #707070;
 }
-.form-control.custom-input {
-  max-width: 100%;
-}
-.form-control {
-  max-width: 100%;
+.i {
+  color: var(--GreenColor);
 }
 .navbar {
+  /* background-color: var(--WhiteColor); */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.profile-card .profile-icon {
-  font-size: 72px;
-}
-
-.profile-icon {
-  cursor: pointer;
 }
 
 .nav-link {
@@ -229,24 +266,33 @@ export default {
   margin-bottom: 2;
 }
 
-.offcanvas.offcanvas-end {
-  background: var(--WhiteColor);
-}
-
-.navbar .navbar-nav .nav-link.active,
 .navbar .navbar-nav .nav-link:focus,
 .navbar .navbar-nav .nav-link:hover {
   color: #8fc0a9;
 }
-
+.navbar .navbar-nav .nav-link.active {
+  color: var(--GreenColor);
+  font-weight: bold;
+  text-underline-position: auto;
+}
 .navbar .profile {
   border-left: 1px solid var(--GreenColor);
 }
-
+.offcanvas.offcanvas-end {
+  background: var(--WhiteColor);
+}
+.edit-icon {
+  color: var(--GreenColor);
+}
 .navbar .profile .svg {
   color: var(--GreenColor);
 }
-
+.profile-card .profile-icon {
+  font-size: 72px;
+}
+.profile-icon {
+  cursor: pointer;
+}
 .navbar .navbar-toggler {
   color: white;
   font-size: 25px;

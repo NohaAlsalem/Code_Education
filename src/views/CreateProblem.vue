@@ -1,15 +1,33 @@
 <template>
+  <NavBar></NavBar>
   <div class="r">
-    <div class="col-md-12 ms-3">
-      <div class="form-group col-md-4">
-        <label for="exampleFormControlInput1">Problem name</label>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleFormControlInput1"
-        />
-      </div>
+    <div class="container col-md-12 ms-3">
       <div class="row">
+        <div class="form-group col-md-4">
+          <label for="exampleFormControlInput1">Problem name</label>
+          <input
+            type="email"
+            class="form-control"
+            id="exampleFormControlInput1"
+          />
+        </div>
+        <div class="btn-group col-md-4">
+          <label for="exampleFormControlInput1">Language:</label>
+          <button
+            type="button"
+            class="btn btn-danger dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="true"
+          >
+            Language
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">C++</a></li>
+            <li><a class="dropdown-item" href="#">Java</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-space-between">
         <div class="form-group col-md-6">
           <label for="exampleFormControlTextarea1">Description</label>
           <textarea
@@ -46,12 +64,6 @@
                   <li><a class="dropdown-item" href="#">status</a></li>
                   <li>
                     <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Separated link</a>
                   </li>
                 </ul>
               </div>
@@ -96,18 +108,9 @@
                   Tags
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">C++</a></li>
                   <li>
-                    <a class="dropdown-item" href="#">Another action</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Separated link</a>
+                    <a class="dropdown-item" href="#">Java</a>
                   </li>
                 </ul>
               </div>
@@ -117,15 +120,19 @@
         <div class="col"></div>
       </div>
 
-      <div class="form-group col-md-4">
-        <label for="exampleFormControlInput1" class="mb-2"
-          >Add hint for this problem</label
-        >
-        <input
-          type="email"
-          class="form-control mb-3"
-          id="exampleFormControlInput1"
-        />
+      <div class="row">
+        <div class="container col-md-12">
+          <div class="form-group col-md-4">
+            <label for="exampleFormControlInput1" class="mb-2"
+              >Add hint for this problem</label
+            >
+            <input
+              type="email"
+              class="row form-control mb-3 ms-1 col-md-6"
+              id="exampleFormControlInput1"
+            />
+          </div>
+        </div>
       </div>
       <button
         type="button"
@@ -135,7 +142,7 @@
         Add hint
       </button>
     </div>
-    <div class="d-flex justify-content-start ms-3">
+    <div class="d-flex justify-content-start ms-4">
       <div>
         <label class="form-check-label" for="generateTestCheckbox">
           <input
@@ -145,7 +152,7 @@
             @click="navigateToGenerateTest"
             :checked="selectedOption === 'generateTest'"
           />
-          Generate test
+          Generate test case
         </label>
       </div>
       <div>
@@ -157,9 +164,15 @@
             @click="navigateToAddManuallyTest"
             :checked="selectedOption === 'addManuallyTest'"
           />
-          Add manually test
+          Add manually test case
         </label>
       </div>
+    </div>
+    <div style="background: var(--WhiteColor)">
+      <AddManuallyTest
+        v-if="selectedOption === 'addManuallyTest'"
+      ></AddManuallyTest>
+      <GenerateTest v-if="selectedOption === 'generateTest'"></GenerateTest>
     </div>
   </div>
 </template>
@@ -169,13 +182,14 @@ import TopBar from "@/components/TopBar.vue";
 import codeEdu from "@/components/codeEdu.vue";
 import AddManuallyTest from "@/components/AddManuallyTest.vue";
 import GenerateTest from "@/components/GenerateTest.vue";
-import router from "@/router";
+import NavBar from "@/components/NavBar.vue";
 export default {
   components: {
     TopBar,
     codeEdu,
     AddManuallyTest,
     GenerateTest,
+    NavBar,
   },
   data() {
     return {
@@ -185,12 +199,12 @@ export default {
   methods: {
     navigateToGenerateTest() {
       this.selectedOption = "generateTest";
-      router.push("/generatetest");
+      // router.push("/generatetest");
       console.log(this.selectedOption);
     },
     navigateToAddManuallyTest() {
       this.selectedOption = "addManuallyTest";
-      router.push("/addmanuallytest");
+      // router.push("/addmanuallytest");
       console.log(this.selectedOption);
     },
   },
@@ -218,5 +232,12 @@ export default {
 
 .form-check-input[type="radio"]:checked {
   border-color: var(--BlueColor);
+}
+.btn.btn-danger.dropdown-toggle {
+  margin-bottom: 3rem;
+  margin-top: 1.5rem;
+  background: var(--darkwhite);
+  border: none;
+  color: var(--GreenColor);
 }
 </style>

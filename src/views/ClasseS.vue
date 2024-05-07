@@ -1,134 +1,86 @@
 <template>
-  <div>
-    <NavBar></NavBar>
-    <SubjectAndClass></SubjectAndClass>
-    <div
-      class="container mt-5 position-absolute top-70 start-50 translate-middle"
-    >
-      <div class="row">
-        <div class="col-md-3">
-          <router-link :to="{name:'createtest'}">
-            <div
-            class="card bg-light rounded"
-            @mouseover="addAnimation"
-            @mouseout="removeAnimation"
-          >
-            <img
-              class="card-img-top"
-              src="../assets/images/img1.jpg"
-              alt="Image"
-            />
-            <div class="card-body">
-              <p class="card-text">Create tests</p>
-            </div>
-          </div>
-          </router-link>
+  <NavBar></NavBar>
+  <div class="container class-cards mt-4">
+    <div v-for="classs in classes" :key="classs.id" class="card classess">
+      <router-link
+        :to="{ name: 'classdetails', params: { id: classs.id } }"
+        class="router-link"
+      >
+        <div class="card-body row">
+          <p class="col-md-4"><strong>Class:</strong> {{ classs.class }}</p>
+          <p class="col-md-4"><strong>Subject:</strong>{{ classs.subject }}</p>
+          <p class="col-md-4">
+            <strong>Number of students:</strong> {{ classs.numberOfStudents }}
+          </p>
         </div>
-
-        <div class="col-md-3">
-          <router-link :to="{ name: 'showtests' }">
-            <div
-              class="card bg-light rounded"
-              @mouseover="addAnimation"
-              @mouseout="removeAnimation"
-            >
-              <img
-                class="card-img-top"
-                src="../assets/images/image.png"
-                alt="Image"
-              />
-              <div class="card-body">
-                <p class="card-text">Show tests</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
-
-        <div class="col-md-3">
-          <router-link :to="{ name: 'takeAttendance' }">
-            <div
-              class="card bg-light rounded"
-              @mouseover="addAnimation"
-              @mouseout="removeAnimation"
-            >
-              <img
-                class="card-img-top"
-                src="../assets/images/img3.jpg"
-                alt="Image"
-              />
-              <div class="card-body">
-                <p class="card-text">Check attendance</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
-        <div class="col-md-3">
-          <router-link :to="{ name: 'studentMarks' }">
-            <div
-              class="card bg-light rounded"
-              @mouseover="addAnimation"
-              @mouseout="removeAnimation"
-            >
-              <img
-                class="card-img-top"
-                src="../assets/images/img2.jpg"
-                alt="Image"
-              />
-              <div class="card-body">
-                <p class="card-text">Student marks</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import SubjectAndClass from "../components/SubjectAndClass.vue";
 import NavBar from "@/components/NavBar.vue";
-
 export default {
+  data() {
+    return {
+      classes: [
+        {
+          id: 1,
+          class: 2,
+          subject: "Programming1",
+          numberOfStudents: 25,
+        },
+        {
+          id: 2,
+          class: 4,
+          subject: "Programming1",
+          numberOfStudents: 25,
+        },
+      ],
+    };
+  },
   components: {
     NavBar,
-    SubjectAndClass,
-  },
-  methods: {
-    addAnimation(event) {
-      const cardBody = event.currentTarget.querySelector(".card-body");
-      cardBody.classList.add("hover-animation");
-      cardBody.style.backgroundPosition = "bottom";
-    },
-    removeAnimation(event) {
-      const cardBody = event.currentTarget.querySelector(".card-body");
-      cardBody.classList.remove("hover-animation");
-      cardBody.style.backgroundPosition = "top";
-    },
   },
 };
 </script>
 
-<style scoped>
-.d-flex {
-  height: 40%;
+<style>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.subject {
-  margin-top: 3px;
+.class-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.image {
-  flex-shrink: 0;
+.classess {
+  flex-basis: 100%;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.hover-animation {
-  background-image: linear-gradient(
-    to top,
-    var(--GreenColor) 0%,
-    transparent 100%
-  );
-  background-size: 100% 200%;
-  transition: background-position 0.3s ease;
+.card-body {
+  margin: 0;
+}
+
+p {
+  margin-bottom: 10px;
+}
+.card.classess {
+  margin: 13px;
+  background: var(--WhiteColor);
+}
+strong {
+  color: var(--GreenColor);
+}
+.router-link {
+  text-decoration: none;
+  color: inherit;
 }
 </style>

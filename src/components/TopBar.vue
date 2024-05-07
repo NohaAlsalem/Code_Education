@@ -1,48 +1,29 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg sticky-top">
-      <div class="container-fluid">
-        <div class="navbar-brand">
-          <img src="@/assets/images/logoo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-          <codeEdu></codeEdu>
+      <div class="container-fluid d-flex">
+        <div class="navbar-brand d-flex">
+          <img
+            src="../assets/images/logoo.png"
+            alt="Logo"
+            width="40"
+            height="40"
+            class="d-inline-block align-text-top"
+          />
+          <h4 class="code d-inline pe-2">Code</h4>
+          <h4 class="edu d-inline">Education</h4>
         </div>
-        <font-awesome-icon icon="fa-solid fa-user" id="toggleDrawerIcon" class="profile-icon" @click="toggleDrawer" />
       </div>
     </nav>
-
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
-      :class="{ 'show': isDrawerOpen }">
-      <div class="offcanvas-header">
-        <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-        <button type="button" class="btn-close text-reset" @click="closeDrawer" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        ...
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import codeEdu from '@/components/codeEdu.vue';
-
+import codeEdu from "@/components/codeEdu.vue";
 export default {
   components: {
-    codeEdu
+    codeEdu,
   },
-  data() {
-    return {
-      isDrawerOpen: false
-    };
-  },
-  methods: {
-    toggleDrawer() {
-      this.isDrawerOpen = !this.isDrawerOpen;
-    },
-    closeDrawer() {
-      this.isDrawerOpen = false;
-    }
-  }
 };
 </script>
 
@@ -51,15 +32,22 @@ export default {
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-.profile-icon {
-cursor: pointer;
+
+.container-fluid {
+  /* justify-content: center; */
+  text-align: center;
 }
-.svg-icon {
-  width: 24px;
-  height: 24px;
-  fill: var(--GreenColor);
+
+
+.code {
+  color: var(--GreenColor);
+  position: relative;
+  top: 5px;
 }
-.offcanvas{
-  background: var(--WhiteColor);
+
+.edu {
+  color: var(--GreenOpacity);
+  position: relative;
+  top: 5px;
 }
 </style>

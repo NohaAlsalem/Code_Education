@@ -2,17 +2,20 @@ import { createRouter, createWebHistory } from "vue-router";
 import TopBar from "@/components/TopBar.vue";
 import NavBar from "@/components/NavBar.vue";
 import splashSc from "../views/splashSc.vue";
-import ProblemS from "../views/ProblemS.vue";
-import ClasseS from "../views/ClasseS.vue";
+import ProblemS from "../views/MyProblemS.vue";
+import Classes from "../views/Classes.vue";
 import logIn from "../views/logIn.vue";
 import ShowTests from "@/views/Tests/ShowTests.vue";
 import TakeAttendance from "@/views/TakeAttendance.vue";
 import StudentMarks from "@/views/StudentMarks.vue";
 import TestDetails from "@/views/Tests/TestDetails.vue";
 import ModifyGrades from "@/views/ModifyGrades.vue";
-import CreateTest from "../views/Tests/CreateProblem.vue";
+import CreateTest from "../views/Tests/CreateTest.vue";
 import AddManuallyTest from "../components/AddManuallyTest.vue";
 import GenerateTest from "../components/GenerateTest.vue";
+import ClassDetails from "@/views/ClassDetails.vue";
+import CreateProblem from "../views/CreateProblem.vue";
+import problemsToaddTotest from "../components/ProblemsToAddTest.vue";
 const routes = [
   {
     name: "topbar",
@@ -42,7 +45,7 @@ const routes = [
   {
     name: "classes",
     path: "/classes",
-    component: ClasseS,
+    component: Classes,
   },
   {
     name: "showtests",
@@ -66,20 +69,45 @@ const routes = [
     props: true,
   },
   {
+    name: "createproblem",
+    path: "/createproblem",
+    component: CreateProblem,
+  },
+  {
     name: "createtest",
     path: "/createtest",
     component: CreateTest,
+    props: (route) => ({
+      problemId: route.query.problemId,
+      title: route.query.title,
+      Language: route.query.Language,
+      Difficulty:route.query.Difficulty,
+      Tags:route.query.Tags
+    }),
+   
   },
   { name: "modifygrades", path: "/modifygrades", component: ModifyGrades },
   {
-    name:"addmanuallytest",
-    path:"/addmanuallytest",
-    component:AddManuallyTest
-  },{
-    name:"generatetest",
-    path:"/generatetest",
-    component:GenerateTest
-  }
+    name: "addmanuallytest",
+    path: "/addmanuallytest",
+    component: AddManuallyTest,
+  },
+  {
+    name: "generatetest",
+    path: "/generatetest",
+    component: GenerateTest,
+  },
+  {
+    name: "classdetails",
+    path: "/classdetails/:id",
+    component: ClassDetails,
+    props: true,
+  },
+  {
+    name: "problemsToaddTotest",
+    path: "/problemsToaddTotest",
+    component: problemsToaddTotest,
+  },
 ];
 
 const router = createRouter({
