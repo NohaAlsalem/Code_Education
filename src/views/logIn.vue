@@ -4,42 +4,55 @@
     <div>
       <div class="col-md-12">
         <div class="form-sub-main">
-          <div class="_main_head_as text-center justify-content-center align-items-center mb-0">
-            <img src="@/assets/images/logoo.png">
+          <div
+            class="_main_head_as text-center justify-content-center align-items-center mb-0"
+          >
+            <img src="@/assets/images/logoo.png" />
             <codeEdu></codeEdu>
           </div>
-
-          <div class="form-group">
-            <input id="email" name="email" class="form-control _ge_de_ol mb-3" type="text"
-              placeholder="username or E-mail" required="" aria-required="true">
-          </div>
-
-          <div class="form-group">
-            <input id="password" type="password" class="form-control mb-3" name="password" placeholder="password"
-              required="required">
-          </div>
-
-          <div class="form-group">
-            <div class="btn_uy">
-              <routerLink to="/problems">
-                <h5>SignIn</h5>
-              </routerLink>
+          <form @submit="signIn">
+            <div class="form-group">
+              <input
+                id="email"
+                name="email"
+                v-model="formData.email"
+                class="form-control _ge_de_ol mb-3"
+                type="text"
+                placeholder="username or E-mail"
+                required=""
+                aria-required="true"
+              />
             </div>
-          </div>
 
+            <div class="form-group">
+              <input
+                id="password"
+                type="password"
+                v-model="formData.password"
+                class="form-control mb-3"
+                name="password"
+                placeholder="password"
+                required="required"
+              />
+            </div>
 
-          <div class="txt d-flex ">
+            <div class="form-group" @click="signIn">
+              <div class="btn_uy" type="submit">
+                <!-- <routerLink to="/problems"> -->
+                <h5>SignIn</h5>
+                <!-- </routerLink> -->
+              </div>
+            </div>
+          </form>
+          <div class="txt d-flex">
             <p class="pt-2">Forgot Password?</p>
           </div>
-
         </div>
-
-        <div class="txt d-flex ">
+        <div class="txt d-flex">
           <p class="pt-2"></p>
-          <routerLink to="/signup" class="txt-h pt-0  me-4 ms-auto">
+          <routerLink to="/signup" class="txt-h pt-0 me-4 ms-auto">
             <font-awesome-icon icon="fa-solid fa-bell" />
           </routerLink>
-
         </div>
       </div>
     </div>
@@ -47,15 +60,45 @@
 </template>
 
 <script>
-
-import TopBar from '@/components/TopBar.vue';
-import codeEdu from '@/components/codeEdu.vue';
+import TopBar from "@/components/TopBar.vue";
+import codeEdu from "@/components/codeEdu.vue";
+import axios from "axios";
 export default {
   components: {
     TopBar,
-    codeEdu
-  }
-}
+    codeEdu,
+  },
+  data() {
+    return {
+      error: null,
+      mesaage: "",
+      searchText: "",
+      token: "",
+      formData: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    signIn() {
+      //  if (this.isValidEmail && this.isValidPassword) {
+      axios
+        .post("http://127.0.0.1:8000/api/login", this.formData)
+        .then((response) => {
+          this.$router.push("/problems");
+          this.token = response.data.token;
+          localStorage.setItem("token", this.token);
+          this.mesaage = response.data.mesaage;
+          console.log(this.token + "lknkj");
+        })
+        .catch((error) => {
+          console.log(error);
+          this.error = error;
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -93,7 +136,6 @@ a {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 0px 30px 20px;
-
 }
 
 .form-group .form-control {
@@ -105,10 +147,9 @@ a {
   /* border: 1px solid rgba(255, 255, 255, 0.3); */
   padding: 10px 15px;
   background-color: transparent;
-  color: #fff;
+  color: black;
   margin: 10px 0px;
 }
-
 
 .form-sub-main .form-group ::placeholder {
   display: block;
@@ -133,8 +174,6 @@ a {
   border-color: var(--GreenColor);
 }
 
-
-
 .btn_uy {
   position: relative;
   z-index: 9;
@@ -142,10 +181,9 @@ a {
   margin: 20px 0px;
 }
 
-.btn_uy a {
+.btn_uy h5 {
   padding: 10px 20px;
   background: var(--GreenColor);
-  ;
   text-transform: uppercase;
   text-align: center;
   font-size: 16px;
@@ -159,5 +197,4 @@ a {
   display: inline-block;
   cursor: pointer;
 }
-
 </style>

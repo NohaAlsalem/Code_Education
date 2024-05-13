@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bk position-relative text-center justify-content-center align-items-start"
+    class="bk position-relative text-center justify-content-center "
   >
     <div class="d-flex flex-column align-items-center">
       <div class="image">
@@ -11,15 +11,23 @@
         />
       </div>
       <div class="subject">
-        <h1><span>Subject</span><span> Programming1</span></h1>
-        <h3><span>Class</span><span> 25</span></h3>
+        <h1>
+          <span class="first">Subject </span
+          ><span class="second"> {{ class_subject }}</span>
+        </h1>
+        <h3>
+          <span class="first">Class </span
+          ><span class="second"> {{ class_name }}</span>
+        </h3>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["class_name", "class_subject"],
+};
 </script>
 
 <style>
@@ -30,4 +38,11 @@ export default {};
   justify-content: center;
   align-items: flex-start;
 }
+.first {
+  color: var(--GreenColor);
+}
+.second {
+  color: var(--GreenOpacity);
+}
+
 </style>

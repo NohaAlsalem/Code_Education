@@ -9,7 +9,12 @@
         </div>
       </div>
       <div class="input-group">
-        <input type="text" class="form-control" v-model="TestName" />
+        <input
+          type="text"
+          class="form-control"
+          v-model="formData.name"
+          required
+        />
       </div>
       <div class="row mt-0">
         <div class="col-8">
@@ -19,18 +24,28 @@
         </div>
       </div>
       <div class="input-group">
-        <input type="number" class="form-control" v-model="mark" />
+        <input
+          type="number"
+          class="form-control"
+          v-model="formData.mark"
+          required
+        />
       </div>
       <div class="container mt-4 p-0">
         <p>Add problem to test:</p>
       </div>
 
       <div>
-        <router-link :to="{ name: 'problemsToaddTotest' }">
+        <router-link
+          :to="{
+            name: 'problemsToaddTotest',
+            params: { id: $route.params.id },
+          }"
+        >
           <button type="button" class="btn btn-success mb-2">Add</button>
         </router-link>
       </div>
-      <div v-if="problemId" class="row input-group">
+      <div class="row input-group">
         <div class="me-5">
           <table class="table">
             <thead>
@@ -45,7 +60,6 @@
             <tbody>
               <tr>
                 <th scope="row">{{ problemId }}</th>
-
                 <td>{{ title }}</td>
                 <td>{{ Language }}</td>
                 <td>{{ Difficulty }}</td>
@@ -65,7 +79,11 @@
       </div>
       <div class="row m-5">
         <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-success mb-2 col-md-6">
+          <button
+            @click="addTest"
+            type="button"
+            class="btn btn-success mb-2 col-md-6"
+          >
             Create
           </button>
         </div>
@@ -76,16 +94,48 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import { BASE_URL } from "@/assets/config";
+import axios from "axios";
 export default {
   components: {
     NavBar,
   },
-  props: ["problemId", "title", "Language", "Difficulty", "Tags"],
+  props: ["problemId", "title", "Language", "Difficulty", "Tags", "id"],
+  mounted() {
+    console.log(this.$route.params.id);
+  },
   data() {
     return {
-      TestName: "",
-      mark: 1,
+      formData: {
+        problem_id: this.problemId,
+        category_id: this.$route.params.id,
+        name: "",
+        mark: 0,
+      },
     };
+  },
+  mounted() {
+    console.log(this.problemId);
+    console.log(this.$route.params.id);
+  },
+  methods: {
+    addTest() {
+      const token = localStorage.getItem("token");
+      console.log(this.formData);
+      console.log(token);
+      axios
+        .post(BASE_URL + "assessment/create", this.formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          // this.mesaage = response.data;
+          console.log(response.data.message);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.error = error;
+        });
+    },
   },
 };
 </script>
@@ -99,6 +149,7 @@ export default {
 }
 p {
   color: var(--GreenColor);
+  font-weight: bold;
 }
 
 h6 {

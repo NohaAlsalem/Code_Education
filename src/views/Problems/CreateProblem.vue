@@ -1,29 +1,30 @@
 <template>
   <NavBar></NavBar>
   <div class="r">
-    <div class="container col-md-12 ms-3">
+    <div class="container col-md-12 ms-3 pt-4">
       <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
           <label for="exampleFormControlInput1">Problem name</label>
           <input
+           v-model="formData.name"
             type="email"
             class="form-control"
             id="exampleFormControlInput1"
           />
         </div>
-        <div class="btn-group col-md-4">
+        <div class="btn-group col-md-6">
           <label for="exampleFormControlInput1">Language:</label>
           <button
             type="button"
             class="btn btn-danger dropdown-toggle"
             data-bs-toggle="dropdown"
-            aria-expanded="true"
+            
           >
             Language
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">C++</a></li>
-            <li><a class="dropdown-item" href="#">Java</a></li>
+            <li><a class="dropdown-item" >C++</a></li>
+            <li><a class="dropdown-item" >Java</a></li>
           </ul>
         </div>
       </div>
@@ -39,6 +40,7 @@
         <div class="form-group col-md-6">
           <label for="exampleFormControlTextarea1">Solution</label>
           <textarea
+          v-model="formData.teacher_code_solve"
             class="form-control"
             id="exampleFormControlTextarea1"
             rows="5"
@@ -174,6 +176,20 @@
       ></AddManuallyTest>
       <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
     </div>
+
+    <div class="container col-md-12" style="background: var(--WhiteColor)">
+      <router-link :to="{ name: 'confirmproblem' }">
+        <div class="row">
+          <button
+            type="button"
+            class="row btn btn-success mb-2 ms-4 mt-4"
+            style="background: var(--GreenColor)"
+          >
+            Create
+          </button>
+        </div>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -181,9 +197,8 @@
 import TopBar from "@/components/TopBar.vue";
 import codeEdu from "@/components/codeEdu.vue";
 import AddManuallyTest from "@/components/AddManuallyTest.vue";
-import GenerateTest from "@/components/GenerateTest.vue";
 import NavBar from "@/components/NavBar.vue";
-import Generate2 from '@/components/Generate2.vue';
+import Generate2 from "@/components/Generate2.vue";
 export default {
   components: {
     TopBar,
@@ -195,17 +210,19 @@ export default {
   data() {
     return {
       selectedOption: null,
+      formData:{
+        name:'',
+        teacher_code_solve:''
+      }
     };
   },
   methods: {
     navigateToGenerateTest() {
       this.selectedOption = "generateTest";
-      // router.push("/generatetest");
       console.log(this.selectedOption);
     },
     navigateToAddManuallyTest() {
       this.selectedOption = "addManuallyTest";
-      // router.push("/addmanuallytest");
       console.log(this.selectedOption);
     },
   },
@@ -215,7 +232,7 @@ export default {
 <style scoped>
 .r {
   background: var(--WhiteColor);
-  height: 100vh;
+  height: 100%;
 }
 .btn-group .btn {
   background: var(--LightGreen);

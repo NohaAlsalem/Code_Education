@@ -1,13 +1,20 @@
 <template>
   <div>
     <NavBar></NavBar>
-    <SubjectAndClass></SubjectAndClass>
+    <SubjectAndClass
+      :class_name="$route.params.class_name"
+      :class_subject="class_subject"
+    ></SubjectAndClass>
+
     <div
-      class="container mt-5 position-absolute top-70 start-50 translate-middle"
+      class="container  position-absolute top-70 start-50 translate-middle"
     >
       <div class="row">
         <div class="col-md-3">
-          <router-link :to="{ name: 'createtest' }" class="router-link">
+          <router-link
+            :to="{ name: 'createtest', params: { id: $route.params.id } }"
+            class="router-link"
+          >
             <div
               class="card bg-light rounded"
               @mouseover="addAnimation"
@@ -26,7 +33,7 @@
         </div>
 
         <div class="col-md-3">
-          <router-link :to="{ name: 'showtests' }" class="router-link">
+          <router-link :to="{ name: 'showtests', params: { id: $route.params.id } }" class="router-link">
             <div
               class="card bg-light rounded"
               @mouseover="addAnimation"
@@ -95,7 +102,27 @@ export default {
     NavBar,
     SubjectAndClass,
   },
+  props: ["id", "class_name", "class_subject"],
+  mounted() {
+    // this.id=this.$route.params.id;
+    console.log("Received item ID:", this.$route.params.id);
+    console.log("Received item name:", this.$route.params.class_name);
+  },
   methods: {
+    // goToCreateTest(problem) {
+    //   console.log()
+    //   this.$router.push({
+    //     name: "createtest",
+    //     query: {
+    //       id:this.$route.params.id,
+    //       problemId: problem.id,
+    //       title: problem.title,
+    //       Language: problem.Language,
+    //       Difficulty: problem.Difficulty,
+    //       Tags: problem.Tags,
+    //     },
+    //   });
+    // },
     addAnimation(event) {
       const cardBody = event.currentTarget.querySelector(".card-body");
       cardBody.classList.add("hover-animation");
@@ -107,12 +134,13 @@ export default {
       cardBody.style.backgroundPosition = "top";
     },
   },
+  
 };
 </script>
 
 <style scoped>
 .d-flex {
-  height: 40%;
+  height: 70%;
 }
 .cont {
   height: 50px;

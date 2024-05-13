@@ -1,51 +1,89 @@
 <template>
   <div class="card-body" style="height: 40%; overflow-y: auto">
-    <h5 class="card-title">1. Two Sum</h5>
-    <h6 class="card-title" style="color: var(--GreenColor)">Easy</h6>
-    <h6 class="card-title" style="color: var(--GreenColor)">Language: C++</h6>
+    <h5 class="card-title">{{ name }}</h5>
+    <h6 class="card-title" style="color: var(--GreenColor)">{{ diffculty }}</h6>
+    <!-- <h6 class="card-title" style="color: var(--GreenColor)">Language: C++</h6> -->
     <p class="card-text">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, amet
-      dolor? Ab neque quam reprehenderit vero, fugiat laudantium doloribus unde
-      necessitatibus, consequuntur nisi dolorem? Dolor accusamus vero autem, sit
-      culpa nam repellendus minima optio rerum dolore qui a deleniti minus illo
-      iure sed facilis et veritatis recusandae consequuntur! Itaque omnis
-      voluptas modi facere, enim, non, maxime rem obcaecati exercitationem quasi
-      suscipit placeat doloremque. Ut, quis quasi? Hic enim distinctio sequi
-      perspiciatis molestiae, vel vero. Pariatur, tempora ratione est obcaecati
-      quasi amet magnam veniam temporibus nostrum laboriosam, consectetur, iste
-      a odio et. Laborum quia placeat neque suscipit autem dolores nam ipsam.
+      {{ description }}
     </p>
-    <h6 class="card-title" style="color: var(--GreenColor)">Test 1:</h6>
-    <p>
-      <span style="color: var(--GreenColor)">Input: </span>
-      nums = [2,7,11,15], target = 9
-    </p>
-    <p>
-      <span style="color: var(--GreenColor)">Output: </span>
-      [0,1]
-    </p>
-    <div class="d-flex">
-      <font-awesome-icon
-        icon="font-awesome"
-        class="me-1"
-        style="color: var(--GreenColor)"
-      />
-      <h6 class="card-title" style="color: var(--GreenColor)">Tags:</h6>
+    <div v-if="test_case">
+      <h6 class="card-title" style="color: var(--GreenColor)">Test 1:</h6>
+      <p>
+        <span style="color: var(--GreenColor)">Input: </span>
+        {{ test_case[0].input }}
+      </p>
+      <p>
+        <span style="color: var(--GreenColor)">Output: </span>
+        {{ test_case[0].output }}
+      </p>
     </div>
+
     <div>
-      <button type="button" class="custom-btn" style="pointer-events: none">
-        Array
-      </button>
       <div id="accordion">
         <div class="card">
           <div class="card-header" id="headingOne">
             <h5 class="mb-0">
-              <div class="d-flex align-items-center" @click="toggleCollpases">
+              <div class="d-flex align-items-center" @click="toggleTags">
                 <button
                   class="btn btn-link"
                   data-toggle="collapse"
                   data-target="#collapseOne"
-                  :aria-expanded="toggleCollapse"
+                  :aria-expanded="toggleTag"
+                  aria-controls="collapseOne"
+                >
+                  <div class="d-flex">
+                    <font-awesome-icon
+                      icon="font-awesome"
+                      class="me-1"
+                      style="color: var(--GreenColor)"
+                    />
+                    <h6 class="card-title" style="color: var(--GreenColor)">
+                      Tags:
+                    </h6>
+                  </div>
+                </button>
+                <div
+                  class="arrow-icon"
+                  :class="{
+                    'arrow-up': toggleTag,
+                    'arrow-down': !toggleTag,
+                  }"
+                ></div>
+              </div>
+            </h5>
+          </div>
+
+          <div
+            id="collapseOne"
+            :class="{
+              'collapse show': toggleTag,
+              collapse: !toggleTag,
+            }"
+            aria-labelledby="headingOne"
+            data-parent="#accordion"
+          >
+            <div class="card-body">
+              <button
+                v-for="tag in tags"
+                :key="tag"
+                type="button"
+                class="custom-btn"
+                style="pointer-events: none"
+              >
+                {{ tag.name }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <div class="d-flex align-items-center" @click="toggleHints1">
+                <button
+                  class="btn btn-link"
+                  data-toggle="collapse"
+                  data-target="#collapseOne"
+                  :aria-expanded="toggleHint1"
                   aria-controls="collapseOne"
                 >
                   <font-awesome-icon
@@ -58,8 +96,8 @@
                 <div
                   class="arrow-icon"
                   :class="{
-                    'arrow-up': toggleCollapse,
-                    'arrow-down': !toggleCollapse,
+                    'arrow-up': toggleHint1,
+                    'arrow-down': !toggleHint1,
                   }"
                 ></div>
               </div>
@@ -69,91 +107,57 @@
           <div
             id="collapseOne"
             :class="{
-              'collapse show': toggleCollapse,
-              collapse: !toggleCollapse,
+              'collapse show': toggleHint1,
+              collapse: !toggleHint1,
             }"
             aria-labelledby="headingOne"
             data-parent="#accordion"
           >
             <div class="card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life
-              accusamus terry richardson ad squid. 3 wolf moon officia aute, non
-              cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-              laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-              on it squid single-origin coffee nulla assumenda shoreditch et.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-              nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-              lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them
-              accusamus labore sustainable VHS.
+              {{ hint1 }}
             </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header" id="headingTwo">
+          <div class="card-header" id="headingOne">
             <h5 class="mb-0">
-              <button
-                class="btn btn-link collapsed"
-                data-toggle="collapse"
-                data-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo"
-              >
-                Collapsible Group Item #2
-              </button>
+              <div class="d-flex align-items-center" @click="toggleHints2">
+                <button
+                  class="btn btn-link"
+                  data-toggle="collapse"
+                  data-target="#collapseOne"
+                  :aria-expanded="toggleHint2"
+                  aria-controls="collapseOne"
+                >
+                  <font-awesome-icon
+                    icon="fa-solid fa-lightbulb"
+                    class="fa-xs me-1"
+                    style="color: var(--GreenColor)"
+                  />
+                  Hint 2:
+                </button>
+                <div
+                  class="arrow-icon"
+                  :class="{
+                    'arrow-up': toggleHint2,
+                    'arrow-down': !toggleHint2,
+                  }"
+                ></div>
+              </div>
             </h5>
           </div>
+
           <div
-            id="collapseTwo"
-            class="collapse"
-            aria-labelledby="headingTwo"
+            id="collapseOne"
+            :class="{
+              'collapse show': toggleHint2,
+              collapse: !toggleHint2,
+            }"
+            aria-labelledby="headingOne"
             data-parent="#accordion"
           >
             <div class="card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life
-              accusamus terry richardson ad squid. 3 wolf moon officia aute, non
-              cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-              laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-              on it squid single-origin coffee nulla assumenda shoreditch et.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-              nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-              lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them
-              accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="headingThree">
-            <h5 class="mb-0">
-              <button
-                class="btn btn-link collapsed"
-                data-toggle="collapse"
-                data-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
-                Collapsible Group Item #3
-              </button>
-            </h5>
-          </div>
-          <div
-            id="collapseThree"
-            class="collapse"
-            aria-labelledby="headingThree"
-            data-parent="#accordion"
-          >
-            <div class="card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life
-              accusamus terry richardson ad squid. 3 wolf moon officia aute, non
-              cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-              laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-              on it squid single-origin coffee nulla assumenda shoreditch et.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-              nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-              lomo. Leggings occaecat craft beer farm-to-table, raw denim
-              aesthetic synth nesciunt you probably haven't heard of them
-              accusamus labore sustainable VHS.
+              {{ hint2 }}
             </div>
           </div>
         </div>
@@ -166,12 +170,29 @@
 export default {
   data() {
     return {
-      toggleCollapse: false,
+      toggleTag: false,
+      toggleHint1: false,
+      toggleHint2: false,
     };
   },
+  props: [
+    "name",
+    "diffculty",
+    "description",
+    "tags",
+    "hint1",
+    "hint2",
+    "test_case",
+  ],
   methods: {
-    toggleCollpases() {
-      this.toggleCollapse = !this.toggleCollapse;
+    toggleTags() {
+      this.toggleTag = !this.toggleTag;
+    },
+    toggleHints1() {
+      this.toggleHint1 = !this.toggleHint1;
+    },
+    toggleHints2() {
+      this.toggleHint2 = !this.toggleHint2;
     },
   },
 };
@@ -215,5 +236,8 @@ export default {
 .btn.btn-link {
   text-decoration: none;
   color: var(--GreenColor);
+}
+.card-body {
+  height: 100%;
 }
 </style>

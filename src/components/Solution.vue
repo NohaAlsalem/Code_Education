@@ -1,7 +1,7 @@
 <template>
   <div class="card-body">
     <p class="card-text" ref="codeContainer">
-      <pre><code class="language-cpp">{{ code }}</code></pre>
+      <pre><code class="language-cpp">{{ solve }}</code></pre>
     </p>
   </div>
 </template>
@@ -18,6 +18,7 @@ export default {
       code: "int sum(){return 3;}",
     };
   },
+  props:['solve'],
   mounted() {
     // Call the highlightCode method when the component is mounted
     this.highlightCode();
@@ -31,4 +32,7 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.card-body{
+  height: 100%;
+}</style>

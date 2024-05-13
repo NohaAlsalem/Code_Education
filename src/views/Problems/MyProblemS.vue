@@ -18,42 +18,10 @@
                       Difficulty
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Difficulty</a></li>
-                      <li><a class="dropdown-item" href="#">status</a></li>
+                      <li><a class="dropdown-item" href="#">easy</a></li>
+                      <li><a class="dropdown-item" href="#">meduim</a></li>
                       <li>
-                        <a class="dropdown-item" href="#"
-                          >Something else here</a
-                        >
-                      </li>
-                      <li>
-                        <hr class="dropdown-divider" />
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="p-2">
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn btn-danger dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="true"
-                    >
-                      Statuse
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li>
-                        <a class="dropdown-item" href="#">Another action</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#"
-                          >Something else here</a
-                        >
+                        <a class="dropdown-item" href="#">hard</a>
                       </li>
                       <li>
                         <hr class="dropdown-divider" />
@@ -147,8 +115,7 @@
           <thead>
             <tr class="colored-header">
               <th scope="col">#</th>
-              <th scope="col">Title</th>
-              <th scope="col">Language</th>
+              <th scope="col" @click="getMyProblems">Title</th>
               <th scope="col">Difficulty</th>
               <th scope="col">Tags</th>
               <th scope="col">Operation</th>
@@ -156,45 +123,61 @@
           </thead>
           <tbody>
             <tr v-for="problem in problems" :key="problem.id">
-              <th scope="row">{{ problem.id }}</th>
-              <td>{{ problem.title }}</td>
-              <td>{{ problem.Language }}</td>
-              <td>{{ problem.Difficulty }}</td>
+              <th scope="row">
+                <router-link
+                  :to="{ name: 'problemdetails', params: { id: problem.id } }"
+                >
+                  {{ problem.id }}
+                </router-link>
+              </th>
+              <td>
+                <router-link
+                  :to="{ name: 'problemdetails', params: { id: problem.id } }"
+                >
+                  {{ problem.title }}
+                </router-link>
+              </td>
+              <td>
+                <router-link
+                  :to="{ name: 'problemdetails', params: { id: problem.id } }"
+                >
+                  {{ problem.diffculty }}
+                </router-link>
+              </td>
               <td>
                 <button
+                  v-for="tag in problem.tags"
+                  :key="tag"
                   type="button"
-                  class="custom-btn"
+                  class="custom-btn ms-2"
                   style="pointer-events: none"
                 >
-                  {{ problem.Tags }}
+                  {{ tag.name }}
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-success">Active</button>
+                <button
+                  @click="active(problem.id)"
+                  type="button"
+                  class="btn btn-success"
+                >
+                  Active
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      <footer class="page-footer mt-3 mb-3">
-        <div class="p-3">
-          <pagination
-            :total-items="100"
-            :items-per-page="10"
-            :current-page="currentPage"
-            @pageChanged="handlePageChange"
-          />
-        </div>
-      </footer>
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import { BASE_URL } from "@/assets/config";
 import Pagination from "@/components/Pagination.vue";
 import Table from "@/components/Table.vue";
+import axios from "axios";
 export default {
   components: {
     NavBar,
@@ -203,29 +186,51 @@ export default {
   },
   data() {
     return {
-      currentPage: 1,
-      problems: [
-        {
-          id: 1,
-          title: "Return Length of Arguments Passed",
-          Language: "C++",
-          Difficulty: "Return Length of Arguments Passed",
-          Tags: "Array",
-        },
-        {
-          id: 2,
-          title: "Return Length of Arguments Passed",
-          Language: "C++",
-          Difficulty: "Return Length of Arguments Passed",
-          Tags: "hash table",
-        },
-      ],
+      errMessage: "",
+      problems: [],
     };
+  },
+  mounted() {
+    this.getMyProblems();
   },
   methods: {
     handlePageChange(page) {
       this.currentPage = page;
-      // Fetch data for the new page
+    },
+    getMyProblems() {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      console.log(BASE_URL);
+      axios
+        .get(BASE_URL + "problems/bank", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.problems = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errMessage = "error retrieving data";
+        });
+    },
+    active(id) {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      console.log(BASE_URL);
+      axios
+        .get(BASE_URL + "problems/active/" + id, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.getMyProblems();
+          // this.problems = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errMessage = "error not activate";
+        });
     },
     goToCreateTest(problem) {
       this.$router.push({

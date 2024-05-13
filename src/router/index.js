@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import TopBar from "@/components/TopBar.vue";
 import NavBar from "@/components/NavBar.vue";
 import splashSc from "../views/splashSc.vue";
-import ProblemS from "../views/MyProblemS.vue";
+import ProblemS from "../views/Problems/MyProblemS.vue";
 import Classes from "../views/Classes.vue";
 import logIn from "../views/logIn.vue";
 import ShowTests from "@/views/Tests/ShowTests.vue";
@@ -14,8 +14,12 @@ import CreateTest from "../views/Tests/CreateTest.vue";
 import AddManuallyTest from "../components/AddManuallyTest.vue";
 import GenerateTest from "../components/GenerateTest.vue";
 import ClassDetails from "@/views/ClassDetails.vue";
-import CreateProblem from "../views/CreateProblem.vue";
+import CreateProblem from "../views/Problems/CreateProblem.vue";
 import problemsToaddTotest from "../components/ProblemsToAddTest.vue";
+import ProblemDetails from "../views/Problems/ProblemDetails.vue";
+import ConfirmCreateTest from "../views/Problems/ConfirmCreateProblem.vue";
+import ConfirmCreateProblem from "../views/Problems/ConfirmCreateProblem.vue";
+import SubjectsClasses from "../views/admin/Subjects&Classes.vue";
 const routes = [
   {
     name: "topbar",
@@ -49,8 +53,9 @@ const routes = [
   },
   {
     name: "showtests",
-    path: "/showtests",
+    path: "/showtests/:id",
     component: ShowTests,
+    props:true
   },
   {
     name: "takeAttendance",
@@ -75,16 +80,15 @@ const routes = [
   },
   {
     name: "createtest",
-    path: "/createtest",
+    path: "/createtest/:id",
     component: CreateTest,
     props: (route) => ({
       problemId: route.query.problemId,
       title: route.query.title,
       Language: route.query.Language,
-      Difficulty:route.query.Difficulty,
-      Tags:route.query.Tags
+      Difficulty: route.query.Difficulty,
+      Tags: route.query.Tags,
     }),
-   
   },
   { name: "modifygrades", path: "/modifygrades", component: ModifyGrades },
   {
@@ -99,14 +103,26 @@ const routes = [
   },
   {
     name: "classdetails",
-    path: "/classdetails/:id",
+    path: "/classdetails/:id/:class_name/:class_subject",
     component: ClassDetails,
-    props: true,
+    props: true
   },
   {
     name: "problemsToaddTotest",
-    path: "/problemsToaddTotest",
+    path: "/problemsToaddTotest/:id",
     component: problemsToaddTotest,
+    props:true
+  },
+  {
+    name: "problemdetails",
+    path: "/problemdetails/:id",
+    component: ProblemDetails,
+    props:true
+  },
+  {
+    name: "confirmproblem",
+    path: "/confirmproblem",
+    component: ConfirmCreateProblem,
   },
 ];
 

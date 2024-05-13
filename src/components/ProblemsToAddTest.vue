@@ -198,6 +198,7 @@ export default {
     Pagination,
     Table,
   },
+  props:['id'],
   data() {
     return {
       currentPage: 1,
@@ -222,12 +223,13 @@ export default {
   methods: {
     handlePageChange(page) {
       this.currentPage = page;
-      // Fetch data for the new page
     },
     goToCreateTest(problem) {
+      console.log(this.$route.params.id);
       this.$router.push({
         name: "createtest",
         query: {
+          id:this.$route.params.id,
           problemId: problem.id,
           title: problem.title,
           Language: problem.Language,
