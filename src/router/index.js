@@ -71,7 +71,7 @@ const routes = [
     name: "testdetails",
     path: "/testdetails/:id",
     component: TestDetails,
-    props: true,
+    props: true
   },
   {
     name: "createproblem",

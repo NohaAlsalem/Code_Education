@@ -10,7 +10,7 @@
             <img src="@/assets/images/logoo.png" />
             <codeEdu></codeEdu>
           </div>
-          <form @submit="signIn">
+          <form @submit.prevent="signIn">
             <div class="form-group">
               <input
                 id="email"
@@ -36,12 +36,15 @@
               />
             </div>
 
-            <div class="form-group" @click="signIn">
-              <div class="btn_uy" type="submit">
-                <!-- <routerLink to="/problems"> -->
-                <h5>SignIn</h5>
-                <!-- </routerLink> -->
-              </div>
+            <div class="form-group">
+              <button class="btn btn_uy" type="submit" :disabled="loading">
+                <template v-if="loading">
+                  <i class="fa fa-spinner fa-spin"></i> Loading...
+                </template>
+                <template v-else>
+                  <h5>SignIn</h5>
+                </template>
+              </button>
             </div>
           </form>
           <div class="txt d-flex">
@@ -50,9 +53,9 @@
         </div>
         <div class="txt d-flex">
           <p class="pt-2"></p>
-          <routerLink to="/signup" class="txt-h pt-0 me-4 ms-auto">
+          <router-link to="/signup" class="txt-h pt-0 me-4 ms-auto">
             <font-awesome-icon icon="fa-solid fa-bell" />
-          </routerLink>
+          </router-link>
         </div>
       </div>
     </div>
@@ -71,7 +74,8 @@ export default {
   data() {
     return {
       error: null,
-      mesaage: "",
+      message: "",
+      loading: false,
       searchText: "",
       token: "",
       formData: {
@@ -82,19 +86,22 @@ export default {
   },
   methods: {
     signIn() {
-      //  if (this.isValidEmail && this.isValidPassword) {
+      this.loading = true; // Set loading to true when sign-in starts
       axios
         .post("http://127.0.0.1:8000/api/login", this.formData)
         .then((response) => {
           this.$router.push("/problems");
           this.token = response.data.token;
           localStorage.setItem("token", this.token);
-          this.mesaage = response.data.mesaage;
+          this.message = response.data.message;
           console.log(this.token + "lknkj");
         })
         .catch((error) => {
           console.log(error);
           this.error = error;
+        })
+        .finally(() => {
+          this.loading = false; // Set loading to false when sign-in finishes
         });
     },
   },
@@ -178,7 +185,7 @@ a {
   position: relative;
   z-index: 9;
   display: block;
-  margin: 20px 0px;
+  margin: auto;
 }
 
 .btn_uy h5 {

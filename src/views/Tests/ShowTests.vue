@@ -25,6 +25,8 @@
               class="btn btn-success me-2"
               data-bs-toggle="modal"
               data-bs-target="#takeAttendance"
+              ref="takeAttendanceModal"
+              @click="startAttendance(test.id)"
             >
               Start
             </button>
@@ -42,7 +44,7 @@
           <td>
             <router-link
               class="mt-1"
-              :to="{ name: 'testdetails', params: { id: 1 } }"
+              :to="{ name: 'testdetails', params: { id: test.id } }"
               style="text-decoration: none"
             >
               Show details
@@ -68,54 +70,20 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Email</th>
                 <th scope="col">Presence</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td scope="row">1</td>
-                <td>Mark</td>
-                <td>Otto</td>
+              <tr v-for="(student, index) in students" :key="index">
+                <td scope="row">{{ student.student_id }}</td>
+                <td>{{ student.student_name }}</td>
                 <td>
                   <div>
                     <input
                       class="form-check-input custom-checkbox"
                       type="checkbox"
-                      id="checkboxNoLabel"
-                      value=""
-                      aria-label="..."
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td scope="row">2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>
-                  <div>
-                    <input
-                      class="form-check-input custom-checkbox"
-                      type="checkbox"
-                      id="checkboxNoLabel"
-                      value=""
-                      aria-label="..."
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td scope="row">3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>
-                  <div>
-                    <input
-                      class="form-check-input custom-checkbox"
-                      type="checkbox"
-                      id="checkboxNoLabel"
-                      value=""
+                      :id="'checkboxNoLabel_' + student.student_id"
+                      v-model="student.checked"
                       aria-label="..."
                     />
                   </div>
@@ -132,7 +100,13 @@
           >
             Cancel
           </button>
-          <button type="button" class="btn btn-success me-2">Save</button>
+          <button
+            type="button"
+            class="btn btn-success me-2"
+            @click="saveAttendance()"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
@@ -190,6 +164,8 @@ export default {
       errorMessage: "",
       alertType: "",
       alertMessage: "",
+      students: [],
+      selectedTestId: null,
     };
   },
   mounted() {
@@ -197,6 +173,9 @@ export default {
     this.getStudentsInClass();
   },
   methods: {
+    startAttendance(testId) {
+      this.selectedTestId = testId; // Set the selected test ID
+    },
     getStudentsInClass() {
       const token = localStorage.getItem("token");
       console.log("this is from students " + token);
@@ -206,7 +185,12 @@ export default {
         })
         .then((response) => {
           console.log("this is studnets");
-          console.log(response.data);
+          this.students = response.data.data.map((student) => {
+            return {
+              ...student,
+              checked: false, // Add a checked property
+            };
+          });
         })
         .catch((error) => {
           console.log(error.message);
@@ -242,6 +226,15 @@ export default {
           }, 1000);
         });
     },
+    closeAttendanceModal() {
+      // Close the password modal using vanilla JavaScript
+      const modal = document.getElementById("takeAttendance");
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      modal.setAttribute("style", "display: none");
+      const modalBackdrop = document.querySelector(".modal-backdrop");
+      modalBackdrop.parentNode.removeChild(modalBackdrop);
+    },
     clearAlert() {
       this.alertType = "";
       this.alertMessage = "";
@@ -266,6 +259,44 @@ export default {
           this.errMessage = "error retrieving data";
         });
     },
+    saveAttendance() {
+      const selectedStudents = this.students
+        .filter((student) => student.checked)
+        .map((student) => student.student_id);
+      // selectedStudents now contains the IDs of checked students
+
+      // Make API POST request here, sending selectedStudents as form data
+      const formData = new FormData();
+      selectedStudents.forEach((studentId) => {
+        formData.append("students[]", studentId);
+      });
+
+      // Example of POST request
+      const token = localStorage.getItem("token");
+      axios
+        .post(BASE_URL + "assessment/active/" + this.selectedTestId, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.closeAttendanceModal();
+          this.$router.push({
+            name: "testdetails",
+            params: { id: this.selectedTestId },
+          });
+
+          this.selectedStudents = [];
+          this.students = this.students.map((student) => {
+            return {
+              ...student,
+              checked: false, // Add a checked property
+            };
+          });
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
   },
 };
 </script>
@@ -280,5 +311,9 @@ export default {
 }
 .table thead {
   margin-bottom: 2px;
+}
+.custom-checkbox {
+  border: 1px solid var(--GreenColor);
+  padding: 4;
 }
 </style>

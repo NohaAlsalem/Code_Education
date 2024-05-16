@@ -10,11 +10,11 @@
       <h6 class="card-title" style="color: var(--GreenColor)">Test 1:</h6>
       <p>
         <span style="color: var(--GreenColor)">Input: </span>
-        {{ test_case[0].input }}
+        {{ test_case.input }}
       </p>
       <p>
         <span style="color: var(--GreenColor)">Output: </span>
-        {{ test_case[0].output }}
+        {{ test_case.output }}
       </p>
     </div>
 

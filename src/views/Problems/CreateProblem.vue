@@ -6,7 +6,7 @@
         <div class="form-group col-md-6">
           <label for="exampleFormControlInput1">Problem name</label>
           <input
-           v-model="formData.name"
+            v-model="formData.name"
             type="email"
             class="form-control"
             id="exampleFormControlInput1"
@@ -18,13 +18,20 @@
             type="button"
             class="btn btn-danger dropdown-toggle"
             data-bs-toggle="dropdown"
-            
           >
-            Language
+            {{ selectedLanguage || "Language" }}
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" >C++</a></li>
-            <li><a class="dropdown-item" >Java</a></li>
+            <li>
+              <a class="dropdown-item" @click="setSelectedLanguage('C++')"
+                >C++</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" @click="setSelectedLanguage('Java')"
+                >Java</a
+              >
+            </li>
           </ul>
         </div>
       </div>
@@ -32,6 +39,7 @@
         <div class="form-group col-md-6">
           <label for="exampleFormControlTextarea1">Description</label>
           <textarea
+            v-model="formData.description"
             class="form-control"
             id="exampleFormControlTextarea1"
             rows="5"
@@ -40,7 +48,7 @@
         <div class="form-group col-md-6">
           <label for="exampleFormControlTextarea1">Solution</label>
           <textarea
-          v-model="formData.teacher_code_solve"
+            v-model="formData.teacher_code_solve"
             class="form-control"
             id="exampleFormControlTextarea1"
             rows="5"
@@ -98,7 +106,17 @@
                 </ul>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="col"></div>
+      </div>
 
+      <div class="row">
+        <div class="container col-md-12">
+          <div class="form-group col-md-4">
+            <label for="exampleFormControlInput1" class="mb-2"
+              >Add tags for this problem</label
+            >
             <div class="p-2">
               <div class="btn-group">
                 <button
@@ -110,29 +128,14 @@
                   Tags
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">C++</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Java</a>
+                  <li v-for="tag in tags" :key="tag.id">
+                    <a class="dropdown-item" @click="submitTag(tag.id)">{{
+                      tag.name
+                    }}</a>
                   </li>
                 </ul>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col"></div>
-      </div>
-
-      <div class="row">
-        <div class="container col-md-12">
-          <div class="form-group col-md-4">
-            <label for="exampleFormControlInput1" class="mb-2"
-              >Add hint for this problem</label
-            >
-            <input
-              type="email"
-              class="row form-control mb-3 ms-1 col-md-6"
-              id="exampleFormControlInput1"
-            />
           </div>
         </div>
       </div>
@@ -140,9 +143,20 @@
         type="button"
         class="btn mb-3"
         style="background: var(--GreenColor); color: white"
+        @click="addTag()"
       >
-        Add hint
+        Add tag
       </button>
+      <input
+        v-model="formData.hint1"
+        class="row form-control mb-3 ms-1 col-md-6"
+        id="exampleFormControlInput1"
+      />
+      <input
+        v-model="formData.hint2"
+        class="row form-control mb-3 ms-1 col-md-6"
+        id="exampleFormControlInput1"
+      />
     </div>
     <div class="d-flex justify-content-start ms-4">
       <div>
@@ -172,6 +186,7 @@
     </div>
     <div style="background: var(--WhiteColor)">
       <AddManuallyTest
+        @tests-updated="handleTestsUpdated"
         v-if="selectedOption === 'addManuallyTest'"
       ></AddManuallyTest>
       <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
@@ -184,6 +199,7 @@
             type="button"
             class="row btn btn-success mb-2 ms-4 mt-4"
             style="background: var(--GreenColor)"
+            @click="addProblem"
           >
             Create
           </button>
@@ -199,6 +215,8 @@ import codeEdu from "@/components/codeEdu.vue";
 import AddManuallyTest from "@/components/AddManuallyTest.vue";
 import NavBar from "@/components/NavBar.vue";
 import Generate2 from "@/components/Generate2.vue";
+import axios from "axios";
+import { BASE_URL } from "@/assets/config";
 export default {
   components: {
     TopBar,
@@ -210,11 +228,23 @@ export default {
   data() {
     return {
       selectedOption: null,
-      formData:{
-        name:'',
-        teacher_code_solve:''
-      }
+      selectedLanguage: "",
+      tags: [],
+      newTag: null,
+      formData: {
+        name: "",
+        teacher_code_solve: "",
+        language: "",
+        description: "",
+        tags: [],
+        test_cases: [],
+        hint1: "",
+        hint2: "",
+      },
     };
+  },
+  mounted() {
+    this.getTags();
   },
   methods: {
     navigateToGenerateTest() {
@@ -224,6 +254,68 @@ export default {
     navigateToAddManuallyTest() {
       this.selectedOption = "addManuallyTest";
       console.log(this.selectedOption);
+    },
+    setSelectedLanguage(language) {
+      if (language === "C++") {
+        this.selectedLanguage = "C++"; // Set variable 1 to a value for C++
+        this.formData.language = 1;
+        console.log("Variable 1 set to: " + this.selectedLanguage);
+      } else if (language === "Java") {
+        this.selectedLanguage = "Java"; // Set variable 2 to a value for Java
+        this.formData.language = 2;
+        console.log("Variable 2 set to: " + this.selectedLanguage);
+      }
+    },
+    submitTag(id){
+     this.newTag=id;
+     console.log(this.newTag)
+    },
+    addTag() {
+      if (this.newTag !== null) {
+        this.formData.tags.push(this.newTag);
+        this.newTag = "";
+        console.log("Tags:", this.formData.tags);
+      }
+    },
+    handleTestsUpdated(tests) {
+      this.formData.test_cases = tests; // Update the received tests list
+      console.log("Received Tests:", this.formData.test_cases);
+    },
+    addProblem() {
+      const token = localStorage.getItem("token");
+      console.log(this.formData);
+      console.log(this.formData.test_cases);
+      console.log(this.formData.hint1);
+      console.log(this.formData.hint2);
+      console.log(token);
+      axios
+        .post(BASE_URL + "problems/", this.formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          // this.mesaage = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.error = error;
+        });
+    },
+    
+    getTags() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(BASE_URL + "problems/tags", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.tags = response.data;
+          console.log(this.tags);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errMessage = "error retrieving data";
+        });
     },
   },
 };

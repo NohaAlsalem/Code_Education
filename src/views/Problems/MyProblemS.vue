@@ -163,10 +163,52 @@
                 >
                   Active
                 </button>
+                <button
+                  @click="confirmDelete(problem.id)"
+                  type="button"
+                  class="btn btn-danger ms-3"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirmDeleteModal"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
+
+  <div
+    class="modal fade"
+    id="confirmDeleteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmDeleteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">Are you sure you want to delete this item?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            @click="deleteProblem(confirmId)"
+            type="button"
+            class="btn btn-danger"
+            data-bs-dismiss="modal"
+          >
+            Yes
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -177,23 +219,32 @@ import NavBar from "@/components/NavBar.vue";
 import { BASE_URL } from "@/assets/config";
 import Pagination from "@/components/Pagination.vue";
 import Table from "@/components/Table.vue";
+import Alert from "../../components/Alert.vue";
 import axios from "axios";
 export default {
   components: {
     NavBar,
     Pagination,
     Table,
+    Alert
   },
   data() {
     return {
-      errMessage: "",
+      successMessage: "",
+      errorMessage: "",
+      alertType: "",
+      alertMessage: "",
       problems: [],
+      confirmId: null,
     };
   },
   mounted() {
     this.getMyProblems();
   },
   methods: {
+    confirmDelete(id) {
+      this.confirmId = id;
+    },
     handlePageChange(page) {
       this.currentPage = page;
     },
@@ -231,6 +282,38 @@ export default {
           console.log(error);
           this.errMessage = "error not activate";
         });
+    },
+    deleteProblem(id) {
+      const token = localStorage.getItem("token");
+      axios
+        .delete(BASE_URL + "problems/" + id, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.successMessage = response.data.message;
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
+          console.log(response.data);
+          // Assuming you're just refreshing the list after deletion
+          this.getMyProblems();
+          setTimeout(() => {
+            this.clearAlert();
+          }, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errorMessage = "Error deleting problem: " + error.message;
+          this.alertType = "error";
+          this.alertMessage = "Error deleting problem: " + error.message;
+          this.error = error;
+          setTimeout(() => {
+            this.clearAlert();
+          }, 1000);
+        });
+    },
+    clearAlert() {
+      this.alertType = "";
+      this.alertMessage = "";
     },
     goToCreateTest(problem) {
       this.$router.push({

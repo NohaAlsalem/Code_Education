@@ -16,14 +16,10 @@
 
 <script>
 export default {
-  props:['test_case'],
+  props: ["test_case"],
   data() {
     return {
       tests: [
-        {
-          input: "t4334",
-          output: "353",
-        },
       ],
     };
   },
@@ -48,7 +44,7 @@ export default {
   margin-bottom: 0px;
   margin-left: 3px;
 }
-.card-body{
+.card-body {
   height: 100%;
 }
 </style>
