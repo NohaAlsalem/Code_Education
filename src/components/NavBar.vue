@@ -333,13 +333,17 @@ export default {
 };
 </script>
 <style>
-:root {
-  --WhiteColor: #faf3dd;
-  --darkwhite: #c8d5b9;
-  --LightGreen: #8fc0a9;
-  --GreenOpacity: #68b0ab;
-  --GreenColor: #4a7c59;
-  --borderColor: #707070;
+:root{
+    --WhiteColor:#FAF3DD;
+    --darkwhite:#C8D5B9;
+    --LightGreen:#8FC0A9;
+    --GreenOpacity:#ff9400;
+    --GreenColor:#1b305e;
+    --PrimaryColor: #007bff; /* Replace with your primary color */
+  --TextColor: #ffffff; /* Replace with your text color */
+  --GrayColor: #c4c6c7; /* Replace with your gray color */
+  --HoverColor: #0056b3; /* Replace with your hover background color */
+  --HoverTextColor: #ffffff;
 }
 .i {
   color: var(--GreenColor);

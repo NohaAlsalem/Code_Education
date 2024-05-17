@@ -2,8 +2,9 @@
     --WhiteColor:#FAF3DD;
     --darkwhite:#C8D5B9;
     --LightGreen:#8FC0A9;
-    --GreenOpacity:#68B0AB;
-    --GreenColor:#4A7C59;
+    --GreenOpacity:#ff9400;
+    --GreenColor:#1b305e;
+    --GrayColor:#6C757D;
 }
 body{
     height: 100%;

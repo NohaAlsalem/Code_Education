@@ -42,7 +42,7 @@
                   <i class="fa fa-spinner fa-spin"></i> Loading...
                 </template>
                 <template v-else>
-                  <h5>SignIn</h5>
+                  <h5 >SignIn</h5>
                 </template>
               </button>
             </div>

@@ -19,7 +19,8 @@ import problemsToaddTotest from "../components/ProblemsToAddTest.vue";
 import ProblemDetails from "../views/Problems/ProblemDetails.vue";
 import ConfirmCreateTest from "../views/Problems/ConfirmCreateProblem.vue";
 import ConfirmCreateProblem from "../views/Problems/ConfirmCreateProblem.vue";
-import SubjectsClasses from "../views/admin/Subjects&Classes.vue";
+import Loading from "../views/Loading.vue"
+import SideBar from "../components/SideBar.vue"
 const routes = [
   {
     name: "topbar",
@@ -31,7 +32,16 @@ const routes = [
     path: "/",
     component: splashSc,
   },
-
+  // {
+  //   name: "loading",
+  //   path: "/",
+  //   component: Loading,
+  // },
+  // {
+  //   name: "splash",
+  //   path: "/",
+  //   component: SideBar,
+  // },
   {
     path: "/NavBar",
     component: NavBar,

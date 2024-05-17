@@ -187,6 +187,8 @@
     <div style="background: var(--WhiteColor)">
       <AddManuallyTest
         @tests-updated="handleTestsUpdated"
+        :language="formData.language"
+        :code="formData.teacher_code_solve"
         v-if="selectedOption === 'addManuallyTest'"
       ></AddManuallyTest>
       <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>

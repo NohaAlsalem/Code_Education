@@ -15,7 +15,7 @@
               class="form-control mb-3"
               id="exampleFormControlInput1"
               placeholder="Enter input for test case"
-              v-model="testInput"
+              v-model="testNumber"
             />
             <p
               class="mt-3"
@@ -51,7 +51,7 @@
           </div>
           <div
             v-if="
-              selectedInputType === 'Integer' || selectedInputType === 'Double'
+              selectedInputType === 'INTEGER' || selectedInputType === 'DOUBLE'
             "
           >
             <p class="mt-3">Enter Range value you want</p>
@@ -166,7 +166,7 @@
             </div>
           </div>
           <div
-            v-if="selectedInputType === 'String Array'"
+            v-if="selectedInputType === 'STRING_ARRAY'"
             style="background: var(--WhiteColor)"
           >
             <p>Enter Range number of row in array you want</p>
@@ -297,7 +297,7 @@
             </div>
           </div>
           <div
-            v-if="selectedInputType === 'Integer Array'"
+            v-if="selectedInputType === 'INTEGER_ARRAY'"
             style="background: var(--WhiteColor)"
           >
             <p>Enter Range number of row in array you want</p>
@@ -370,7 +370,7 @@
             </div>
           </div>
           <div
-            v-if="selectedInputType === 'Double Array'"
+            v-if="selectedInputType === 'DOUBLE_ARRAY'"
             style="background: var(--WhiteColor)"
           >
             <p>Enter Range number of row in array you want</p>
@@ -456,6 +456,7 @@
             type="button"
             class="btn mb-3"
             style="background: var(--GreenColor); color: white"
+            @click="GenerateTest"
           >
             generate tests
           </button>
@@ -481,34 +482,34 @@
                       <p class="custom-p">Test {{ index + 1 }}:</p>
                       <p>Type: {{ test.type }}</p>
                       <p
-                        v-if="test.type === 'Integer' || test.type === 'Double'"
+                        v-if="test.type === 'INTEGER' || test.type === 'DOUBLE'"
                       >
                         Minimum Value: {{ test.minimumValue }}
                       </p>
                       <p
-                        v-if="test.type === 'Integer' || test.type === 'Double'"
+                        v-if="test.type === 'INTEGER' || test.type === 'DOUBLE'"
                       >
                         Maximum Value: {{ test.maximumValue }}
                       </p>
                       <p
                         v-if="
-                          test.type === 'String' || test.type === 'String Array'
+                          test.type === 'STRING' || test.type === 'STRING_ARRAY'
                         "
                       >
                         First Character Range: {{ test.FirstCharacterRange }}
                       </p>
                       <p
                         v-if="
-                          test.type === 'String' || test.type === 'String Array'
+                          test.type === 'STRING' || test.type === 'STRING_ARRAY'
                         "
                       >
                         Last Character Range: {{ test.LastCharacterRange }}
                       </p>
                       <p
                         v-if="
-                          test.type === 'String Array' ||
-                          test.type === 'Integer Array' ||
-                          test.type === 'Double Array'
+                          test.type === 'STRING_ARRAY' ||
+                          test.type === 'INTEGER_ARRAY' ||
+                          test.type === 'DOUBLE_ARRAY'
                         "
                       >
                         Number of Rows: {{ test.rowMinimumValue }} -
@@ -516,9 +517,9 @@
                       </p>
                       <p
                         v-if="
-                          test.type === 'String Array' ||
-                          test.type === 'Integer Array' ||
-                          test.type === 'Double Array'
+                          test.type === 'STRING_ARRAY' ||
+                          test.type === 'INTEGER_ARRAY' ||
+                          test.type === 'DOUBLE_ARRAY'
                         "
                       >
                         Number of Columns: {{ test.colMinimumValue }} -
@@ -544,11 +545,20 @@
 </template>
 
 <script>
+import axios from "axios";
+import { BASE_URL } from "@/assets/config";
 export default {
+  props: ["code", "language"],
   data() {
     return {
       tests: [],
-      testInput: "",
+      formData: {
+        lang: this.language,
+        code: this.code,
+        model: this.model,
+      },
+      model: "",
+      testNumber: "",
       showInteger: false,
       showString: false,
       showDouble: false,
@@ -556,12 +566,12 @@ export default {
       showArrayDouble: false,
       showArrayInteger: false,
       inputTypes: [
-        { id: 1, name: "Integer" },
-        { id: 2, name: "String" },
-        { id: 3, name: "Double" },
-        { id: 4, name: "String Array" },
-        { id: 5, name: "Integer Array" },
-        { id: 6, name: "Double Array" },
+        { id: 1, name: "INTEGER" },
+        { id: 2, name: "STRING" },
+        { id: 3, name: "DOUBLE" },
+        { id: 4, name: "STRING_ARRAY" },
+        { id: 5, name: "INTEGER_ARRAY" },
+        { id: 6, name: "DOUBLE_ARRAY" },
       ],
       characterRange: [
         { id: 1, name: "A" },
@@ -571,7 +581,7 @@ export default {
         { id: 5, name: "0" },
         { id: 6, name: "1" },
       ],
-      selectedInputType: "Integer",
+      selectedInputType: "INTEGER",
       FirstCharacterRange: "A",
       LastCharacterRange: "A",
       MinimumValue: 1,
@@ -583,6 +593,35 @@ export default {
     };
   },
   methods: {
+    GenerateTest() {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      this.setModel();
+      console.log(this.formData);
+      console.log(this.model);
+      axios
+        .post(BASE_URL + "problems/generate-test-cases", this.formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          // this.mesaage = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.error = error;
+        });
+    },
+    setModel() {
+      let modelString = `${this.testNumber}\n`;
+
+      this.tests.forEach((test) => {
+        modelString += `${test.type} ${test.minimumValue} ${test.maximumValue} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue}\n`;
+      });
+
+      modelString += "EXIT";
+      this.model = modelString;
+    },
     addTestCase() {
       // Push the entered test data to the tests array
       this.tests.push({
@@ -602,7 +641,7 @@ export default {
     },
     resetInputFields() {
       // Reset all input fields
-      this.selectedInputType = "Integer";
+      this.selectedInputType = "INTEGER";
       this.MinimumValue = 1;
       this.MaximumValue = 1;
       this.FirstCharacterRange = "A";
@@ -636,7 +675,7 @@ export default {
       };
       this.tests.push(newTest);
       this.testInput = "";
-      this.selectedInputType = "Integer";
+      this.selectedInputType = "INTEGER";
       this.FirstCharacterRange = "A";
       this.LastCharacterRange = "A";
       this.MinimumValue = 1;
