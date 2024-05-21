@@ -1,8 +1,8 @@
 <template>
   <NavBar></NavBar>
   <div>
-    <div class="ms-5">
-      <div class="container-fluid">
+    <div class="ms-5 mt-5">
+      <div class="container-fluid col-md-12">
         <div class="row">
           <div class="container d-flex justify-content-space-between">
             <div class="col">

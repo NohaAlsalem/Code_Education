@@ -114,24 +114,24 @@
       <div class="row">
         <div class="container col-md-12">
           <div class="form-group col-md-4">
-            <label for="exampleFormControlInput1" class="mb-2"
+            <label for="exampleFormControlInput1"
               >Add tags for this problem</label
             >
-            <div class="p-2">
-              <div class="btn-group">
+            <div>
+              <div class="btn-group mt-0 mb-0">
                 <button
                   type="button"
                   class="btn btn-danger dropdown-toggle"
                   data-bs-toggle="dropdown"
                   aria-expanded="true"
                 >
-                  Tags
+                {{ "Tags" ||  selectedTag }}
                 </button>
                 <ul class="dropdown-menu">
                   <li v-for="tag in tags" :key="tag.id">
-                    <a class="dropdown-item" @click="submitTag(tag.id)">{{
+                    <a class="dropdown-item" @click="submitTag(tag.id,tag.name)">{{
                       tag.name
-                    }}</a>
+                    }} {{ tag.id }}</a>
                   </li>
                 </ul>
               </div>
@@ -141,21 +141,31 @@
       </div>
       <button
         type="button"
-        class="btn mb-3"
+        class="btn mb-3 mt-0"
         style="background: var(--GreenColor); color: white"
         @click="addTag()"
       >
         Add tag
       </button>
+      <p 
+        v-for="tag in formData.tags"
+        :key="tag"
+        class="ms-2"
+        style="color: black"
+      >
+        {{ tag }}
+      </p>
       <input
         v-model="formData.hint1"
         class="row form-control mb-3 ms-1 col-md-6"
         id="exampleFormControlInput1"
+        placeholder="Enter first hint"
       />
       <input
         v-model="formData.hint2"
         class="row form-control mb-3 ms-1 col-md-6"
         id="exampleFormControlInput1"
+        placeholder="Enter second hint"
       />
     </div>
     <div class="d-flex justify-content-start ms-4">
@@ -231,7 +241,9 @@ export default {
     return {
       selectedOption: null,
       selectedLanguage: "",
+      selectedTag:"",
       tags: [],
+   
       newTag: null,
       formData: {
         name: "",
@@ -268,9 +280,11 @@ export default {
         console.log("Variable 2 set to: " + this.selectedLanguage);
       }
     },
-    submitTag(id){
-     this.newTag=id;
-     console.log(this.newTag)
+    submitTag(id,name) {
+      this.newTag = id;
+      this.selectedTag=name;
+      console.log(this.selectedTag);
+      console.log(this.newTag);
     },
     addTag() {
       if (this.newTag !== null) {
@@ -303,7 +317,7 @@ export default {
           this.error = error;
         });
     },
-    
+
     getTags() {
       const token = localStorage.getItem("token");
       axios

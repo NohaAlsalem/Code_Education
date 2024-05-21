@@ -21,26 +21,32 @@ import ConfirmCreateTest from "../views/Problems/ConfirmCreateProblem.vue";
 import ConfirmCreateProblem from "../views/Problems/ConfirmCreateProblem.vue";
 import Loading from "../views/Loading.vue"
 import SideBar from "../components/SideBar.vue"
+import Test from "../components/Test.vue"
 const routes = [
   {
     name: "topbar",
     path: "/topbar",
     component: TopBar,
   },
-  {
-    name: "splash",
-    path: "/",
-    component: splashSc,
-  },
   // {
-  //   name: "loading",
+  //   name: "splash",
   //   path: "/",
-  //   component: Loading,
+  //   component: splashSc,
   // },
+  {
+    name: "loading",
+    path: "/",
+    component: Loading,
+  },
   // {
   //   name: "splash",
   //   path: "/",
   //   component: SideBar,
+  // },
+  //  {
+  //   name: "splash",
+  //   path: "/",
+  //   component: Test,
   // },
   {
     path: "/NavBar",

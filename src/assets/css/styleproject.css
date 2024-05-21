@@ -1,11 +1,15 @@
-:root{
-    --WhiteColor:#FAF3DD;
-    --darkwhite:#C8D5B9;
-    --LightGreen:#8FC0A9;
-    --GreenOpacity:#ff9400;
-    --GreenColor:#1b305e;
-    --GrayColor:#6C757D;
+:root {
+  --WhiteColor: #caa8f5;
+  --darkwhite: #9984d4;
+  --LightGreen: #592e83;
+  --GreenOpacity: #b27c66;
+  --MainColor: #230c33;
+  --PrimaryColor: #007bff; /* Replace with your primary color */
+  --TextColor: #ffffff; /* Replace with your text color */
+  --GrayColor: #c4c6c7; /* Replace with your gray color */
+  --HoverColor: #0056b3; /* Replace with your hover background color */
+  --HoverTextColor: #ffffff;
 }
-body{
-    height: 100%;
+body {
+  height: 100%;
 }

@@ -4,13 +4,14 @@
     class="position-absolute top-70 start-0"
     src="../assets/images/load.webp"
   />
-  <button class="btn btn-custom text-center">
-    Sign in
+ <router-link :to="{name:'login'}">
+  <button class="btn btn-custom text-center text-cust">
+    Get Started
     <svg
       class="arrow-icon"
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
+      width="18"
+      height="18"
       fill="currentColor"
       viewBox="0 0 16 16"
     >
@@ -19,6 +20,7 @@
       />
     </svg>
   </button>
+ </router-link>
 </template>
 
 <script>
@@ -51,17 +53,19 @@ export default {};
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .btn-custom:hover {
-  background-color: var(
-    --HoverColor
-  ); /* Replace with your desired hover color */
-  color: var(--HoverTextColor); /* Replace with your desired hover text color */
+  background: var(--MainColor);
+  color: white; 
 }
 
 .arrow-icon {
-    display: flex;
+  display: flex;
   justify-content: center;
   align-content: center;
-  margin-top:3px;
+  margin-top: 6px;
   margin-left: 7px;
-  }
+}
+.text-cust{
+  font-weight:600;
+  font-size: 1.25rem;
+}
 </style>

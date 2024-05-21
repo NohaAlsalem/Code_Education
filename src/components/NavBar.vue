@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg sticky-top">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
       <div class="container-fluid">
         <!-- <a class="navbar-brand" href="#">Navbar</a> -->
         <div class="d-flex">
@@ -333,13 +333,13 @@ export default {
 };
 </script>
 <style>
-:root{
-    --WhiteColor:#FAF3DD;
-    --darkwhite:#C8D5B9;
-    --LightGreen:#8FC0A9;
-    --GreenOpacity:#ff9400;
-    --GreenColor:#1b305e;
-    --PrimaryColor: #007bff; /* Replace with your primary color */
+:root {
+  --WhiteColor: #caa8f5;
+  --darkwhite: #9984d4;
+  --LightGreen: #592e83;
+  --GreenOpacity: #b27c66;
+  --MainColor: #230c33;
+  --PrimaryColor: #007bff; /* Replace with your primary color */
   --TextColor: #ffffff; /* Replace with your text color */
   --GrayColor: #c4c6c7; /* Replace with your gray color */
   --HoverColor: #0056b3; /* Replace with your hover background color */
@@ -349,7 +349,9 @@ export default {
   color: var(--GreenColor);
 }
 .navbar {
-  /* background-color: var(--WhiteColor); */
+  background-color: white;
+  position: sticky;
+  top: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 

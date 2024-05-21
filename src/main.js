@@ -9,6 +9,9 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
+import 'highlight.js/styles/default.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+
 library.add(fas, far, fab)
 
 const app = createApp(App)

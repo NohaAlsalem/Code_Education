@@ -1,24 +1,45 @@
 <template>
   <div class="card-body">
     <p class="card-text" ref="codeContainer">
-      <pre><code class="language-java">{{ solve }}</code></pre>
+      <pre><code :class="languageClass">{{ solve }}</code></pre>
     </p>
   </div>
 </template>
 
 <script>
-// Import Prism.js and its necessary components
-import 'prismjs';
-// import 'prismjs/components/prism-cpp';
-import 'prismjs/components/prism-java';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/default.css'; // You can choose a different style if you prefer
 
 export default {
-  props:['solve'],
- 
-  mounted() {
-    // Call Prism.highlightAll() to apply syntax highlighting
-    Prism.highlightAll();
+  props: ['solve', 'language'],
+  computed: {
+    languageClass() {
+      return this.language;
+    }
   },
+  watch: {
+    solve() {
+      this.$nextTick(() => {
+        this.highlightCode();
+      });
+    },
+    language() {
+      this.$nextTick(() => {
+        this.highlightCode();
+      });
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.highlightCode();
+    });
+  },
+  methods: {
+    highlightCode() {
+      const codeBlock = this.$refs.codeContainer.querySelector('code');
+      hljs.highlightElement(codeBlock);
+    }
+  }
 };
 </script>
 
@@ -27,3 +48,4 @@ export default {
   height: 100%;
 }
 </style>
+//192.168.95.243

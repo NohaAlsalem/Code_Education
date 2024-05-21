@@ -1,7 +1,7 @@
 <template>
   <div class="r">
     <div class="mt-4">
-      <div class="container col-md-12">
+      <div class="container col-md-12 ms-4">
         <div class="form-group col-md-4">
           <input
             v-model="newTest"
@@ -19,15 +19,7 @@
         >
           Add test case
         </button>
-        <button
-          type="button"
-          class="btn mb-3 col-md-2"
-          style="background: var(--GreenColor); color: white"
-          @click="sendTestsToParent"
 
-        >
-          submit test cases
-        </button>
         <div class="row">
           <div class="container col-md-12">
             <div
@@ -36,14 +28,18 @@
               style="
                 margin-top: 10px;
                 margin-bottom: 10px;
-                height: 400px;
+                max-height: 400px;
                 overflow-y: auto;
               "
             >
               <div class="card text-start">
                 <div class="card-header">Your test:</div>
                 <div class="card-body">
-                  <div v-for="test in test_cases" :key="test" class="row">
+                  <div
+                    v-for="(test, index) in test_cases"
+                    :key="index"
+                    class="row"
+                  >
                     <h6 class="col-md-9">
                       <div class="col-md-6">
                         <p>{{ test }}</p>
@@ -51,8 +47,9 @@
                     </h6>
                     <button
                       type="button"
-                      class="btn col-md-2"
+                      class="btn col-md-2 mb-3"
                       style="background: var(--GreenColor); color: white"
+                      @click="deleteTest(index)"
                     >
                       Delete
                     </button>
@@ -62,11 +59,18 @@
             </div>
           </div>
         </div>
+        <button
+          type="button"
+          class="btn mb-3 col-md-2 mt-2"
+          style="background: var(--GreenColor); color: white"
+          @click="sendTestsToParent"
+        >
+          submit test cases
+        </button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -83,20 +87,12 @@ export default {
         console.log("Tests:", this.test_cases);
       }
     },
+    deleteTest(index) {
+      this.test_cases.splice(index, 1);
+    },
     sendTestsToParent() {
       this.$emit("tests-updated", this.test_cases);
     },
   },
 };
 </script>
-
-<style scoped>
-.r {
-  background: var(--WhiteColor);
-  height: 100%;
-}
-.btn {
-  height: 30px;
-  text-align: center;
-}
-</style>
