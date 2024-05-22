@@ -7,7 +7,8 @@
  <router-link :to="{name:'login'}">
   <button class="btn btn-custom text-center text-cust">
     Get Started
-    <svg
+    <i class="fa fa-angle-right arrow-icon" aria-hidden="true"></i>
+    <!-- <svg
       class="arrow-icon"
       xmlns="http://www.w3.org/2000/svg"
       width="18"
@@ -18,7 +19,7 @@
       <path
         d="M4.354 4.354a.5.5 0 0 1 .708 0l5.792 5.792a.5.5 0 0 1 0 .708l-5.792 5.792a.5.5 0 1 1-.708-.708L9.293 8 4.354 3.146a.5.5 0 0 1 0-.708z"
       />
-    </svg>
+    </svg> -->
   </button>
  </router-link>
 </template>

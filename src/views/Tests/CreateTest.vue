@@ -1,91 +1,93 @@
 <template>
-  <div class="r m-5">
-    <div class="container col-md-12 m-5">
-      <div class="mt-0">
-        <div>
-          <div class="mt-4 p-0">
-            <p>Test Name</p>
+  <div class="full-screen-background">
+    <div class="r m-5">
+      <div class="container col-md-12 m-1">
+        <div class="mt-0">
+          <div>
+            <div class="mt-4 p-0">
+              <p>Test Name</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          v-model="formData.name"
-          required
-        />
-      </div>
-      <div class="row mt-0">
-        <div class="col-8">
-          <div class="mt-4 p-0">
-            <p>Enter mark</p>
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            v-model="formData.name"
+            required
+          />
+        </div>
+        <div class="row mt-0">
+          <div class="col-8">
+            <div class="mt-4 p-0">
+              <p>Enter mark</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="input-group">
-        <input
-          type="number"
-          class="form-control"
-          v-model="formData.mark"
-          required
-        />
-      </div>
-      <div class="container mt-4 p-0">
-        <p>Add problem to test:</p>
-      </div>
+        <div class="input-group">
+          <input
+            type="number"
+            class="form-control"
+            v-model="formData.mark"
+            required
+          />
+        </div>
+        <div class="container mt-4 p-0">
+          <p>Add problem to test:</p>
+        </div>
 
-      <div>
-        <router-link
-          :to="{
-            name: 'problemsToaddTotest',
-            params: { id: $route.params.id },
-          }"
-        >
-          <button type="button" class="btn btn-success mb-2">Add</button>
-        </router-link>
-      </div>
-      <div class="row input-group">
-        <div class="me-5">
-          <table class="table">
-            <thead>
-              <tr class="colored-header">
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Language</th>
-                <th scope="col">Difficulty</th>
-                <th scope="col">Tags</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">{{ problemId }}</th>
-                <td>{{ title }}</td>
-                <td>{{ Language }}</td>
-                <td>{{ Difficulty }}</td>
-                <td>
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    style="pointer-events: none"
-                  >
-                    {{ Tags }}
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="row m-5">
-        <div class="d-flex justify-content-center">
-          <button
-            @click="addTest"
-            type="button"
-            class="btn btn-success mb-2 col-md-6"
+        <div>
+          <router-link
+            :to="{
+              name: 'problemsToaddTotest',
+              params: { id: $route.params.id },
+            }"
           >
-            Create
-          </button>
+            <button type="button" class="btn btn-success mb-2">Add</button>
+          </router-link>
+        </div>
+        <div v-if="problemId" class="row input-group">
+          <div class="me-5">
+            <table class="table">
+              <thead>
+                <tr class="colored-header">
+                  <th scope="col">#</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Language</th>
+                  <th scope="col">Difficulty</th>
+                  <th scope="col">Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{{ problemId }}</th>
+                  <td>{{ title }}</td>
+                  <td>{{ Language }}</td>
+                  <td>{{ Difficulty }}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="custom-btn"
+                      style="pointer-events: none"
+                    >
+                      {{ Tags }}
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row m-5">
+          <div class="d-flex justify-content-center">
+            <button
+              @click="addTest"
+              type="button"
+              class="btn btn-success mb-2 col-md-6"
+            >
+              Create
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -96,14 +98,12 @@
 import NavBar from "@/components/NavBar.vue";
 import { BASE_URL } from "@/assets/config";
 import axios from "axios";
+
 export default {
   components: {
     NavBar,
   },
   props: ["problemId", "title", "Language", "Difficulty", "Tags", "id"],
-  mounted() {
-    console.log(this.$route.params.id);
-  },
   data() {
     return {
       formData: {
@@ -141,28 +141,42 @@ export default {
 </script>
 
 <style scoped>
-.r {
+.full-screen-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: var(--WhiteColor);
-  border: solid 1px var(--GreenColor);
+  background-color: var(--GrayColor); /* gray color */
+  z-index: -1; /* Ensure it stays in the background */
+}
+
+.r {
+  height: 87%;
+  border: solid 1px var(--MainColor);
   border-radius: 10px;
+  background-color: white; /* Ensure content background is white */
+  padding: 20px;
+  margin-bottom: 10px;
 }
 p {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   font-weight: bold;
 }
 
 h6 {
-  color: var(--GreenColor);
+  color: var(--MainColor);
 }
 
 .btn {
-  background: var(--GreenColor);
+  background: var(--MainColor);
 }
-
+.btn:hover {
+  background: var(--MainColor);
+}
 .input-group .form-control {
   background: var(--WhiteColor);
-  border: 1px solid var(--LightGreen);
+  border: 1px solid var(--MainColor);
   padding: 10px;
   margin-right: 20px;
 }
@@ -170,7 +184,6 @@ h6 {
 .form-group .form-control ::placeholder {
   display: block;
   margin-bottom: 6px;
-  /* color:#fff; */
   color: var(--LightGreen);
 }
 </style>

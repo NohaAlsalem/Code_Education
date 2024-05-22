@@ -15,19 +15,31 @@
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
-                      Difficulty
+                      {{
+                        selectedDifficulty ? selectedDifficulty : "Difficulty"
+                      }}
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">easy</a></li>
-                      <li><a class="dropdown-item" href="#">meduim</a></li>
                       <li>
-                        <a class="dropdown-item" href="#">hard</a>
+                        <a
+                          class="dropdown-item"
+                          @click="submitDifficulty('Easy')"
+                          >Easy</a
+                        >
                       </li>
                       <li>
-                        <hr class="dropdown-divider" />
+                        <a
+                          class="dropdown-item"
+                          @click="submitDifficulty('Medium')"
+                          >Medium</a
+                        >
                       </li>
                       <li>
-                        <a class="dropdown-item" href="#">Separated link</a>
+                        <a
+                          class="dropdown-item"
+                          @click="submitDifficulty('Hard')"
+                          >Hard</a
+                        >
                       </li>
                     </ul>
                   </div>
@@ -41,23 +53,13 @@
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
-                      Tags
+                      {{ selectedTag ? selectedTag : "Tags" }}
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li>
-                        <a class="dropdown-item" href="#">Another action</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#"
-                          >Something else here</a
-                        >
-                      </li>
-                      <li>
-                        <hr class="dropdown-divider" />
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#">Separated link</a>
+                      <li v-for="tag in tags" :key="tag.id">
+                        <a class="dropdown-item" @click="submitTag(tag.name)"
+                          >{{ tag.name }}
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -71,23 +73,18 @@
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
-                      sort
+                      {{ selectedSort ? selectedSort : "Sort" }}
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
                       <li>
-                        <a class="dropdown-item" href="#">Another action</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#"
-                          >Something else here</a
+                        <a class="dropdown-item" @click="submitSort('AES')"
+                          >Aes</a
                         >
                       </li>
                       <li>
-                        <hr class="dropdown-divider" />
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#">Separated link</a>
+                        <a class="dropdown-item" @click="submitSort('DESC')"
+                          >Desc</a
+                        >
                       </li>
                     </ul>
                   </div>
@@ -99,11 +96,16 @@
               <div class="input-group">
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control search-input"
                   placeholder="Search questions"
-                  aria-label="Recipient's username"
-                  aria-describedby="basic-addon2"
+                  aria-label="Search"
+                  aria-describedby="basic-addon1"
+                  v-model="searchText"
+                  @input="onSearchInput"
                 />
+                <div class="search-icon">
+                  <i class="fa fa-search"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -111,67 +113,72 @@
         </div>
       </div>
       <div class="me-5">
-        <table class="table">
+        <table class="table table-striped">
           <thead>
             <tr class="colored-header">
-              <th scope="col">#</th>
-              <th scope="col" @click="getMyProblems">Title</th>
+              <th scope="col">Title</th>
+              <th scope="col">Tag</th>
+              <th scope="col">Level</th>
               <th scope="col">Difficulty</th>
-              <th scope="col">Tags</th>
               <th scope="col">Operation</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="problem in problems" :key="problem.id">
-              <th scope="row">
-                <router-link
-                  :to="{ name: 'problemdetails', params: { id: problem.id } }"
-                >
-                  {{ problem.id }}
-                </router-link>
-              </th>
               <td>
                 <router-link
+                  class="router-link"
                   :to="{ name: 'problemdetails', params: { id: problem.id } }"
                 >
-                  {{ problem.title }}
+                  {{ problem.id }}. {{ problem.title }}
                 </router-link>
               </td>
+
               <td>
-                <router-link
-                  :to="{ name: 'problemdetails', params: { id: problem.id } }"
-                >
-                  {{ problem.diffculty }}
-                </router-link>
+                {{ problem.tags.name }}
               </td>
               <td>
-                <button
-                  v-for="tag in problem.tags"
-                  :key="tag"
-                  type="button"
-                  class="custom-btn ms-2"
-                  style="pointer-events: none"
-                >
-                  {{ tag.name }}
-                </button>
+                {{ problem.level }}
+              </td>
+              <td
+                :class="{
+                  coloreasyDiff: problem.diffculty === 'easy',
+                  colormediumDiff: problem.diffculty === 'medium',
+                  colorhardDiff: problem.diffculty === 'hard',
+                }"
+              >
+                {{ problem.diffculty }}
               </td>
               <td>
-                <button
+                <i
+                  @click="active(problem.id)"
+                  class="fas fa-check-circle text-success ms-4 me-3"
+                  data-bs-toggle="tooltip"
+                  title="Active"
+                ></i>
+                <i
+                  @click="confirmDelete(problem.id)"
+                  class="fas fa-trash-alt text-danger"
+                  data-bs-toggle="tooltip"
+                  title="Delete"
+                ></i>
+
+                <!-- <button
                   @click="active(problem.id)"
                   type="button"
-                  class="btn btn-success"
+                  class="btn btn-success btn-customer"
                 >
                   Active
-                </button>
-                <button
+                </button> -->
+                <!-- <button
                   @click="confirmDelete(problem.id)"
                   type="button"
-                  class="btn btn-danger ms-3"
+                  class="btn btn-danger ms-3 btn-customer"
                   data-bs-toggle="modal"
                   data-bs-target="#confirmDeleteModal"
                 >
                   Delete
-                </button>
+                </button> -->
               </td>
             </tr>
           </tbody>
@@ -226,7 +233,7 @@ export default {
     NavBar,
     Pagination,
     Table,
-    Alert
+    Alert,
   },
   data() {
     return {
@@ -236,12 +243,76 @@ export default {
       alertMessage: "",
       problems: [],
       confirmId: null,
+      searchText: "",
+      selectedTag: "",
+      selectedDifficulty: "",
+      selectedSort: "",
+      tags: [],
+      formData: {
+        diffculty: this.selectedDifficulty,
+        sort: this.selectedSort,
+        name: this.searchText,
+        tag: this.selectedTag,
+      },
     };
   },
   mounted() {
+    this.getTags();
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
     this.getMyProblems();
   },
   methods: {
+    onSearchInput(event) {
+      this.searchText = event.target.value;
+      this.Filter();
+    },
+    Filter() {
+      const token = localStorage.getItem("token");
+      this.formData = {
+        diffculty: this.selectedDifficulty,
+        sort: this.selectedSort,
+        name: this.searchText,
+        tag: this.selectedTag,
+      };
+      axios
+        .post(BASE_URL + "problems/fillter", this.formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.problems = response.data; // assuming the response data has a 'data' property containing the filtered problems
+          console.log("this is filter ");
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.error = error;
+        });
+    },
+    submitTag(name) {
+      this.selectedTag = name;
+      console.log(this.selectedTag);
+      this.Filter();
+    },
+    getTags() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(BASE_URL + "problems/tags", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.tags = response.data;
+          console.log(this.tags);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errMessage = "error retrieving data";
+        });
+    },
     confirmDelete(id) {
       this.confirmId = id;
     },
@@ -282,6 +353,14 @@ export default {
           console.log(error);
           this.errMessage = "error not activate";
         });
+    },
+    submitDifficulty(diff) {
+      this.selectedDifficulty = diff;
+      this.Filter();
+    },
+    submitSort(sort) {
+      this.selectedSort = sort;
+      this.Filter();
     },
     deleteProblem(id) {
       const token = localStorage.getItem("token");
@@ -334,9 +413,9 @@ export default {
 <style scoped>
 .btn-group .btn {
   margin-top: 3rem;
-  background: var(--darkwhite);
+  background: var(--GrayColor);
   border: none;
-  color: var(--GreenColor);
+  color: var(--MainColor);
 }
 
 .input-group .form-control {
@@ -348,7 +427,11 @@ export default {
 .input-group .form-control::placeholder {
   color: var(--LightGreen);
 }
-
+.btn-customer {
+  border: none;
+  background: none;
+  color: black;
+}
 .Divider {
   border-top: 1px solid var(--LightGreen) !important;
   /* border-bottom: 1px solid  var(--LightGreen)!important; */
@@ -357,13 +440,47 @@ export default {
 }
 
 p {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   margin-bottom: 0;
 }
 
 .page-footer .btn {
-  border: 1px solid var(--GreenColor);
-  color: var(--GreenColor);
+  border: 1px solid var(--MainColor);
+  color: var(--MainColor);
   background: var(--LightGreen);
+}
+.router-link {
+  color: inherit;
+}
+.router-link:hover {
+  color: var(--darkwhite);
+}
+.coloreasyDiff {
+  color: green;
+}
+.colormediumDiff {
+  color: orange;
+}
+.colorhardDiff {
+  color: red;
+}
+.input-group {
+  position: relative;
+}
+
+.search-input {
+  padding-left: 40px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 68%;
+  pointer-events: none;
+  color: var(--WhiteColor);
+}
+
+.search-input::placeholder {
+  text-indent: 10px;
 }
 </style>

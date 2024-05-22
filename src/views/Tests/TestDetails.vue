@@ -115,6 +115,7 @@ export default {
     this.getMyTestDetails();
   },
   methods: {
+    StartTest() {},
     selectButton(buttonNumber) {
       this.selectedButton = buttonNumber;
       if (this.selectedButton === 1) {

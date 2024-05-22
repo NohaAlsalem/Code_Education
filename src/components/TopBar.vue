@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg sticky-top">
+    <nav class="navbar fixed-top navbar-expand-lg ">
       <div class="container-fluid d-flex">
         <div class="navbar-brand d-flex">
           <img
@@ -10,7 +10,7 @@
             height="40"
             class="d-inline-block align-text-top"
           />
-          <h4 class="code d-inline pe-2">Code</h4>
+          <h4 class="code d-inline pe-2 ms-2">Code</h4>
           <h4 class="edu d-inline">Education</h4>
         </div>
       </div>
@@ -40,13 +40,13 @@ export default {
 
 
 .code {
-  color: var(--GreenColor);
+  color: var(--LightGreen);
   position: relative;
   top: 5px;
 }
 
 .edu {
-  color: var(--GreenOpacity);
+  color: var(--darkwhite);
   position: relative;
   top: 5px;
 }

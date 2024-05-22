@@ -1,7 +1,9 @@
 <template>
   <NavBar></NavBar>
   <!-- <SubjectAndClass></SubjectAndClass> -->
-  <div class="container text-center d-flex justify-content-center col-md-12">
+  <div
+    class="container text-center d-flex justify-content-center col-md-12 screen"
+  >
     <table class="table ms-4 mt-5">
       <thead>
         <tr class="colored-header">
@@ -306,8 +308,11 @@ export default {
   border: none;
 }
 .table thead th {
-  background: var(--GreenColor);
+  background: var(--MainColor);
   color: white;
+}
+.screen {
+  margin-top: 8%;
 }
 .table thead {
   margin-bottom: 2px;

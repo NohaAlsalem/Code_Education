@@ -2,13 +2,12 @@
   <div>
     <NavBar></NavBar>
     <SubjectAndClass
+      class="cust-subject"
       :class_name="$route.params.class_name"
       :class_subject="class_subject"
     ></SubjectAndClass>
 
-    <div
-      class="container  position-absolute top-70 start-50 translate-middle"
-    >
+    <div class="container position-absolute top-53 start-50 translate-middle">
       <div class="row">
         <div class="col-md-3">
           <router-link
@@ -33,7 +32,10 @@
         </div>
 
         <div class="col-md-3">
-          <router-link :to="{ name: 'showtests', params: { id: $route.params.id } }" class="router-link">
+          <router-link
+            :to="{ name: 'showtests', params: { id: $route.params.id } }"
+            class="router-link"
+          >
             <div
               class="card bg-light rounded"
               @mouseover="addAnimation"
@@ -134,7 +136,6 @@ export default {
       cardBody.style.backgroundPosition = "top";
     },
   },
-  
 };
 </script>
 
@@ -148,7 +149,12 @@ export default {
 .subject {
   margin-top: 3px;
 }
-
+.cust-subject {
+  margin-top: 5.8%;
+}
+.container.position-absolute {
+  margin-bottom: 30px;
+}
 img {
   height: 200px;
 }
@@ -158,7 +164,7 @@ img {
 .hover-animation {
   background-image: linear-gradient(
     to top,
-    var(--GreenColor) 0%,
+    var(--MainColor) 0%,
     transparent 100%
   );
   background-size: 100% 200%;

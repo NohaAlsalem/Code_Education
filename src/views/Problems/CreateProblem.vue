@@ -131,7 +131,7 @@
                   <li v-for="tag in tags" :key="tag.id">
                     <a class="dropdown-item" @click="submitTag(tag.id,tag.name)">{{
                       tag.name
-                    }} {{ tag.id }}</a>
+                    }}</a>
                   </li>
                 </ul>
               </div>

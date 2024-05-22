@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bk position-relative text-center justify-content-center "
-  >
+  <div class="bk position-relative text-center justify-content-center">
     <div class="d-flex flex-column align-items-center">
       <div class="image">
         <img
@@ -32,8 +30,8 @@ export default {
 
 <style>
 .bk {
-  background: var(--darkwhite);
-  height: 80vh; /* Adjust the height as needed */
+  background: var(--GrayOpactiyColor);
+  height: 70vh; /* Adjust the height as needed */
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -44,5 +42,8 @@ export default {
 .second {
   color: var(--GreenOpacity);
 }
-
+.image{
+  height: 200px;
+  width: 200px;
+}
 </style>

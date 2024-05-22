@@ -11,7 +11,7 @@
             height="40"
             class="d-inline-block align-text-top ps-0 ms-0"
           />
-          <codeEdu class="mt-1"></codeEdu>
+          <codeEdu class="mt-1 ms-2"></codeEdu>
         </div>
 
         <button
@@ -142,7 +142,7 @@
                     <button
                       type="button"
                       class="btn btn-primary btn-sm btn-auto"
-                      style="white-space: nowrap; background: var(--GreenColor)"
+                      style="white-space: nowrap; background: var(--MainColor)"
                       data-bs-toggle="modal"
                       data-bs-target="#passwordModal"
                     >
@@ -153,7 +153,7 @@
                       v-if="editMode"
                       type="button"
                       class="btn btn-secondary btn-sm btn-block"
-                      style="background: var(--GreenColor)"
+                      style="background: var(--MainColor)"
                       @click="edit"
                     >
                       Edit
@@ -210,7 +210,7 @@
           <button
             type="button"
             class="btn"
-            style="background: var(--GreenColor); color: white"
+            style="background: var(--MainColor); color: white"
             @click="changePassword"
           >
             Change
@@ -334,62 +334,67 @@ export default {
 </script>
 <style>
 :root {
-  --WhiteColor: #caa8f5;
-  --darkwhite: #9984d4;
+  --darkwhite: #caa8f5;
   --LightGreen: #592e83;
-  --GreenOpacity: #b27c66;
+  --GreenOpacity: #c79682;
   --MainColor: #230c33;
-  --PrimaryColor: #007bff; /* Replace with your primary color */
-  --TextColor: #ffffff; /* Replace with your text color */
-  --GrayColor: #c4c6c7; /* Replace with your gray color */
-  --HoverColor: #0056b3; /* Replace with your hover background color */
+  --PrimaryColor: #007bff;
+  --TextColor: #ffffff;
+  --GrayColor: #d3d4d4;
+  --GrayOpactiyColor: #dddddd;
+  --HoverColor: #0056b3;
   --HoverTextColor: #ffffff;
 }
-.i {
-  color: var(--GreenColor);
-}
+
 .navbar {
   background-color: white;
   position: sticky;
   top: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 1rem; /* Reduce the padding to decrease height */
 }
 
 .nav-link {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   font-size: 1.25rem;
-
-  /* padding: 1rem; */
-  margin-bottom: 2;
+  padding: 0.25rem 0.5rem; /* Reduce padding to decrease height */
 }
 
 .navbar .navbar-nav .nav-link:focus,
 .navbar .navbar-nav .nav-link:hover {
-  color: #8fc0a9;
+  color: var(--darkwhite);
 }
+
 .navbar .navbar-nav .nav-link.active {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   font-weight: bold;
   text-underline-position: auto;
 }
+
 .navbar .profile {
-  border-left: 1px solid var(--GreenColor);
+  border-left: 1px solid var(--MainColor);
 }
+
 .offcanvas.offcanvas-end {
   background: var(--WhiteColor);
 }
+
 .edit-icon {
-  color: var(--GreenColor);
+  color: var(--MainColor);
 }
+
 .navbar .profile .svg {
-  color: var(--GreenColor);
+  color: var(--MainColor);
 }
+
 .profile-card .profile-icon {
   font-size: 72px;
 }
+
 .profile-icon {
   cursor: pointer;
 }
+
 .navbar .navbar-toggler {
   color: white;
   font-size: 25px;
@@ -403,6 +408,6 @@ export default {
 }
 
 .navbar .navbar-toggler[aria-expanded="true"] {
-  border-color: var(--GreenColor);
+  border-color: var(--MainColor);
 }
 </style>

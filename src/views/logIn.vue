@@ -1,63 +1,63 @@
 <template>
-  <div class="r">
-    <TopBar></TopBar>
-    <div>
-      <div class="col-md-12">
-        <div class="form-sub-main">
-          <div
-            class="_main_head_as text-center justify-content-center align-items-center mb-0"
-          >
-            <img src="@/assets/images/logoo.png" />
-            <codeEdu></codeEdu>
-          </div>
-          <form @submit.prevent="signIn">
-            <div class="form-group">
-              <input
-                id="email"
-                name="email"
-                v-model="formData.email"
-                class="form-control _ge_de_ol mb-3"
-                type="text"
-                placeholder="username or E-mail"
-                required=""
-                aria-required="true"
-              />
-            </div>
+  <TopBar></TopBar>
 
-            <div class="form-group">
-              <input
-                id="password"
-                type="password"
-                v-model="formData.password"
-                class="form-control mb-3"
-                name="password"
-                placeholder="password"
-                required="required"
-              />
-            </div>
-
-            <div class="form-group">
-              <button class="btn btn_uy" type="submit" :disabled="loading">
-                <template v-if="loading">
-                  <i class="fa fa-spinner fa-spin"></i> Loading...
-                </template>
-                <template v-else>
-                  <h5 >SignIn</h5>
-                </template>
-              </button>
-            </div>
-          </form>
-          <div class="txt d-flex">
-            <p class="pt-2">Forgot Password?</p>
-          </div>
+  <div class="row">
+    <div class="container col-md-12">
+      <div class="form-sub-main">
+        <div
+          class="_main_head_as text-center justify-content-center align-items-center mb-0"
+        >
+          <img class="logo" src="@/assets/images/logoo.png" />
+          <codeEdu></codeEdu>
         </div>
+        <form @submit.prevent="signIn">
+          <div class="form-group">
+            <input
+              id="email"
+              name="email"
+              v-model="formData.email"
+              class="form-control _ge_de_ol mb-3 mt-5"
+              type="text"
+              placeholder="username or E-mail"
+              required=""
+              aria-required="true"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              id="password"
+              type="password"
+              v-model="formData.password"
+              class="form-control mb-3"
+              name="password"
+              placeholder="password"
+              required="required"
+            />
+          </div>
+
+          <div class="form-group fg">
+            <button class="btn btn_uy" type="submit" :disabled="loading">
+              <template v-if="loading">
+                <i class="fa fa-spinner fa-spin"></i>
+                <p class="load">Loading...</p>
+              </template>
+              <template v-else>
+                <p class="load">Sign In</p>
+              </template>
+            </button>
+          </div>
+        </form>
         <div class="txt d-flex">
-          <p class="pt-2"></p>
-          <router-link to="/signup" class="txt-h pt-0 me-4 ms-auto">
-            <font-awesome-icon icon="fa-solid fa-bell" />
-          </router-link>
+          <p class="pt-2 p">Forgot Password?</p>
         </div>
       </div>
+      <!-- <div class="txt d-flex">
+        <p class="pt-2"></p>
+        <router-link to="/signup" class="txt-h pt-0 me-4 ms-auto">
+          <font-awesome-icon icon="fa-solid fa-bell" />
+        </router-link>
+      </div> -->
     </div>
   </div>
 </template>
@@ -109,11 +109,19 @@ export default {
 </script>
 
 <style scoped>
-.r {
-  height: 100%;
-  background: var(--WhiteColor);
+.row {
+  background: var(--GrayColor);
+  margin: 0; /* Remove margin that might cause overflow */
+  padding: 0; /* Remove padding that might cause overflow */
+  width: 100%; /* Ensure it takes full width without overflow */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  height: 100vh;
 }
-
+.logo{
+  height: 100px;
+  width: 100px;
+  margin-top: 20px;
+}
 img {
   max-width: 75%;
   margin: 0;
@@ -126,16 +134,25 @@ a {
 }
 
 .txt p {
+  color: white;
+}
+.load{
+  color: white;
+  font-weight: normal;
+
+}
+.txt .txt-h p {
   color: var(--GreenColor);
 }
-
-.txt .txt-h h5 {
-  color: var(--GreenColor);
+.btn.btn_uy{
+  border: 1px solid var(--MainColor);
+  border-radius: 20px;
+  margin-top: 20px;
 }
-
 .form-sub-main {
   max-width: 400px;
   width: 100%;
+  height: 500px;
   display: block;
   margin: 20px auto;
   margin-top: 5rem;
@@ -149,24 +166,30 @@ a {
   min-height: 50px;
   -webkit-box-shadow: none;
   border: 1px solid var(--LightGreen);
+  color: black;
+  /* background: var(--darkwhite); */
   border-radius: 3px;
   box-shadow: none;
   /* border: 1px solid rgba(255, 255, 255, 0.3); */
   padding: 10px 15px;
-  background-color: transparent;
-  color: black;
+  /* background-color: transparent;
+  color: black; */
   margin: 10px 0px;
 }
 
 .form-sub-main .form-group ::placeholder {
   display: block;
   margin-bottom: 6px;
-  color: var(--LightGreen);
+  color: var(--darkwhite);
 }
 
-.form-group {
+.fg {
   position: relative;
   z-index: 9;
+  background: var(--MainColor);
+}
+.fg:hover {
+  background: var(--MainColor);
 }
 
 .toggle-password {
@@ -178,14 +201,18 @@ a {
 .form-group .form-control:focus {
   background: transparent;
   box-shadow: none;
-  border-color: var(--GreenColor);
+  border-color: var(--MainColor);
 }
 
 .btn_uy {
   position: relative;
   z-index: 9;
-  display: block;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   margin: auto;
+  background: var(--MainColor);
 }
 
 .btn_uy h5 {

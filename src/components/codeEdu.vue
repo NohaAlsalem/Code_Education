@@ -11,10 +11,10 @@
 
 <style scoped>
 .code {
-    color: var(--GreenColor);
+    color: var(--LightGreen);
 }
 
 .edu {
-    color: var(--GreenOpacity);
+    color: var(--darkwhite);
 }
 </style>
