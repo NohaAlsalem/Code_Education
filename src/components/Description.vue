@@ -88,8 +88,8 @@
                 >
                   <font-awesome-icon
                     icon="fa-solid fa-lightbulb"
-                    class="fa-xs me-1"
-                    style="color: var(--GreenColor)"
+                    class="fa-xs me-1 icon-light"
+                   
                   />
                   Hint 1:
                 </button>
@@ -131,8 +131,8 @@
                 >
                   <font-awesome-icon
                     icon="fa-solid fa-lightbulb"
-                    class="fa-xs me-1"
-                    style="color: var(--GreenColor)"
+                    class="fa-xs me-1 icon-light"
+                    
                   />
                   Hint 2:
                 </button>
@@ -214,7 +214,9 @@ export default {
   border-right: 5px solid transparent;
   margin-left: auto;
 }
-
+.icon-light{
+  color:rgb(189, 189, 37)
+}
 .arrow-down {
   border-top: 5px solid black;
 }

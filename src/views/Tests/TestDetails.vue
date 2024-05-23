@@ -90,7 +90,11 @@
       </tbody>
     </table>
     <div class="row">
-      <button type="button" class="btn btn-danger ms-1 me-1">Finish</button>
+      <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-danger ms-1 me-1" @click="finish">
+          Finish
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -98,11 +102,11 @@
 <script>
 import Description from "../../components/Description.vue";
 import Solution from "../../components/Solution.vue";
-import SubjectAndClass from "../../components/SubjectAndClass.vue";
 import { BASE_URL } from "@/assets/config";
 import axios from "axios";
+
 export default {
-  components: { SubjectAndClass, Description, Solution },
+  components: { Description, Solution },
   props: ["id"],
   data() {
     return {
@@ -110,43 +114,58 @@ export default {
       description: true,
       solution: false,
       problem: "",
-      Students: "",
+      Students: [],
     };
   },
   mounted() {
     this.getMyTestDetails();
   },
   methods: {
-    StartTest() {},
     selectButton(buttonNumber) {
       this.selectedButton = buttonNumber;
-      if (this.selectedButton === 1) {
-        this.description = true;
-        this.solution = false;
-      } else {
-        this.solution = true;
-        this.description = false;
-      }
+      this.description = this.selectedButton === 1;
+      this.solution = this.selectedButton === 2;
     },
     getMyTestDetails() {
       const token = localStorage.getItem("token");
       const id = this.$route.params.id;
-      console.log(id);
-      console.log(token);
       axios
         .get(BASE_URL + "assessment/details/" + id, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          console.log("this is test details");
-          console.log(response.data);
           this.testDetails = response.data;
           this.problem = response.data.problem;
           this.Students = response.data.student;
         })
         .catch((error) => {
           console.log(error);
-          this.errMessage = "Error retrieving data";
+        });
+    },
+    finish() {
+      const token = localStorage.getItem("token");
+      const id = this.$route.params.id;
+      const formData = new FormData();
+
+      this.Students.forEach((student, index) => {
+        formData.append(`students[${index}][id]`, student.id);
+        formData.append(`students[${index}][mark]`, student.mark);
+      });
+
+      axios
+        .post(`${BASE_URL}categories/${id}/attendance`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log("Attendance saved successfully", response.data);
+          alert("Attendance saved successfully");
+        })
+        .catch((error) => {
+          console.error("Error saving attendance", error);
+          alert("Error saving attendance");
         });
     },
   },
