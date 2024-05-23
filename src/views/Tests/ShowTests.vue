@@ -4,10 +4,9 @@
   <div
     class="container text-center d-flex justify-content-center col-md-12 screen"
   >
-    <table class="table ms-4 mt-5">
+    <table class="table table-striped ms-4 mt-5">
       <thead>
         <tr class="colored-header">
-          <th scope="col">#</th>
           <th scope="col">Test name</th>
           <th scope="col">Problem name</th>
           <th scope="col">Create date</th>
@@ -17,12 +16,28 @@
       </thead>
       <tbody>
         <tr v-for="(test, index) in tests" :key="index++">
-          <td scope="row">{{ index }}</td>
-          <td>{{ test.name }}</td>
+          <td>{{ index }}.{{ test.name }}</td>
           <td>{{ test.problem_name }}</td>
           <td>{{ formatDate(test.date) }}</td>
-          <td class="d-flex justify-content-center">
-            <button
+          <td>
+            <i
+              class="fas fa-play me-2 text-success"
+              v-b-tooltip.hover
+              title="Start"
+              data-bs-toggle="modal"
+              data-bs-target="#takeAttendance"
+              ref="takeAttendanceModal"
+              @click="startAttendance(test.id)"            ></i>
+
+            <i
+              class="fas fa-trash-alt text-danger"
+              v-b-tooltip.hover
+              title="Delete"
+              @click="confirmDelete(test.id)"
+              data-bs-toggle="modal"
+              data-bs-target="#confirmDeleteModal"
+            ></i>
+            <!-- <button
               type="button"
               class="btn btn-success me-2"
               data-bs-toggle="modal"
@@ -41,7 +56,7 @@
             >
               Delete
             </button>
-            <button type="button" class="btn btn-warning">End</button>
+            <button type="button" class="btn btn-warning">End</button> -->
           </td>
           <td>
             <router-link
@@ -318,7 +333,7 @@ export default {
   margin-bottom: 2px;
 }
 .custom-checkbox {
-  border: 1px solid var(--GreenColor);
+  border: 1px solid var(--MainColor);
   padding: 4;
 }
 </style>

@@ -49,7 +49,7 @@
         :hint2="problem.hint2"
       ></Solution>
     </div>
-    <div class="text-start">
+    <!-- <div class="text-start">
       <p style="margin-top: 10px; margin-bottom: 10px">
         Modifying the grades of students who received a zero grade and have
         codes
@@ -63,7 +63,7 @@
           Edit
         </button>
       </router-link>
-    </div>
+    </div> -->
 
     <table class="table table-striped">
       <thead>
@@ -72,7 +72,7 @@
           <th scope="col">Name</th>
 
           <th scope="col">Mark</th>
-          <th scope="col">Operation</th>
+          <!-- <th scope="col">Operation</th> -->
         </tr>
       </thead>
       <tbody>
@@ -80,10 +80,12 @@
           <th scope="row">1</th>
           <td>{{ student.name }}</td>
 
-          <td><input type="text" :value="student.mark" /></td>
           <td>
-            <button type="button" class="btn btn-success">Edit</button>
+            <input type="text" class="custom-input" :value="student.mark" />
           </td>
+          <!-- <td>
+            <button type="button" class="btn btn-success">Edit</button>
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -154,6 +156,17 @@ export default {
 <style scoped>
 .btn {
   border: none;
+}
+.input {
+  border: none;
+  text-align: center;
+}
+.custom-input {
+  border: none;
+  border-bottom: 1px solid rgb(192, 192, 192);
+  text-align: center;
+  /* width: 100%; */
+  outline: none;
 }
 .custom-button,
 .bt:hover {
