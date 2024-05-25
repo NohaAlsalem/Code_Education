@@ -147,7 +147,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--GrayColor); /* gray color */
+  background-color: var(--darkwhite); /* gray color */
   z-index: -1; /* Ensure it stays in the background */
 }
 

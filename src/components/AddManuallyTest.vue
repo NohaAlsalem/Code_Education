@@ -14,7 +14,7 @@
         <button
           type="button"
           class="btn mb-3 col-md-2"
-          style="background: var(--GreenColor); color: white"
+          style="background: var(--MainColor); color: white"
           @click="addTest"
         >
           Add test case
@@ -48,7 +48,7 @@
                     <button
                       type="button"
                       class="btn col-md-2 mb-3"
-                      style="background: var(--GreenColor); color: white"
+                      style="background: var(--MainColor); color: white"
                       @click="deleteTest(index)"
                     >
                       Delete
@@ -62,7 +62,7 @@
         <button
           type="button"
           class="btn mb-3 col-md-2 mt-2"
-          style="background: var(--GreenColor); color: white"
+          style="background: var(--MainColor); color: white"
           @click="sendTestsToParent"
         >
           submit test cases

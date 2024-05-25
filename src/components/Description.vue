@@ -7,13 +7,13 @@
       {{ description }}
     </p>
     <div v-if="test_case">
-      <h6 class="card-title" style="color: var(--GreenColor)">Test 1:</h6>
+      <h6 class="card-title" style="color: var(--MainColor)">Test 1:</h6>
       <p>
-        <span style="color: var(--GreenColor)">Input: </span>
+        <span style="color: var(--MainColor)">Input: </span>
         {{ test_case.input }}
       </p>
       <p>
-        <span style="color: var(--GreenColor)">Output: </span>
+        <span style="color: var(--MainColor)">Output: </span>
         {{ test_case.output }}
       </p>
     </div>
@@ -35,9 +35,9 @@
                     <font-awesome-icon
                       icon="font-awesome"
                       class="me-1"
-                      style="color: var(--GreenColor)"
+                      style="color: var(--MainColor)"
                     />
-                    <h6 class="card-title" style="color: var(--GreenColor)">
+                    <h6 class="card-title" style="color: var(--MainColor)">
                       Tags:
                     </h6>
                   </div>
@@ -88,8 +88,8 @@
                 >
                   <font-awesome-icon
                     icon="fa-solid fa-lightbulb"
-                    class="fa-xs me-1 icon-light"
-                   
+                    class="fa-xs me-1"
+                    style="color: var(--MainColor)"
                   />
                   Hint 1:
                 </button>
@@ -131,8 +131,8 @@
                 >
                   <font-awesome-icon
                     icon="fa-solid fa-lightbulb"
-                    class="fa-xs me-1 icon-light"
-                    
+                    class="fa-xs me-1 icon"
+                    style="color: var(--MainColor)"
                   />
                   Hint 2:
                 </button>
@@ -214,8 +214,8 @@ export default {
   border-right: 5px solid transparent;
   margin-left: auto;
 }
-.icon-light{
-  color:rgb(189, 189, 37)
+.fa-xs {
+  color: yellow;
 }
 .arrow-down {
   border-top: 5px solid black;

@@ -1,222 +1,202 @@
 <template>
   <NavBar></NavBar>
-  <div class="r">
-    <div class="container col-md-12 ms-3 pt-4">
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label for="exampleFormControlInput1">Problem name</label>
+  <div class="screen pt-5">
+    <div class="content">
+      <div class="cont">
+        <div class="container col-md-12 pt-5">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="exampleFormControlInput1">Problem name</label>
+              <input
+                v-model="formData.name"
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+              />
+            </div>
+            <div class="btn-group col-md-3">
+              <label for="exampleFormControlInput1">Language:</label>
+              <button
+                type="button"
+                class="btn dropdown-toggle btn-danger dropdown-toggle ms-2"
+                data-bs-toggle="dropdown"
+              >
+                {{ selectedLanguage || "Language" }}
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" @click="setSelectedLanguage('C++')"
+                    >C++</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" @click="setSelectedLanguage('Java')"
+                    >Java</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-space-between">
+            <div class="form-group col-md-6">
+              <label for="exampleFormControlTextarea1">Description</label>
+              <textarea
+                v-model="formData.description"
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="12"
+              ></textarea>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="exampleFormControlTextarea1">Solution</label>
+              <textarea
+                v-model="formData.teacher_code_solve"
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="12"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col me-5">
+              <div class="d-flex flex-row mb-2 mt-2">
+                <div class="p-2">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-danger dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      Difficulty
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item">Easy</a></li>
+                      <li><a class="dropdown-item">Medium</a></li>
+                      <li>
+                        <a class="dropdown-item">Hard</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col"></div>
+          </div>
+
+          <div class="row">
+            <div class="container col-md-12">
+              <div class="form-group col-md-4">
+                <label for="exampleFormControlInput1"
+                  >Add tags for this problem</label
+                >
+                <div>
+                  <div class="btn-group mt-0 mb-0">
+                    <button
+                      type="button"
+                      class="btn btn-danger dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      {{ "Tags" || selectedTag }}
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li v-for="tag in tags" :key="tag.id">
+                        <a
+                          class="dropdown-item"
+                          @click="submitTag(tag.id, tag.name)"
+                          >{{ tag.name }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn mb-3 mt-0"
+            style="background: var(--MainColor); color: white"
+            @click="addTag()"
+          >
+            Add tag
+          </button>
+          <p
+            v-for="tag in formData.tags"
+            :key="tag"
+            class="ms-2"
+            style="color: black"
+          >
+            {{ tag }}
+          </p>
           <input
-            v-model="formData.name"
-            type="email"
-            class="form-control"
+            v-model="formData.hint1"
+            class="form-control mb-3 ms-1 me-5"
             id="exampleFormControlInput1"
+            placeholder="Enter first hint"
+          />
+          <input
+            v-model="formData.hint2"
+            class="form-control mb-3 ms-1"
+            id="exampleFormControlInput1"
+            placeholder="Enter second hint"
           />
         </div>
-        <div class="btn-group col-md-6">
-          <label for="exampleFormControlInput1">Language:</label>
-          <button
-            type="button"
-            class="btn btn-danger dropdown-toggle"
-            data-bs-toggle="dropdown"
-          >
-            {{ selectedLanguage || "Language" }}
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" @click="setSelectedLanguage('C++')"
-                >C++</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" @click="setSelectedLanguage('Java')"
-                >Java</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="row d-flex justify-content-space-between">
-        <div class="form-group col-md-6">
-          <label for="exampleFormControlTextarea1">Description</label>
-          <textarea
-            v-model="formData.description"
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="5"
-          ></textarea>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="exampleFormControlTextarea1">Solution</label>
-          <textarea
-            v-model="formData.teacher_code_solve"
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="5"
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col me-5">
-          <div class="d-flex flex-row mb-2 mt-2">
-            <div class="p-2">
-              <div class="btn-group">
-                <button
-                  type="button"
-                  class="btn btn-danger dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="true"
-                >
-                  Difficulty
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Difficulty</a></li>
-                  <li><a class="dropdown-item" href="#">status</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="p-2">
-              <div class="btn-group">
-                <button
-                  type="button"
-                  class="btn btn-danger dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="true"
-                >
-                  Statuse
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Another action</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+        <div class="d-flex justify-content-start ms-4">
+          <div>
+            <label class="form-check-label" for="generateTestCheckbox">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="generateTestCheckbox"
+                @click="navigateToGenerateTest"
+                :checked="selectedOption === 'generateTest'"
+              />
+              Generate test case
+            </label>
+          </div>
+          <div>
+            <label class="form-check-label ms-5" for="addManuallyTestRadio">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="addManuallyTestRadio"
+                @click="navigateToAddManuallyTest"
+                :checked="selectedOption === 'addManuallyTest'"
+              />
+              Add manually test case
+            </label>
           </div>
         </div>
-        <div class="col"></div>
+        <div>
+          <AddManuallyTest
+            @tests-updated="handleTestsUpdated"
+            :language="formData.language"
+            :code="formData.teacher_code_solve"
+            v-if="selectedOption === 'addManuallyTest'"
+          ></AddManuallyTest>
+          <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
+        </div>
       </div>
 
-      <div class="row">
-        <div class="container col-md-12">
-          <div class="form-group col-md-4">
-            <label for="exampleFormControlInput1"
-              >Add tags for this problem</label
-            >
-            <div>
-              <div class="btn-group mt-0 mb-0">
-                <button
-                  type="button"
-                  class="btn btn-danger dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="true"
-                >
-                {{ "Tags" ||  selectedTag }}
-                </button>
-                <ul class="dropdown-menu">
-                  <li v-for="tag in tags" :key="tag.id">
-                    <a class="dropdown-item" @click="submitTag(tag.id,tag.name)">{{
-                      tag.name
-                    }}</a>
-                  </li>
-                </ul>
-              </div>
+      <div class="container col-md-12">
+        <router-link :to="{ name: 'confirmproblem' }" class="router-link">
+          <div class="row">
+            <div class="d-flex justify-content-center">
+              <button
+                type="button"
+                class="row btn btn-create mb-2 ms-4 mt-4"
+                style="background: var(--MainColor)"
+                @click="addProblem"
+              >
+                Create
+              </button>
             </div>
           </div>
-        </div>
+        </router-link>
       </div>
-      <button
-        type="button"
-        class="btn mb-3 mt-0"
-        style="background: var(--GreenColor); color: white"
-        @click="addTag()"
-      >
-        Add tag
-      </button>
-      <p 
-        v-for="tag in formData.tags"
-        :key="tag"
-        class="ms-2"
-        style="color: black"
-      >
-        {{ tag }}
-      </p>
-      <input
-        v-model="formData.hint1"
-        class="row form-control mb-3 ms-1 col-md-6"
-        id="exampleFormControlInput1"
-        placeholder="Enter first hint"
-      />
-      <input
-        v-model="formData.hint2"
-        class="row form-control mb-3 ms-1 col-md-6"
-        id="exampleFormControlInput1"
-        placeholder="Enter second hint"
-      />
-    </div>
-    <div class="d-flex justify-content-start ms-4">
-      <div>
-        <label class="form-check-label" for="generateTestCheckbox">
-          <input
-            class="form-check-input"
-            type="radio"
-            id="generateTestCheckbox"
-            @click="navigateToGenerateTest"
-            :checked="selectedOption === 'generateTest'"
-          />
-          Generate test case
-        </label>
-      </div>
-      <div>
-        <label class="form-check-label ms-5" for="addManuallyTestRadio">
-          <input
-            class="form-check-input"
-            type="radio"
-            id="addManuallyTestRadio"
-            @click="navigateToAddManuallyTest"
-            :checked="selectedOption === 'addManuallyTest'"
-          />
-          Add manually test case
-        </label>
-      </div>
-    </div>
-    <div style="background: var(--WhiteColor)">
-      <AddManuallyTest
-        @tests-updated="handleTestsUpdated"
-        :language="formData.language"
-        :code="formData.teacher_code_solve"
-        v-if="selectedOption === 'addManuallyTest'"
-      ></AddManuallyTest>
-      <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
-    </div>
-
-    <div class="container col-md-12" style="background: var(--WhiteColor)">
-      <router-link :to="{ name: 'confirmproblem' }">
-        <div class="row">
-          <button
-            type="button"
-            class="row btn btn-success mb-2 ms-4 mt-4"
-            style="background: var(--GreenColor)"
-            @click="addProblem"
-          >
-            Create
-          </button>
-        </div>
-      </router-link>
     </div>
   </div>
 </template>
@@ -241,9 +221,9 @@ export default {
     return {
       selectedOption: null,
       selectedLanguage: "",
-      selectedTag:"",
+      selectedTag: "",
       tags: [],
-   
+
       newTag: null,
       formData: {
         name: "",
@@ -280,9 +260,9 @@ export default {
         console.log("Variable 2 set to: " + this.selectedLanguage);
       }
     },
-    submitTag(id,name) {
+    submitTag(id, name) {
       this.newTag = id;
-      this.selectedTag=name;
+      this.selectedTag = name;
       console.log(this.selectedTag);
       console.log(this.newTag);
     },
@@ -338,32 +318,70 @@ export default {
 </script>
 
 <style scoped>
-.r {
-  background: var(--WhiteColor);
+body,
+html {
   height: 100%;
+  margin: 0;
+  background-color: var(--GrayColor);
+}
+.screen {
+  background: var(--darkwhite);
+  margin-top: 6%;
+  padding: 20px;
+}
+.cont {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--MainColor);
+}
+.router-link {
+  color: inherit;
+  text-decoration: none;
 }
 .btn-group .btn {
   background: var(--LightGreen);
   border: none;
-  color: var(--GreenColor);
+  color: var(--MainColor);
+}
+.btn-create {
+  background: var(--MainColor);
+  color: white;
 }
 .form-check-input[type="radio"] {
   appearance: none;
 
   border-radius: 50%;
-  border: 1.5px solid var(--GreenColor);
+  border: 1.5px solid var(--MainColor);
   outline: none;
   transition: border-color 0.2s ease-in-out;
 }
-
+label {
+  color: var(--MainColor);
+  font-weight: bold;
+}
 .form-check-input[type="radio"]:checked {
-  border-color: var(--BlueColor);
+  border-color: var(--GreenOpacity);
 }
 .btn.btn-danger.dropdown-toggle {
   margin-bottom: 3rem;
   margin-top: 1.5rem;
-  background: var(--darkwhite);
-  border: none;
-  color: var(--GreenColor);
+  background: var(--MainColor);
+  border: 1px solid var(--MainColor);
+  border-radius: 8px;
+  color: white;
+}
+.toggle-lang {
+  height: 50px;
+  background: var(--MainColor);
+  color: white;
+}
+.form-group .form-control ::placeholder {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--LightGreen);
+}
+input,textarea{
+  border:1px solid var(--MainColor)
 }
 </style>

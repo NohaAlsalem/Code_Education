@@ -54,7 +54,7 @@
                   :class="{
                     active:
                       $route.path === '/classes' ||
-                      $route.path === '/showtests' ||
+                      $route.path.startsWith('/showtests') ||
                       /^\/classdetails\//.test($route.path),
                   }"
                 >

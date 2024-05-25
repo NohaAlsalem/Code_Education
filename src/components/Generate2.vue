@@ -3,7 +3,7 @@
     <div class="container col-md-12 mb-2 ms-4">
       <p
         class="mt-5"
-        style="color: var(--GreenColor); font-weight: bold; font-size: 18px"
+        style="color: var(--MainColor); font-weight: bold; font-size: 18px"
       >
         Enter the number of test cases you want
       </p>
@@ -20,7 +20,7 @@
             <p
               class="mt-3"
               style="
-                color: var(--GreenColor);
+                color: var(--MainColor);
                 font-weight: bold;
                 font-size: 18px;
               "
@@ -529,7 +529,7 @@
                     <button
                       type="button"
                       class="btn col-md-2"
-                      style="background: var(--GreenColor); color: white"
+                      style="background: var(--MainColor); color: white"
                     >
                       Delete
                     </button>
@@ -691,7 +691,7 @@ export default {
 
 <style scoped>
 .r {
-  background: var(--WhiteColor);
+  /* background: var(--WhiteColor); */
   height: 100vh;
 }
 .custom-card {
@@ -706,7 +706,7 @@ export default {
   text-align: center;
 }
 .btn.dropdown-toggle {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   background: white;
 }
 .dropdown-item:hover {
@@ -716,14 +716,14 @@ export default {
   background: var(--LightGreen);
 }
 .selected {
-  background-color: var(--GreenColor);
+  background-color: var(--MainColor);
   color: white;
 }
 .screen {
   margin-bottom: 10px;
 }
 .custom-p {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   font-weight: bold;
 }
 </style>

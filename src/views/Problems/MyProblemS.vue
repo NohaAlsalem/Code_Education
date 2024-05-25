@@ -451,6 +451,7 @@ p {
 }
 .router-link {
   color: inherit;
+  text-decoration: none;
 }
 .router-link:hover {
   color: var(--darkwhite);
