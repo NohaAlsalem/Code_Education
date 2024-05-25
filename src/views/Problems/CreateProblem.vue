@@ -60,7 +60,7 @@
 
           <div class="row">
             <div class="col me-5">
-              <div class="d-flex flex-row mb-2 mt-2">
+              <div class="d-flex flex-row  mt-2">
                 <div class="p-2">
                   <div class="btn-group">
                     <button
@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <div class="col"></div>
+           
           </div>
 
           <div class="row">
@@ -144,7 +144,7 @@
             placeholder="Enter second hint"
           />
         </div>
-        <div class="d-flex justify-content-start ms-4">
+        <div class="d-flex justify-content-start select-test-type">
           <div>
             <label class="form-check-label" for="generateTestCheckbox">
               <input
@@ -334,6 +334,9 @@ html {
   padding: 20px;
   border-radius: 10px;
   border: 1px solid var(--MainColor);
+}
+.select-test-type{
+  margin-left: 65px;
 }
 .router-link {
   color: inherit;

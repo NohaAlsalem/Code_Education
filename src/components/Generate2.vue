@@ -1,6 +1,6 @@
 <template>
   <div class="r">
-    <div class="container col-md-12 mb-2 ms-4">
+    <div class="container col-md-12 mb-2 ms-5">
       <p
         class="mt-5"
         style="color: var(--MainColor); font-weight: bold; font-size: 18px"
@@ -80,7 +80,7 @@
               </div>
             </div>
           </div>
-          <div v-if="selectedInputType === 'String'">
+          <div v-if="selectedInputType === 'STRING'">
             <p>Enter Range value you want</p>
             <div class="row">
               <div class="container col-md-12">
@@ -725,5 +725,8 @@ export default {
 .custom-p {
   color: var(--MainColor);
   font-weight: bold;
+}
+input{
+  border:1px solid var(--MainColor)
 }
 </style>

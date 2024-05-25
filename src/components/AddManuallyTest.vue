@@ -1,7 +1,7 @@
 <template>
   <div class="r">
     <div class="mt-4">
-      <div class="container col-md-12 ms-4">
+      <div class="container col-md-12 ms-5">
         <div class="form-group col-md-4">
           <input
             v-model="newTest"
@@ -96,3 +96,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+input{
+  border:1px solid var(--MainColor)
+}
+</style>
