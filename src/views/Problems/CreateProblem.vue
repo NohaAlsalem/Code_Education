@@ -60,7 +60,7 @@
 
           <div class="row">
             <div class="col me-5">
-              <div class="d-flex flex-row  mt-2">
+              <div class="d-flex flex-row mt-2">
                 <div class="p-2">
                   <div class="btn-group">
                     <button
@@ -69,20 +69,35 @@
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
-                      Difficulty
+                      {{ selectedDifficulty || "Difficulty" }}
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item">Easy</a></li>
-                      <li><a class="dropdown-item">Medium</a></li>
                       <li>
-                        <a class="dropdown-item">Hard</a>
+                        <a
+                          class="dropdown-item"
+                          @click="setSelectedDifficulty('Easy')"
+                          >Easy</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          @click="setSelectedDifficulty('Medium')"
+                          >Medium</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          @click="setSelectedDifficulty('Hard')"
+                          >Hard</a
+                        >
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
-           
           </div>
 
           <div class="row">
@@ -221,6 +236,7 @@ export default {
     return {
       selectedOption: null,
       selectedLanguage: "",
+      selectedDifficulty: "",
       selectedTag: "",
       tags: [],
 
@@ -234,6 +250,7 @@ export default {
         test_cases: [],
         hint1: "",
         hint2: "",
+        diffculty: "",
       },
     };
   },
@@ -259,6 +276,10 @@ export default {
         this.formData.language = 2;
         console.log("Variable 2 set to: " + this.selectedLanguage);
       }
+    },
+    setSelectedDifficulty(diff) {
+      this.selectedDifficulty = diff;
+      this.formData.diffculty = diff;
     },
     submitTag(id, name) {
       this.newTag = id;
@@ -335,7 +356,7 @@ html {
   border-radius: 10px;
   border: 1px solid var(--MainColor);
 }
-.select-test-type{
+.select-test-type {
   margin-left: 65px;
 }
 .router-link {
@@ -384,7 +405,8 @@ label {
   margin-bottom: 6px;
   color: var(--LightGreen);
 }
-input,textarea{
-  border:1px solid var(--MainColor)
+input,
+textarea {
+  border: 1px solid var(--MainColor);
 }
 </style>
