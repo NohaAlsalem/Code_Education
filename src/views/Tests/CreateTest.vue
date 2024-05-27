@@ -43,7 +43,7 @@
               params: { id: $route.params.id },
             }"
           >
-            <button type="button" class="btn btn-success mb-2">Add</button>
+            <button type="button" class="btn custom-btn mb-2">Add</button>
           </router-link>
         </div>
         <div v-if="problemId" class="row input-group">
@@ -83,7 +83,7 @@
             <button
               @click="addTest"
               type="button"
-              class="btn btn-success mb-2 col-md-6"
+              class="btn custom-btn mb-2 col-md-6"
             >
               Create
             </button>
@@ -116,16 +116,6 @@ export default {
   },
   mounted() {
     this.loadFormData();
-    console.log(this.problemId);
-    console.log(this.$route.params.id);
-  },
-  watch: {
-    formData: {
-      handler(newFormData) {
-        localStorage.setItem("formData", JSON.stringify(newFormData));
-      },
-      deep: true,
-    },
   },
   methods: {
     loadFormData() {
@@ -134,16 +124,26 @@ export default {
         this.formData = JSON.parse(savedFormData);
       }
     },
+    saveFormData() {
+      localStorage.setItem("formData", JSON.stringify(this.formData));
+    },
+    clearFormData() {
+      localStorage.removeItem("formData");
+    },
+    navigateToAddProblems() {
+      this.saveFormData();
+      this.$router.push({
+        name: "problemsToaddTotest",
+        params: { id: this.$route.params.id },
+      });
+    },
     addTest() {
       const token = localStorage.getItem("token");
-      console.log(this.formData);
-      console.log(token);
       axios
         .post(BASE_URL + "assessment/create", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          // this.message = response.data;
           console.log(response.data.message);
         })
         .catch((error) => {
@@ -151,6 +151,14 @@ export default {
           this.error = error;
         });
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "problemsToaddTotest") {
+      this.saveFormData();
+    } else {
+      this.clearFormData();
+    }
+    next();
   },
 };
 </script>
@@ -187,6 +195,10 @@ h6 {
   background: var(--MainColor);
 }
 .btn:hover {
+  background: var(--MainColor);
+}
+.custom-btn {
+  color: white;
   background: var(--MainColor);
 }
 .input-group .form-control {
