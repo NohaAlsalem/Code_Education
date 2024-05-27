@@ -27,7 +27,8 @@
               data-bs-toggle="modal"
               data-bs-target="#takeAttendance"
               ref="takeAttendanceModal"
-              @click="startAttendance(test.id)"            ></i>
+              @click="startAttendance(test.id)"
+            ></i>
 
             <i
               class="fas fa-trash-alt text-danger"

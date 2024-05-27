@@ -75,13 +75,15 @@ const routes = [
   },
   {
     name: "takeAttendance",
-    path: "/takeAttendance",
+    path: "/takeAttendance/:id",
+    props:true,
     component: TakeAttendance,
   },
   {
     name: "studentMarks",
-    path: "/studentmarks",
+    path: "/studentmarks/:id",
     component: StudentMarks,
+    props:true
   },
   {
     name: "testdetails",
