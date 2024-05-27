@@ -107,7 +107,7 @@
                   >Add tags for this problem</label
                 >
                 <div>
-                  <div class="btn-group mt-0 mb-0">
+                  <div class="btn-group">
                     <button
                       type="button"
                       class="btn btn-danger dropdown-toggle"
@@ -126,35 +126,51 @@
                       </li>
                     </ul>
                   </div>
+                  <button
+                    type="button"
+                    class="btn mb-4 button-add-tag"
+                    style="background: var(--MainColor); color: white"
+                    @click="addTag()"
+                  >
+                    Add tag
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            class="btn mb-3 mt-0"
-            style="background: var(--MainColor); color: white"
-            @click="addTag()"
-          >
-            Add tag
-          </button>
-          <p
-            v-for="tag in formData.tags"
+
+          <!-- <p
+            v-for="tag in selectedTags"
             :key="tag"
             class="ms-2"
             style="color: black"
           >
             {{ tag }}
-          </p>
+          </p> -->
+          <button
+            v-for="(tag, index) in selectedTags"
+            :key="index"
+            type="button"
+            class="custom-btn mb-3"
+            style="pointer-events: none"
+          >
+            {{ tag }}
+            <i
+              @click="deleteTag(index)"
+              class="fas fa-trash-alt text-danger"
+              data-bs-toggle="tooltip"
+              title="Delete"
+            ></i>
+          </button>
           <input
             v-model="formData.hint1"
-            class="form-control mb-3 ms-1 me-5"
+            class="form-control mb-3 ms-1 me-5 hint"
             id="exampleFormControlInput1"
             placeholder="Enter first hint"
           />
           <input
             v-model="formData.hint2"
-            class="form-control mb-3 ms-1"
+            class="form-control mb-3 ms-1 hint"
             id="exampleFormControlInput1"
             placeholder="Enter second hint"
           />
@@ -194,23 +210,22 @@
           ></AddManuallyTest>
           <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
         </div>
-      </div>
-
-      <div class="container col-md-12">
-        <router-link :to="{ name: 'confirmproblem' }" class="router-link">
-          <div class="row">
-            <div class="d-flex justify-content-center">
-              <button
-                type="button"
-                class="row btn btn-create mb-2 ms-4 mt-4"
-                style="background: var(--MainColor)"
-                @click="addProblem"
-              >
-                Create
-              </button>
+        <div class="container col-md-12">
+          <router-link :to="{ name: 'confirmproblem' }" class="router-link">
+            <div class="row">
+              <div class="d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="row btn btn-create mb-2 ms-4 mt-4"
+                  style="background: var(--MainColor)"
+                  @click="addProblem"
+                >
+                  Create
+                </button>
+              </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -239,7 +254,7 @@ export default {
       selectedDifficulty: "",
       selectedTag: "",
       tags: [],
-
+      selectedTags: [],
       newTag: null,
       formData: {
         name: "",
@@ -258,6 +273,9 @@ export default {
     this.getTags();
   },
   methods: {
+    deleteTag(index) {
+      this.selectedTags.splice(index, 1);
+    },
     navigateToGenerateTest() {
       this.selectedOption = "generateTest";
       console.log(this.selectedOption);
@@ -284,6 +302,8 @@ export default {
     submitTag(id, name) {
       this.newTag = id;
       this.selectedTag = name;
+      this.formData.tags.push(this.newTag);
+      this.selectedTags.push(this.selectedTag);
       console.log(this.selectedTag);
       console.log(this.newTag);
     },
@@ -350,9 +370,13 @@ html {
   margin-top: 6%;
   padding: 20px;
 }
+.button-add-tag {
+  margin-left: 10px;
+  margin-bottom: -10px;
+}
 .cont {
   background: white;
-  padding: 20px;
+  padding: 25px;
   border-radius: 10px;
   border: 1px solid var(--MainColor);
 }
@@ -408,5 +432,8 @@ label {
 input,
 textarea {
   border: 1px solid var(--MainColor);
+}
+.hint {
+  width: 50%;
 }
 </style>

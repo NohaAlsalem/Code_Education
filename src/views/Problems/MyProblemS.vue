@@ -130,12 +130,14 @@
                   class="router-link"
                   :to="{ name: 'problemdetails', params: { id: problem.id } }"
                 >
-                  {{ problem.id }}. {{ problem.title }}
+                  {{ problem.id }}. {{ problem.name }}
                 </router-link>
               </td>
 
               <td>
-                {{ problem.tags.name }}
+                <span class="badge bg-secondary me-1 ">
+                  {{ problem.tags ? problem.tags.name : '' }}
+                </span>
               </td>
               <td>
                 {{ problem.level }}
@@ -280,7 +282,7 @@ export default {
         tag: this.selectedTag,
       };
       axios
-        .post(BASE_URL + "problems/fillter", this.formData, {
+        .post(BASE_URL + "problems/bank/filter", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {

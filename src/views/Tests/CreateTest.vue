@@ -115,10 +115,25 @@ export default {
     };
   },
   mounted() {
+    this.loadFormData();
     console.log(this.problemId);
     console.log(this.$route.params.id);
   },
+  watch: {
+    formData: {
+      handler(newFormData) {
+        localStorage.setItem("formData", JSON.stringify(newFormData));
+      },
+      deep: true,
+    },
+  },
   methods: {
+    loadFormData() {
+      const savedFormData = localStorage.getItem("formData");
+      if (savedFormData) {
+        this.formData = JSON.parse(savedFormData);
+      }
+    },
     addTest() {
       const token = localStorage.getItem("token");
       console.log(this.formData);
@@ -128,7 +143,7 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          // this.mesaage = response.data;
+          // this.message = response.data;
           console.log(response.data.message);
         })
         .catch((error) => {

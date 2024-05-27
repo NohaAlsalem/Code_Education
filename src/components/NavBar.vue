@@ -376,7 +376,8 @@ export default {
 }
 
 .offcanvas.offcanvas-end {
-  background: var(--WhiteColor);
+  background: white;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .edit-icon {

@@ -447,7 +447,7 @@
           <button
             type="button"
             class="btn mb-3"
-            style="background: var(--GreenColor); color: white"
+            style="background: var(--MainColor); color: white"
             @click="addTestCase"
           >
             Add test case
@@ -455,7 +455,7 @@
           <button
             type="button"
             class="btn mb-3"
-            style="background: var(--GreenColor); color: white"
+            style="background: var(--MainColor); color: white"
             @click="GenerateTest"
           >
             generate tests
@@ -605,7 +605,7 @@ export default {
         })
         .then((response) => {
           // this.mesaage = response.data;
-          console.log(response.data);
+          console.log(response);
         })
         .catch((error) => {
           console.log(error.message);
