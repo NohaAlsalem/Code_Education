@@ -1,6 +1,7 @@
 <template>
   <div class="container text-center col-md-12 screen">
-    <table class="table">
+    <h1 class="page-title">Student Marks Overview</h1>
+    <table class="table table-striped table-hover">
       <thead>
         <tr class="colored-header">
           <th scope="col">#</th>
@@ -8,8 +9,6 @@
           <th scope="col">Presence (5)</th>
           <th scope="col">Exam mark (15)</th>
           <th scope="col">Tests(10)</th>
-          <th scope="col">Total mark</th>
-          <th scope="col">Operation</th>
         </tr>
       </thead>
       <tbody>
@@ -19,15 +18,11 @@
           <td>{{ student.pivot.attendance_marks }}</td>
           <td>{{ student.pivot.assessment_marks }}</td>
           <td>{{ student.pivot.mark }}</td>
-          <td>
-            <button type="button" class="btn btn-success">Edit</button>
-          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import { BASE_URL } from "@/assets/config";
@@ -45,37 +40,66 @@ export default {
   methods: {
     getStudentsWithMarks() {
       const token = localStorage.getItem("token");
-      console.log("this is from students " + token);
       axios
         .get(
-          BASE_URL + "categories/" + this.$route.params.id + "/marksStudents",
+          `${BASE_URL}categories/${this.$route.params.id}/marksStudents`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         )
         .then((response) => {
-          console.log("this is students");
-          console.log(response.data);
-           this.students = response.data;
-           console.log(this.students)
-          // this.students = response.data.data.map((student) => {
-          //   return {
-          //     ...student,
-          //     checked: false, // Add a checked property
-          //   };
-          // });
+          this.students = response.data;
         })
         .catch((error) => {
           console.log(error.message);
-          // this.errMessage = "error retrieving data";
         });
     },
   },
 };
 </script>
-
 <style scoped>
 .screen {
-  margin-top: 8%;
+  margin-top: 5%;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--LightGreen);
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.colored-header {
+  background-color: var(--MainColor);
+  color: var(--MainColor);
+  font-size: 1.1rem;
+}
+
+.table th,
+.table td {
+  padding: 15px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table th {
+  border-top: none;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
 }
 </style>

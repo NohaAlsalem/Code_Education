@@ -151,15 +151,15 @@
             v-for="(tag, index) in selectedTags"
             :key="index"
             type="button"
-            class="custom-btn mb-3"
-            style="pointer-events: none"
+            class="custom-btn me-2 mb-4 mt-0 tag-btn"
           >
             {{ tag }}
             <i
-              @click="deleteTag(index)"
-              class="fas fa-trash-alt text-danger"
+              @click.stop="deleteTag(index)"
+              class="fas fa-times text-danger ms-2"
               data-bs-toggle="tooltip"
               title="Delete"
+              style="cursor: pointer"
             ></i>
           </button>
           <input
@@ -275,6 +275,7 @@ export default {
   methods: {
     deleteTag(index) {
       this.selectedTags.splice(index, 1);
+      this.formData.tags.splice(index, 1); // Also remove from formData.tags
     },
     navigateToGenerateTest() {
       this.selectedOption = "generateTest";
