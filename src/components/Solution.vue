@@ -1,43 +1,34 @@
 <template>
   <div class="card-body">
     <p class="card-text" ref="codeContainer">
-      <pre><code class="cpp">{{ solve }}</code></pre>
+      <pre><code>{{ solve }}</code></pre>
     </p>
   </div>
 </template>
 
 <script>
 import hljs from 'highlight.js';
-import 'highlight.js/styles/default.css'; // You can choose a different style if you prefer
+import 'highlight.js/styles/default.css'; // Ensure this path is correct
 
 export default {
-  props: ['solve', 'language'],
-  computed: {
-    languageClass() {
-      return this.language;
-    }
-  },
+  props: ['solve'],
   watch: {
     solve() {
-      this.$nextTick(() => {
-        this.highlightCode();
-      });
-    },
-    language() {
-      this.$nextTick(() => {
-        this.highlightCode();
-      });
+      this.highlightCode();
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.highlightCode();
-    });
+    this.highlightCode();
   },
   methods: {
     highlightCode() {
-      const codeBlock = this.$refs.codeContainer.querySelector('code');
-      hljs.highlightElement(codeBlock);
+      this.$nextTick(() => {
+        const codeBlock = this.$refs.codeContainer.querySelector('code');
+        if (codeBlock) {
+          const result = hljs.highlightAuto(codeBlock.textContent);
+          codeBlock.innerHTML = result.value;
+        }
+      });
     }
   }
 };
@@ -48,4 +39,3 @@ export default {
   height: 100%;
 }
 </style>
-//192.168.95.243

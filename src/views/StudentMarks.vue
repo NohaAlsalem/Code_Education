@@ -6,9 +6,18 @@
         <tr class="colored-header">
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Presence (5)</th>
-          <th scope="col">Exam mark (15)</th>
-          <th scope="col">Tests(10)</th>
+          <th scope="col">
+            Presence ({{
+              distributedMark ? distributedMark.mark_of_commings : ""
+            }}
+            )
+          </th>
+
+          <th scope="col">
+            Tests ({{ distributedMark ? distributedMark.mark_of_ratings : "" }})
+          </th>
+          <th scope="col">Exam mark ({{ exam_mark ? exam_mark : "" }})</th>
+          <th scope="col">Total mark</th>
         </tr>
       </thead>
       <tbody>
@@ -18,11 +27,13 @@
           <td>{{ student.pivot.attendance_marks }}</td>
           <td>{{ student.pivot.assessment_marks }}</td>
           <td>{{ student.pivot.mark }}</td>
+          <td>30</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 import { BASE_URL } from "@/assets/config";
@@ -32,21 +43,36 @@ export default {
   data() {
     return {
       students: [],
+      distributedMark: null,
+      exam_mark: null,
     };
   },
   mounted() {
     this.getStudentsWithMarks();
+    this.getDistributedMarks();
   },
   methods: {
+    getDistributedMarks() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${BASE_URL}categories/${this.$route.params.id}/details`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.distributedMark = response.data.category;
+          this.exam_mark = response.data.exam_mark;
+          console.log(this.distributedMark);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
     getStudentsWithMarks() {
       const token = localStorage.getItem("token");
       axios
-        .get(
-          `${BASE_URL}categories/${this.$route.params.id}/marksStudents`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
+        .get(`${BASE_URL}categories/${this.$route.params.id}/marksStudents`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response) => {
           this.students = response.data;
         })
@@ -57,6 +83,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .screen {
   margin-top: 5%;
