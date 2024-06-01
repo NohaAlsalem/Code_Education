@@ -1,7 +1,7 @@
 <template>
   <div class="card-body">
     <p class="card-text" ref="codeContainer">
-      <pre><code :class="languageClass">{{ solve }}</code></pre>
+      <pre><code class="cpp">{{ solve }}</code></pre>
     </p>
   </div>
 </template>

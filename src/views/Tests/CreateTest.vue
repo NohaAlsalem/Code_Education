@@ -14,10 +14,10 @@
             type="text"
             class="form-control"
             v-model="formData.name"
-            required
+            required="true"
           />
         </div>
-        <div class="row mt-0">
+        <!-- <div class="row mt-0">
           <div class="col-8">
             <div class="mt-4 p-0">
               <p>Enter mark</p>
@@ -31,7 +31,7 @@
             v-model="formData.mark"
             required
           />
-        </div>
+        </div> -->
         <div class="container mt-4 p-0">
           <p>Add problem to test:</p>
         </div>
@@ -51,28 +51,18 @@
             <table class="table">
               <thead>
                 <tr class="colored-header">
-                  <th scope="col">#</th>
                   <th scope="col">Title</th>
-                  <th scope="col">Language</th>
+                  <th scope="col">Level</th>
                   <th scope="col">Difficulty</th>
-                  <th scope="col">Tags</th>
+                  <th scope="col">Tag</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">{{ problemId }}</th>
-                  <td>{{ title }}</td>
-                  <td>{{ Language }}</td>
-                  <td>{{ Difficulty }}</td>
-                  <td>
-                    <button
-                      type="button"
-                      class="custom-btn"
-                      style="pointer-events: none"
-                    >
-                      {{ Tags }}
-                    </button>
-                  </td>
+                  <th scope="row">{{ problemId }}.{{ title }}</th>
+                  <td>{{ level }}</td>
+                  <td>{{ difficulty }}</td>
+                  <td>{{ tags }}</td>
                 </tr>
               </tbody>
             </table>
@@ -92,30 +82,40 @@
       </div>
     </div>
   </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
 import { BASE_URL } from "@/assets/config";
 import axios from "axios";
+import Alert from "../../components/Alert.vue";
 
 export default {
   components: {
     NavBar,
+    Alert,
   },
-  props: ["problemId", "title", "Language", "Difficulty", "Tags", "id"],
+  props: ["problemId", "title", "level", "difficulty", "tags", "id"],
   data() {
     return {
+      alertType: "",
+      alertMessage: "",
       formData: {
         problem_id: this.problemId,
         category_id: this.$route.params.id,
         name: "",
-        mark: 0,
       },
     };
   },
   mounted() {
     this.loadFormData();
+    console.log("Problem ID:", this.problemId);
+    console.log("Title:", this.title);
+    console.log("Level:", this.level);
+    console.log("Difficulty:", this.difficulty);
+    console.log("Tags:", this.tags);
+    console.log(this.$route.params.id);
   },
   methods: {
     loadFormData() {
@@ -139,14 +139,23 @@ export default {
     },
     addTest() {
       const token = localStorage.getItem("token");
+      console.log(this.formData);
+      console.log(this.problemId);
+      this.formData.problem_id = this.problemId;
       axios
         .post(BASE_URL + "assessment/create", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
+         
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
           console.log(response.data.message);
+          this.clearFormData();
         })
         .catch((error) => {
+          this.alertType = "error";
+          this.alertMessage = "Error deleting problem: " + error.message;
           console.log(error.message);
           this.error = error;
         });

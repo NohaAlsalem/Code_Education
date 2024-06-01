@@ -97,6 +97,7 @@
       </div>
     </div>
   </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
 </template>
 
 <script>
@@ -104,13 +105,16 @@ import Description from "../../components/Description.vue";
 import Solution from "../../components/Solution.vue";
 import { BASE_URL } from "@/assets/config";
 import axios from "axios";
+import Alert from "../../components/Alert.vue";
 
 export default {
-  components: { Description, Solution },
+  components: { Description, Solution, Alert },
   props: ["id"],
   data() {
     return {
       selectedButton: 1,
+      alertType: "",
+      alertMessage: "",
       description: true,
       solution: false,
       problem: "",
@@ -153,17 +157,21 @@ export default {
       });
 
       axios
-        .post(`${BASE_URL}categories/${id}/attendance`, formData, {
+        .post(`${BASE_URL}assessment/stop/${id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
+          this.alertType = "success";
+          this.alertMessage = response.data.mesage;
           console.log("Attendance saved successfully", response.data);
           alert("Attendance saved successfully");
         })
         .catch((error) => {
+          this.alertType = "error";
+          this.alertMessage = "Something occuring error ";
           console.error("Error saving attendance", error);
           alert("Error saving attendance");
         });

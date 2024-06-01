@@ -17,7 +17,7 @@
           <div class="card-body row">
             <div class="col-md-4 image-container">
               <img
-                src="../assets/images/class.jpg"
+                src="../../assets/images/class.jpg"
                 alt="Class Image"
                 class="class-image"
               />

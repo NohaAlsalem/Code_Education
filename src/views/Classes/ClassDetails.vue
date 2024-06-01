@@ -21,7 +21,7 @@
             >
               <img
                 class="card-img-top"
-                src="../assets/images/img1.jpg"
+                src="../../assets/images/img1.jpg"
                 alt="Image"
               />
               <div class="card-body">
@@ -43,7 +43,7 @@
             >
               <img
                 class="card-img-top"
-                src="../assets/images/images (4).jpg"
+                src="../../assets/images/images (4).jpg"
                 alt="Image"
               />
               <div class="card-body">
@@ -62,7 +62,7 @@
             >
               <img
                 class="card-img-top"
-                src="../assets/images/img3.jpg"
+                src="../../assets/images/img3.jpg"
                 alt="Image"
               />
               <div class="card-body">
@@ -80,7 +80,7 @@
             >
               <img
                 class="card-img-top"
-                src="../assets/images/img2.jpg"
+                src="../../assets/images/img2.jpg"
                 alt="Image"
               />
               <div class="card-body">
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import SubjectAndClass from "../components/SubjectAndClass.vue";
+import SubjectAndClass from "../../components/SubjectAndClass.vue";
 import NavBar from "@/components/NavBar.vue";
 
 export default {

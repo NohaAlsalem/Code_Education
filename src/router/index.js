@@ -3,7 +3,7 @@ import TopBar from "@/components/TopBar.vue";
 import NavBar from "@/components/NavBar.vue";
 import splashSc from "../views/splashSc.vue";
 import ProblemS from "../views/Problems/MyProblemS.vue";
-import Classes from "../views/Classes.vue";
+import Classes from "../views/Classes/Classes.vue";
 import logIn from "../views/logIn.vue";
 import ShowTests from "@/views/Tests/ShowTests.vue";
 import TakeAttendance from "@/views/TakeAttendance.vue";
@@ -13,15 +13,15 @@ import ModifyGrades from "@/views/ModifyGrades.vue";
 import CreateTest from "../views/Tests/CreateTest.vue";
 import AddManuallyTest from "../components/AddManuallyTest.vue";
 import GenerateTest from "../components/GenerateTest.vue";
-import ClassDetails from "@/views/ClassDetails.vue";
+import ClassDetails from "@/views/Classes/ClassDetails.vue";
 import CreateProblem from "../views/Problems/CreateProblem.vue";
 import problemsToaddTotest from "../components/ProblemsToAddTest.vue";
 import ProblemDetails from "../views/Problems/ProblemDetails.vue";
 import ConfirmCreateTest from "../views/Problems/ConfirmCreateProblem.vue";
 import ConfirmCreateProblem from "../views/Problems/ConfirmCreateProblem.vue";
-import Loading from "../views/Loading.vue"
-import SideBar from "../components/SideBar.vue"
-import Test from "../components/Test.vue"
+import Loading from "../views/Loading.vue";
+import ClassesOfSubject from "../views/Exams/ClassesOfSubject.vue";
+import StudentsInCategoryofSubject from "../views/Exams/StudentsInCategoryofSubject.vue";
 const routes = [
   {
     name: "topbar",
@@ -68,28 +68,40 @@ const routes = [
     component: Classes,
   },
   {
+    name: "classesOfSubject",
+    path: "/classesOfSubject/:subjectId/:subjectName",
+    component: ClassesOfSubject,
+    props: true,
+  },
+  {
+    name: "StudentsInCategoryofSubject",
+    path: "/StudentsInCategoryofSubject/:category_id",
+    component: StudentsInCategoryofSubject,
+    props: true,
+  },
+  {
     name: "showtests",
     path: "/showtests/:id",
     component: ShowTests,
-    props:true
+    props: true,
   },
   {
     name: "takeAttendance",
     path: "/takeAttendance/:id",
-    props:true,
+    props: true,
     component: TakeAttendance,
   },
   {
     name: "studentMarks",
     path: "/studentmarks/:id",
     component: StudentMarks,
-    props:true
+    props: true,
   },
   {
     name: "testdetails",
     path: "/testdetails/:id",
     component: TestDetails,
-    props: true
+    props: true,
   },
   {
     name: "createproblem",
@@ -103,9 +115,9 @@ const routes = [
     props: (route) => ({
       problemId: route.query.problemId,
       title: route.query.title,
-      Language: route.query.Language,
-      Difficulty: route.query.Difficulty,
-      Tags: route.query.Tags,
+      level: route.query.level,
+      difficulty: route.query.difficulty,
+      tags: route.query.tags
     }),
   },
   { name: "modifygrades", path: "/modifygrades", component: ModifyGrades },
@@ -123,19 +135,19 @@ const routes = [
     name: "classdetails",
     path: "/classdetails/:id/:class_name/:class_subject",
     component: ClassDetails,
-    props: true
+    props: true,
   },
   {
     name: "problemsToaddTotest",
     path: "/problemsToaddTotest/:id",
     component: problemsToaddTotest,
-    props:true
+    props: true,
   },
   {
     name: "problemdetails",
     path: "/problemdetails/:id",
     component: ProblemDetails,
-    props:true
+    props: true,
   },
   {
     name: "confirmproblem",

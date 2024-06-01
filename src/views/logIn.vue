@@ -66,10 +66,13 @@
 import TopBar from "@/components/TopBar.vue";
 import codeEdu from "@/components/codeEdu.vue";
 import axios from "axios";
+import Alert from "../components/Alert.vue";
+
 export default {
   components: {
     TopBar,
     codeEdu,
+    Alert,
   },
   data() {
     return {
@@ -78,6 +81,8 @@ export default {
       loading: false,
       searchText: "",
       token: "",
+      alertType: "",
+      alertMessage: "",
       formData: {
         email: "",
         password: "",
@@ -90,6 +95,8 @@ export default {
       axios
         .post("http://127.0.0.1:8000/api/login", this.formData)
         .then((response) => {
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
           this.$router.push("/problems");
           this.token = response.data.token;
           localStorage.setItem("token", this.token);
@@ -97,6 +104,8 @@ export default {
           console.log(this.token + "lknkj");
         })
         .catch((error) => {
+          this.alertType = "error";
+          this.alertMessage = "Error deleting problem: " + error.message;
           console.log(error);
           this.error = error;
         })
@@ -117,7 +126,7 @@ export default {
   overflow-x: hidden; /* Prevent horizontal scrolling */
   height: 100vh;
 }
-.logo{
+.logo {
   height: 100px;
   width: 100px;
   margin-top: 20px;
@@ -136,15 +145,14 @@ a {
 .txt p {
   color: white;
 }
-.load{
+.load {
   color: white;
   font-weight: normal;
-
 }
 .txt .txt-h p {
   color: var(--GreenColor);
 }
-.btn.btn_uy{
+.btn.btn_uy {
   border: 1px solid var(--MainColor);
   border-radius: 20px;
   margin-top: 20px;

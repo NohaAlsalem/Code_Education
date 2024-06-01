@@ -2,7 +2,6 @@
   <div>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light">
       <div class="container-fluid">
-        <!-- <a class="navbar-brand" href="#">Navbar</a> -->
         <div class="d-flex">
           <img
             src="../assets/images/logoo.png"
@@ -40,7 +39,6 @@
                 >
                   My problems
                 </h5>
-                <!-- <a class="nav-link active" aria-current="page" href="#">Problems</a> -->
               </li>
             </router-link>
 
@@ -55,7 +53,10 @@
                     active:
                       $route.path === '/classes' ||
                       $route.path.startsWith('/showtests') ||
-                      /^\/classdetails\//.test($route.path),
+                      /^\/classdetails\//.test($route.path)||
+                      $route.path.startsWith('/problemsToaddTotest')||
+                      $route.path.startsWith('/takeAttendance')
+                      
                   }"
                 >
                   Classes
@@ -77,7 +78,39 @@
                 </h5>
               </li>
             </router-link>
+
+            <div class="dropdown">
+              <button
+                class="nav-link p-2 p-lg-3 btn dropdown-toggle"
+                :class="{ active: $route.path.startsWith('/classesOfSubject') }"
+                type="button"
+                id="dropdownSubjects"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ selectedSubject ? selectedSubject.name : "Exams" }}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownSubjects">
+                <li v-for="subject in subjects" :key="subject.id">
+                  <router-link
+                    :to="{
+                      name: 'classesOfSubject',
+                      params: {
+                        subjectId: subject.id,
+                        subjectName: subject.name,
+                      },
+                    }"
+                    class="dropdown-item"
+                    @click="selectSubject(subject)"
+                    style="text-decoration: none; color: inherit"
+                  >
+                    {{ subject.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
           </ul>
+
           <font-awesome-icon
             icon="fa-solid fa-user"
             id="toggleDrawerIcon"
@@ -225,15 +258,20 @@
 import codeEdu from "@/components/codeEdu.vue";
 import { BASE_URL } from "@/assets/config";
 import axios from "axios";
+
 export default {
-  components: {
-    codeEdu,
-  },
+  components: { codeEdu },
+
   data() {
     return {
+      subjects: [],
+      selectedSubject: null,
       isDrawerOpen: false,
       editMode: false,
-      info: "",
+      info: {
+        name: "",
+        email: "",
+      },
       errMessage: "",
       formData: {
         old_password: "",
@@ -243,85 +281,66 @@ export default {
   },
   mounted() {
     this.getMyProfile();
+    this.fetchSubjects();
   },
   methods: {
-    edit() {
-      let formDataEdit = new FormData();
-      formDataEdit.append("name", this.info.name);
-      formDataEdit.append("email", this.info.email);
-      const token = localStorage.getItem("token");
-      console.log(formDataEdit); // Corrected here
-      console.log(token);
-      axios
-        .post(BASE_URL + "profile/", formDataEdit, {
-          // Corrected here
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          console.log(response.data.data.user_id);
-          // Update the info object with the edited values
-          this.info.name = formDataEdit.get("name");
-          this.info.email = formDataEdit.get("email");
-          // Toggle off edit mode
-          this.toggleEditMode();
-        })
-        .catch((error) => {
-          console.log(error.message);
-          this.error = error;
-        });
-    },
-
-    changePassword() {
-      const token = localStorage.getItem("token");
-      console.log(this.formData);
-      console.log(token);
-      axios
-        .post(BASE_URL + "profile/change-password", this.formData, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          // this.mesaage = response.data;
-          console.log(response.data.message);
-          this.closePasswordModal();
-          this.formData.new_password = "";
-          this.formData.old_password = "";
-        })
-        .catch((error) => {
-          console.log(error.message);
-          this.error = error;
-        });
-    },
-    toggleDrawer() {
-      this.isDrawerOpen = !this.isDrawerOpen;
-    },
     closeDrawer(event) {
       event.stopPropagation();
       this.isDrawerOpen = false;
       this.getMyProfile();
     },
-    toggleEditMode() {
-      this.editMode = !this.editMode;
+    selectSubject(subject) {
+      this.selectedSubject = subject;
+      // this.$router.push({
+      //   name: "classesOfSubject",
+      //   params: { selectedSubject: subject },
+      // });
     },
-    getMyProfile() {
+    fetchSubjects() {
       const token = localStorage.getItem("token");
-      console.log(token);
-      console.log(BASE_URL);
       axios
-        .get(BASE_URL + "profile/", {
+        .get(`${BASE_URL}subjects`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          console.log(response.data);
-          this.info = response.data;
-          console.log(this.info);
+          this.subjects = response.data.subjects;
         })
         .catch((error) => {
-          console.log(error);
-          this.errMessage = "error retrieving data";
+          this.errMessage = "Error retrieving data";
+        });
+    },
+    toggleDrawer() {
+      this.isDrawerOpen = !this.isDrawerOpen;
+    },
+    getMyProfile() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${BASE_URL}profile/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.info = response.data;
+        })
+        .catch((error) => {
+          this.errMessage = "Error retrieving data";
+        });
+    },
+    changePassword() {
+      const token = localStorage.getItem("token");
+      axios
+        .post(`${BASE_URL}profile/change-password`, this.formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          this.formData.new_password = "";
+          this.formData.old_password = "";
+          this.closePasswordModal();
+        })
+        .catch((error) => {
+          this.error = error;
         });
     },
     closePasswordModal() {
-      // Close the password modal using vanilla JavaScript
       const modal = document.getElementById("passwordModal");
       modal.classList.remove("show");
       modal.setAttribute("aria-hidden", "true");
@@ -332,6 +351,7 @@ export default {
   },
 };
 </script>
+
 <style>
 :root {
   --darkwhite: #caa8f5;
@@ -351,13 +371,13 @@ export default {
   position: sticky;
   top: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 0.5rem 1rem; /* Reduce the padding to decrease height */
+  padding: 0.5rem 1rem;
 }
 
 .nav-link {
   color: var(--MainColor);
   font-size: 1.25rem;
-  padding: 0.25rem 0.5rem; /* Reduce padding to decrease height */
+  padding: 0.25rem 0.5rem;
 }
 
 .navbar .navbar-nav .nav-link:focus,
@@ -410,5 +430,46 @@ export default {
 
 .navbar .navbar-toggler[aria-expanded="true"] {
   border-color: var(--MainColor);
+}
+
+.dropdown-submenu {
+  position: relative;
+  color: var(--MainColor);
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: 0;
+  border-radius: 0.25rem;
+  color: var(--MainColor);
+  font-weight: bold;
+}
+
+/* Additional or overriding styles */
+.navbar .dropdown-menu {
+  background-color: white;
+}
+
+.navbar .dropdown-item {
+  color: var(--MainColor);
+}
+
+.navbar .dropdown-item:hover {
+  background-color: var(--GrayColor);
+  color: var(--HoverTextColor);
+}
+
+.dropdown-submenu > .dropdown-menu {
+  left: 100%;
+  top: 0;
+  margin-top: -6px;
+  margin-left: 0;
+  border-radius: 0.25rem;
+}
+
+.nav-link.active {
+  font-weight: bold;
 }
 </style>

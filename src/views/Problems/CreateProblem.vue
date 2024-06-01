@@ -100,7 +100,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row mb-0">
             <div class="container col-md-12">
               <div class="form-group col-md-4">
                 <label for="exampleFormControlInput1"
@@ -126,42 +126,38 @@
                       </li>
                     </ul>
                   </div>
-                  <button
-                    type="button"
-                    class="btn mb-4 button-add-tag"
-                    style="background: var(--MainColor); color: white"
-                    @click="addTag()"
-                  >
-                    Add tag
-                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- <p
-            v-for="tag in selectedTags"
-            :key="tag"
-            class="ms-2"
-            style="color: black"
-          >
-            {{ tag }}
-          </p> -->
-          <button
-            v-for="(tag, index) in selectedTags"
-            :key="index"
-            type="button"
-            class="custom-btn me-2 mb-4 mt-0 tag-btn"
-          >
-            {{ tag }}
-            <i
-              @click.stop="deleteTag(index)"
-              class="fas fa-times text-danger ms-2"
-              data-bs-toggle="tooltip"
-              title="Delete"
-              style="cursor: pointer"
-            ></i>
-          </button>
+          <div v-if="selectedTags">
+            <button
+              v-for="(tag, index) in selectedTags"
+              :key="index"
+              type="button"
+              class="custom-btn me-2 mt-0 tag-btn"
+            >
+              {{ tag }}
+              <i
+                @click.stop="deleteTag(index)"
+                class="fas fa-times text-danger ms-2"
+                data-bs-toggle="tooltip"
+                title="Delete"
+                style="cursor: pointer"
+              ></i>
+            </button>
+          </div>
+       
+            <p
+           
+              class="btn text-add-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#addTagModal"
+            >
+              Add new tag
+          </p>
+      
           <input
             v-model="formData.hint1"
             class="form-control mb-3 ms-1 me-5 hint"
@@ -229,6 +225,50 @@
       </div>
     </div>
   </div>
+  <div
+    class="modal fade"
+    id="addTagModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="passwordModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="background-color: var(--WhiteColor)">
+          <div class="form-group">
+            <label for="addTags">Add your tag:</label>
+            <input
+              v-model="formDataTag.name"
+              id="addTags"
+              class="form-control"
+              type="text"
+              placeholder="Enter your tag"
+            />
+          </div>
+        </div>
+        <div class="modal-footer" style="background-color: var(--WhiteColor)">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn"
+            style="background: var(--MainColor); color: white"
+            data-bs-dismiss="modal"
+            @click="addTag"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
 </template>
 
 <script>
@@ -238,9 +278,11 @@ import AddManuallyTest from "@/components/AddManuallyTest.vue";
 import NavBar from "@/components/NavBar.vue";
 import Generate2 from "@/components/Generate2.vue";
 import axios from "axios";
+import Alert from "../../components/Alert.vue";
 import { BASE_URL } from "@/assets/config";
 export default {
   components: {
+    Alert,
     TopBar,
     codeEdu,
     AddManuallyTest,
@@ -255,7 +297,12 @@ export default {
       selectedTag: "",
       tags: [],
       selectedTags: [],
+      alertType: "",
+      alertMessage: "",
       newTag: null,
+      formDataTag: {
+        name: "",
+      },
       formData: {
         name: "",
         teacher_code_solve: "",
@@ -309,11 +356,25 @@ export default {
       console.log(this.newTag);
     },
     addTag() {
-      if (this.newTag !== null) {
-        this.formData.tags.push(this.newTag);
-        this.newTag = "";
-        console.log("Tags:", this.formData.tags);
-      }
+      const token = localStorage.getItem("token");
+
+      console.log(token);
+      axios
+        .post(BASE_URL + "problems/add-tag", this.formDataTag, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          // this.mesaage = response.data;
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.alertType = "error";
+          this.alertMessage = "Error deleting problem: " + error.message;
+          this.error = error;
+        });
     },
     handleTestsUpdated(tests) {
       this.formData.test_cases = tests; // Update the received tests list
@@ -392,6 +453,9 @@ html {
   background: var(--LightGreen);
   border: none;
   color: var(--MainColor);
+}
+.text-add-btn {
+  color: blue;
 }
 .btn-create {
   background: var(--MainColor);

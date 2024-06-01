@@ -1,51 +1,58 @@
 <template>
   <div class="screen">
-    <div class="container text-center col-md-12" style="margin-bottom: 10px">
-      <div class="card text-start">
-        <div class="card-header">
-          <button
-            type="button"
-            class="btn"
-            :class="{ 'custom-button': selectedButton === 1 }"
-            @click="selectButton(1)"
+    <div class="container col-md-12 text-center">
+      <div class="row d-flex justify-content-between">
+        <div class="col-md-5 card text-start firt">
+          <div class="card-header">
+            <button
+              type="button"
+              class="btn"
+              :class="{ 'custom-button': selectedButton === 1 }"
+              @click="selectButton(1)"
+            >
+              Description
+            </button>
+
+            |
+            <button
+              type="button"
+              class="btn"
+              :class="{ 'custom-button': selectedButton === 3 }"
+              @click="selectButton(3)"
+            >
+              Tests
+            </button>
+          </div>
+          <Description
+            v-if="description"
+            :name="problem.name"
+            :diffculty="problem.diffculty"
+            :description="problem.description"
+            :tags="problem.tags"
+            :test_case="problem.test_case"
           >
-            Description
-          </button>
-          |
-          <button
-            type="button"
-            class="btn"
-            :class="{ 'custom-button': selectedButton === 2 }"
-            @click="selectButton(2)"
-          >
-            Solution
-          </button>
-          |
-          <button
-            type="button"
-            class="btn"
-            :class="{ 'custom-button': selectedButton === 3 }"
-            @click="selectButton(3)"
-          >
-            Tests
-          </button>
+          </Description>
+
+          <Tests :test_case="problem.test_case" v-else></Tests>
         </div>
-        <Description
-          v-if="description"
-          :name="problem.name"
-          :diffculty="problem.diffculty"
-          :description="problem.description"
-          :tags="problem.tags"
-          :test_case="problem.test_case"
-        >
-        </Description>
-        <Solution
-          v-else-if="solution"
-          :solve="problem.solve"
-          :hint1="problem.hint1"
-          :hint2="problem.hint2"
-        ></Solution>
-        <Tests :test_case="problem.test_case" v-else></Tests>
+        <div class="col-md-6 card text-start second">
+          <div class="card-header">
+            <button
+              type="button"
+              class="btn"
+              :class="{ 'custom-button': selectedButton === 2 }"
+              @click="selectButton(2)"
+            >
+              Solution
+            </button>
+          </div>
+
+          <Solution
+            :solve="problem.solve"
+            :hint1="problem.hint1"
+            :hint2="problem.hint2"
+          ></Solution>
+        </div>
       </div>
     </div>
   </div>
@@ -114,6 +121,16 @@ export default {
 </script>
 
 <style scoped>
+.card.text-start.firt {
+  height: 90vh;
+  margin-right: 48px;
+  margin-top: 5px;
+}
+.card.text-start.second {
+  height: 90vh;
+  /* margin-right: 3px; */
+  margin-top: 5px;
+}
 .btn {
   border: none;
 }
@@ -123,13 +140,10 @@ export default {
   font-weight: bold;
 }
 .screen {
-  background: var(--WhiteColor);
+  background: var(--darkwhite);
   height: 100vh;
   margin: auto;
   display: flex;
   align-items: center;
-}
-.card.text-start {
-  margin: auto;
 }
 </style>

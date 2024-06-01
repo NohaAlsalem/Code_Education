@@ -135,8 +135,8 @@
               </td>
 
               <td>
-                <span class="badge bg-secondary me-1 ">
-                  {{ problem.tags ? problem.tags.name : '' }}
+                <span class="badge bg-secondary me-1">
+                  {{ problem.tags ? problem.tags.name : "" }}
                 </span>
               </td>
               <td>
@@ -239,6 +239,7 @@ export default {
   },
   data() {
     return {
+      selectedSubject: null,
       successMessage: "",
       errorMessage: "",
       alertType: "",
@@ -269,6 +270,9 @@ export default {
     this.getMyProblems();
   },
   methods: {
+    updateSelectedSubject(subject) {
+      this.selectedSubject = subject;
+    },
     onSearchInput(event) {
       this.searchText = event.target.value;
       this.Filter();

@@ -93,14 +93,14 @@
             </thead>
             <tbody>
               <tr v-for="(student, index) in students" :key="index">
-                <td scope="row">{{ student.student_id }}</td>
-                <td>{{ student.student_name }}</td>
+                <td scope="row">{{ student.id }}</td>
+                <td>{{ student.name }}</td>
                 <td>
                   <div>
                     <input
                       class="form-check-input custom-checkbox"
                       type="checkbox"
-                      :id="'checkboxNoLabel_' + student.student_id"
+                      :id="'checkboxNoLabel_' + student.id"
                       v-model="student.checked"
                       aria-label="..."
                     />
@@ -203,7 +203,8 @@ export default {
         })
         .then((response) => {
           console.log("this is studnets");
-          this.students = response.data.data.map((student) => {
+          console.log(response.data);
+          this.students = response.data.map((student) => {
             return {
               ...student,
               checked: false, // Add a checked property
@@ -280,7 +281,8 @@ export default {
     saveAttendance() {
       const selectedStudents = this.students
         .filter((student) => student.checked)
-        .map((student) => student.student_id);
+        .map((student) => student.id);
+        console.log(this.selectedStudents);
       // selectedStudents now contains the IDs of checked students
 
       // Make API POST request here, sending selectedStudents as form data
@@ -288,7 +290,7 @@ export default {
       selectedStudents.forEach((studentId) => {
         formData.append("students[]", studentId);
       });
-
+      console.log(this.selectedStudents);
       // Example of POST request
       const token = localStorage.getItem("token");
       axios

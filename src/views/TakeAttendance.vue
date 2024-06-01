@@ -12,10 +12,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="student in students" :key="student.student_id">
-            <th scope="row">{{ student.student_id }}</th>
-            <td>{{ student.student_name }}</td>
-            <td>{{ student.tests }}</td>
+          <tr v-for="student in students" :key="student.id">
+            <th scope="row">{{ student.id }}</th>
+            <td>{{ student.name }}</td>
+            <td>{{ student.phone_number }}</td>
             <td>
               <div>
                 <input
@@ -73,8 +73,8 @@ export default {
         })
         .then((response) => {
           console.log("this is students");
-          console.log(response.data.data);
-          this.students = response.data.data.map((student) => {
+          console.log(response.data);
+          this.students = response.data.map((student) => {
             return {
               ...student,
               checked: false, // Add a checked property
@@ -88,6 +88,7 @@ export default {
     },
     saveAttendance() {
       const formData = new FormData();
+      console.log();
       this.students.forEach((student, index) => {
         if (student.checked) {
           formData.append(`students[${index}][id]`, student.student_id);
@@ -107,7 +108,7 @@ export default {
         .then((response) => {
           console.log("success" + response.data.message);
           this.alertType = "success";
-          this.alertMessage = response.data.message;
+          this.alertMessage = response.data.mesage;
 
           this.students = this.students.map((student) => {
             return {
@@ -117,7 +118,7 @@ export default {
           });
         })
         .catch((error) => {
-          console.log(error.message);
+          console.log(error.mesage);
           this.alertType = "error";
           this.alertMessage = "Something error during check";
         });
