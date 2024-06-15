@@ -598,14 +598,15 @@ export default {
       console.log(token);
       this.setModel();
       console.log(this.formData);
-      console.log(this.model);
+      console.log("model"+this.model);
+      console.log("model"+this.formData.model);
       axios
         .post(BASE_URL + "problems/generate-test-cases", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           // this.mesaage = response.data;
-          console.log(response);
+          console.log("this is response of generate"+response);
         })
         .catch((error) => {
           console.log(error.message);
@@ -613,14 +614,15 @@ export default {
         });
     },
     setModel() {
-      let modelString = `${this.testNumber}\n`;
+      let modelString = `${this.testNumber} `;
 
       this.tests.forEach((test) => {
-        modelString += `${test.type} ${test.minimumValue} ${test.maximumValue} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue}\n`;
+        modelString += ` ${test.type} ${test.minimumValue} ${test.maximumValue} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue} `;
       });
 
       modelString += "EXIT";
       this.model = modelString;
+      this.formData.model=modelString;
     },
     addTestCase() {
       // Push the entered test data to the tests array

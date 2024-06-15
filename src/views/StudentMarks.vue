@@ -16,7 +16,7 @@
           <th scope="col">
             Tests ({{ distributedMark ? distributedMark.mark_of_ratings : "" }})
           </th>
-          <th scope="col">Exam mark ({{ exam_mark ? exam_mark : "" }})</th>
+          <th scope="col">Exam mark ({{ distributedMark ? distributedMark.exam_mark : "" }})</th>
           <th scope="col">Total mark</th>
         </tr>
       </thead>
@@ -24,10 +24,10 @@
         <tr v-for="student in students" :key="student.id">
           <th scope="row">{{ student.id }}</th>
           <td>{{ student.name }}</td>
-          <td>{{ student.pivot.attendance_marks }}</td>
-          <td>{{ student.pivot.assessment_marks }}</td>
-          <td>{{ student.pivot.mark }}</td>
-          <td>30</td>
+          <td>{{ student.attendance_mark}}</td>
+          <td>{{ student.assessment_mark }}</td>
+          <td>{{ student.exam_mark}}</td>
+          <td>{{ student.total}}</td>
         </tr>
       </tbody>
     </table>
@@ -49,24 +49,25 @@ export default {
   },
   mounted() {
     this.getStudentsWithMarks();
-    this.getDistributedMarks();
+    // this.getDistributedMarks();
   },
   methods: {
-    getDistributedMarks() {
-      const token = localStorage.getItem("token");
-      axios
-        .get(`${BASE_URL}categories/${this.$route.params.id}/details`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          this.distributedMark = response.data.category;
-          this.exam_mark = response.data.exam_mark;
-          console.log(this.distributedMark);
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    },
+    // getDistributedMarks() {
+    //   const token = localStorage.getItem("token");
+    //   axios
+    //     .get(`${BASE_URL}categories/${this.$route.params.id}/details`, {
+    //       headers: { Authorization: `Bearer ${token}` },
+    //     })
+    //     .then((response) => {
+    //       console.log(response.data);
+    //       this.distributedMark = response.data.category;
+    //       this.exam_mark = response.data.exam_mark;
+    //       console.log(this.distributedMark);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.message);
+    //     });
+    // },
     getStudentsWithMarks() {
       const token = localStorage.getItem("token");
       axios
@@ -74,7 +75,10 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          this.students = response.data;
+          this.students = response.data.students;
+          this.distributedMark=response.data.marks;
+          console.log( this.students);
+          console.log(this.distributedMark)
         })
         .catch((error) => {
           console.log(error.message);

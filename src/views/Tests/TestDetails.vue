@@ -81,7 +81,7 @@
           <td>{{ student.name }}</td>
 
           <td>
-            <input type="text" class="custom-input" :value="student.mark" />
+            <input type="text" class="custom-input"  v-model="student.mark" />
           </td>
           <!-- <td>
             <button type="button" class="btn btn-success">Edit</button>
@@ -150,12 +150,14 @@ export default {
       const token = localStorage.getItem("token");
       const id = this.$route.params.id;
       const formData = new FormData();
-
+      console.clear();
       this.Students.forEach((student, index) => {
+   
+        console.log(student.mark)
         formData.append(`students[${index}][id]`, student.id);
         formData.append(`students[${index}][mark]`, student.mark);
       });
-
+  console.log(formData);
       axios
         .post(`${BASE_URL}assessment/stop/${id}`, formData, {
           headers: {
@@ -166,6 +168,7 @@ export default {
         .then((response) => {
           this.alertType = "success";
           this.alertMessage = response.data.mesage;
+          console.log(response.data.students);
           console.log("Attendance saved successfully", response.data);
           alert("Attendance saved successfully");
         })

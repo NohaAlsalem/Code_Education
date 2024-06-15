@@ -148,16 +148,15 @@
               ></i>
             </button>
           </div>
-       
-            <p
-           
-              class="btn text-add-btn"
-              data-bs-toggle="modal"
-              data-bs-target="#addTagModal"
-            >
-              Add new tag
+
+          <p
+            class="btn text-add-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addTagModal"
+          >
+            Add new tag
           </p>
-      
+
           <input
             v-model="formData.hint1"
             class="form-control mb-3 ms-1 me-5 hint"
@@ -204,7 +203,11 @@
             :code="formData.teacher_code_solve"
             v-if="selectedOption === 'addManuallyTest'"
           ></AddManuallyTest>
-          <Generate2 v-if="selectedOption === 'generateTest'"></Generate2>
+          <Generate2
+            :code="formData.teacher_code_solve"
+            :language="formData.language"
+            v-if="selectedOption === 'generateTest'"
+          ></Generate2>
         </div>
         <div class="container col-md-12">
           <router-link :to="{ name: 'confirmproblem' }" class="router-link">

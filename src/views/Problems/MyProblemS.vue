@@ -290,7 +290,7 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          this.problems = response.data; // assuming the response data has a 'data' property containing the filtered problems
+          this.problems = response.data.data; // assuming the response data has a 'data' property containing the filtered problems
           console.log("this is filter ");
           console.log(response.data);
         })
