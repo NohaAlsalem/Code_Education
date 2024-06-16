@@ -62,7 +62,7 @@
                   <th scope="row">{{ problemId }}.{{ title }}</th>
                   <td>{{ level }}</td>
                   <td>{{ difficulty }}</td>
-                  <td>{{ tags }}</td>
+                  <td>{{ tags?tags:null }}</td>
                 </tr>
               </tbody>
             </table>
@@ -147,7 +147,6 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-         
           this.alertType = "success";
           this.alertMessage = response.data.message;
           console.log(response.data.message);

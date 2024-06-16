@@ -41,6 +41,11 @@
                           >Hard</a
                         >
                       </li>
+                      <li>
+                        <a class="dropdown-item" @click="submitDifficulty('')"
+                          >None</a
+                        >
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -60,6 +65,9 @@
                         <a class="dropdown-item" @click="submitTag(tag.name)"
                           >{{ tag.name }}
                         </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" @click="submitTag('')">None</a>
                       </li>
                     </ul>
                   </div>
@@ -84,6 +92,11 @@
                       <li>
                         <a class="dropdown-item" @click="submitSort('DESC')"
                           >Desc</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" @click="submitSort('')"
+                          >None</a
                         >
                       </li>
                     </ul>

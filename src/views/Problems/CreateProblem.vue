@@ -131,26 +131,23 @@
             </div>
           </div>
 
-          <div v-if="selectedTags">
-            <button
-              v-for="(tag, index) in selectedTags"
-              :key="index"
-              type="button"
-              class="custom-btn me-2 mt-0 tag-btn"
-            >
-              {{ tag }}
-              <i
-                @click.stop="deleteTag(index)"
-                class="fas fa-times text-danger ms-2"
-                data-bs-toggle="tooltip"
-                title="Delete"
-                style="cursor: pointer"
-              ></i>
-            </button>
+          <div v-if="selectedTags" class="me-0 mt-0">
+            <div v-for="(tag, index) in selectedTags" :key="index" class="me-0">
+              <button type="button" class="custom-btn me-0 mt-0 tag-btn">
+                {{ tag }}
+                <i
+                  @click.stop="deleteTag(index)"
+                  class="fas fa-times text-danger ms-2 mt-0 me-0"
+                  data-bs-toggle="tooltip"
+                  title="Delete"
+                  style="cursor: pointer"
+                ></i>
+              </button>
+            </div>
           </div>
 
           <p
-            class="btn text-add-btn"
+            class="btn text-add-btn ps-2 mt-0"
             data-bs-toggle="modal"
             data-bs-target="#addTagModal"
           >
@@ -210,20 +207,18 @@
           ></Generate2>
         </div>
         <div class="container col-md-12">
-          <router-link :to="{ name: 'confirmproblem' }" class="router-link">
-            <div class="row">
-              <div class="d-flex justify-content-center">
-                <button
-                  type="button"
-                  class="row btn btn-create mb-2 ms-4 mt-4"
-                  style="background: var(--MainColor)"
-                  @click="addProblem"
-                >
-                  Create
-                </button>
-              </div>
+          <div class="row">
+            <div class="d-flex justify-content-center">
+              <button
+                type="button"
+                class="row btn btn-create mb-2 ms-4 mt-4"
+                style="background: var(--MainColor)"
+                @click="addProblem"
+              >
+                Create
+              </button>
             </div>
-          </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -323,6 +318,10 @@ export default {
     this.getTags();
   },
   methods: {
+    clearAlert() {
+      this.alertType = "";
+      this.alertMessage = "";
+    },
     deleteTag(index) {
       this.selectedTags.splice(index, 1);
       this.formData.tags.splice(index, 1); // Also remove from formData.tags
@@ -375,7 +374,7 @@ export default {
         .catch((error) => {
           console.log(error.message);
           this.alertType = "error";
-          this.alertMessage = "Error deleting problem: " + error.message;
+          this.alertMessage =  error.message;
           this.error = error;
         });
     },
@@ -397,10 +396,14 @@ export default {
         .then((response) => {
           // this.mesaage = response.data;
           console.log(response.data);
+          this.alertType = "success";
+          this.alertMessage = "Problem added successfully";
         })
         .catch((error) => {
           console.log(error.message);
           this.error = error;
+          this.alertType = "error";
+          this.alertMessage = "Error deleting problem: " + error.message;
         });
     },
 

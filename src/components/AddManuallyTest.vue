@@ -45,14 +45,20 @@
                         <p>{{ test }}</p>
                       </div>
                     </h6>
-                    <button
+                    <!-- <button
                       type="button"
                       class="btn col-md-2 mb-3"
                       style="background: var(--MainColor); color: white"
                       @click="deleteTest(index)"
                     >
                       Delete
-                    </button>
+                    </button> -->
+                    <i
+                      @click="deleteTest(index)"
+                      class="fas fa-trash-alt text-danger  col-md-2 mb-3 me-5"
+                      data-bs-toggle="tooltip"
+                      title="Delete"
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -88,6 +94,7 @@ export default {
       }
     },
     deleteTest(index) {
+      console.log(index);
       this.test_cases.splice(index, 1);
     },
     sendTestsToParent() {
@@ -97,7 +104,7 @@ export default {
 };
 </script>
 <style scoped>
-input{
-  border:1px solid var(--MainColor)
+input {
+  border: 1px solid var(--MainColor);
 }
 </style>

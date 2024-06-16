@@ -19,8 +19,7 @@ export default {
   props: ["test_case"],
   data() {
     return {
-      tests: [
-      ],
+      tests:[],
     };
   },
 };

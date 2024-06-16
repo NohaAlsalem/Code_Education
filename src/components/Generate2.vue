@@ -222,7 +222,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      v-model="minimumValue"
+                      v-model="MinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -231,7 +231,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      v-model="maximumValue"
+                      v-model="MaximumValue"
                     />
                   </div>
                 </div>
@@ -310,7 +310,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="rowMinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -319,7 +319,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="rowMaximumValue"
                     />
                   </div>
                 </div>
@@ -331,7 +331,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="colMinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -340,7 +340,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="colMaximumValue"
                     />
                   </div>
                 </div>
@@ -353,7 +353,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="MinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -362,7 +362,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="MaximumValue"
                     />
                   </div>
                 </div>
@@ -383,7 +383,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="rowMinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -392,7 +392,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="rowMaximumValue"
                     />
                   </div>
                 </div>
@@ -404,7 +404,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="colMinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -413,7 +413,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="colMaximumValue"
                     />
                   </div>
                 </div>
@@ -426,7 +426,7 @@
                       type="number"
                       class="form-control mb-3"
                       id="exampleFormControlInput1"
-                      value="1"
+                      v-model="MinimumValue"
                     />
                   </div>
                   <div class="col-md-6">
@@ -476,63 +476,87 @@
             <div class="card text-start">
               <div class="card-header">Your test:</div>
               <div class="card-body">
-                <div v-for="(test, index) in tests" :key="index">
-                  <div class="row custom-card">
-                    <div class="col-md-9">
-                      <p class="custom-p">Test {{ index + 1 }}:</p>
-                      <p>Type: {{ test.type }}</p>
-                      <p
-                        v-if="test.type === 'INTEGER' || test.type === 'DOUBLE'"
-                      >
-                        Minimum Value: {{ test.minimumValue }}
-                      </p>
-                      <p
-                        v-if="test.type === 'INTEGER' || test.type === 'DOUBLE'"
-                      >
-                        Maximum Value: {{ test.maximumValue }}
-                      </p>
-                      <p
-                        v-if="
-                          test.type === 'STRING' || test.type === 'STRING_ARRAY'
-                        "
-                      >
-                        First Character Range: {{ test.FirstCharacterRange }}
-                      </p>
-                      <p
-                        v-if="
-                          test.type === 'STRING' || test.type === 'STRING_ARRAY'
-                        "
-                      >
-                        Last Character Range: {{ test.LastCharacterRange }}
-                      </p>
-                      <p
-                        v-if="
-                          test.type === 'STRING_ARRAY' ||
-                          test.type === 'INTEGER_ARRAY' ||
-                          test.type === 'DOUBLE_ARRAY'
-                        "
-                      >
-                        Number of Rows: {{ test.rowMinimumValue }} -
-                        {{ test.rowMaximumValue }}
-                      </p>
-                      <p
-                        v-if="
-                          test.type === 'STRING_ARRAY' ||
-                          test.type === 'INTEGER_ARRAY' ||
-                          test.type === 'DOUBLE_ARRAY'
-                        "
-                      >
-                        Number of Columns: {{ test.colMinimumValue }} -
-                        {{ test.colMaximumValue }}
-                      </p>
-                    </div>
-                    <button
+                <div v-if="tests.length">
+                  <div v-for="(test, index) in tests" :key="index">
+                    <div class="row custom-card">
+                      <div class="col-md-9">
+                        <p>Type: {{ test.type }}</p>
+                        <p
+                          v-if="
+                            test.type === 'INTEGER' ||
+                            test.type === 'DOUBLE' ||
+                            test.type === 'STRING_ARRAY' ||
+                            test.type === 'DOUBLE_ARRAY' ||
+                            test.type === 'INTEGER_ARRAY'
+                          "
+                        >
+                          Minimum Value: {{ test.minimumValue }}
+                        </p>
+                        <p
+                          v-if="
+                            test.type === 'INTEGER' ||
+                            test.type === 'DOUBLE' ||
+                            test.type === 'STRING_ARRAY' ||
+                            test.type === 'DOUBLE_ARRAY' ||
+                            test.type === 'INTEGER_ARRAY'
+                          "
+                        >
+                          Maximum Value: {{ test.maximumValue }}
+                        </p>
+                        <p
+                          v-if="
+                            test.type === 'STRING' ||
+                            test.type === 'STRING_ARRAY' ||
+                            test.type === 'DOUBLE_ARRAY' ||
+                            test.type === 'INTEGER_ARRAY'
+                          "
+                        >
+                          First Character Range: {{ test.FirstCharacterRange }}
+                        </p>
+                        <p
+                          v-if="
+                            test.type === 'STRING' ||
+                            test.type === 'STRING_ARRAY'
+                          "
+                        >
+                          Last Character Range: {{ test.LastCharacterRange }}
+                        </p>
+                        <p
+                          v-if="
+                            test.type === 'STRING_ARRAY' ||
+                            test.type === 'INTEGER_ARRAY' ||
+                            test.type === 'DOUBLE_ARRAY'
+                          "
+                        >
+                          Number of Rows: {{ test.rowMinimumValue }} -
+                          {{ test.rowMaximumValue }}
+                        </p>
+                        <p
+                          v-if="
+                            test.type === 'STRING_ARRAY' ||
+                            test.type === 'INTEGER_ARRAY' ||
+                            test.type === 'DOUBLE_ARRAY'
+                          "
+                        >
+                          Number of Columns: {{ test.colMinimumValue }} -
+                          {{ test.colMaximumValue }}
+                        </p>
+                      </div>
+                      <!-- <button
                       type="button"
                       class="btn col-md-2"
                       style="background: var(--MainColor); color: white"
+                      @click="deleteTest(index)"
                     >
                       Delete
-                    </button>
+                    </button> -->
+                      <i
+                        @click="deleteTest(index)"
+                        class="fas fa-trash-alt text-danger col-md-2 mt-1"
+                        data-bs-toggle="tooltip"
+                        title="Delete"
+                      ></i>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -552,6 +576,7 @@ export default {
   data() {
     return {
       tests: [],
+      generatedTests: "",
       formData: {
         lang: this.language,
         code: this.code,
@@ -593,20 +618,28 @@ export default {
     };
   },
   methods: {
+    deleteTest(index) {
+      console.log(index);
+      this.tests.splice(index, 1);
+    },
     GenerateTest() {
       const token = localStorage.getItem("token");
       console.log(token);
       this.setModel();
       console.log(this.formData);
-      console.log("model"+this.model);
-      console.log("model"+this.formData.model);
+      console.log("model" + this.model);
+      console.log("model" + this.formData.model);
       axios
         .post(BASE_URL + "problems/generate-test-cases", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           // this.mesaage = response.data;
-          console.log("this is response of generate"+response);
+          console.log(
+            "this is response of generate" + JSON.stringify(response.data.data)
+          );
+          this.generatedTests = JSON.stringify(response.data.data);
+          console.log("this is response of generate" + this.generatedTests);
         })
         .catch((error) => {
           console.log(error.message);
@@ -617,12 +650,12 @@ export default {
       let modelString = `${this.testNumber} `;
 
       this.tests.forEach((test) => {
-        modelString += ` ${test.type} ${test.minimumValue} ${test.maximumValue} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue} `;
+        modelString += ` ${test.type} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue} ${test.minimumValue} ${test.maximumValue} `;
       });
 
       modelString += "EXIT";
       this.model = modelString;
-      this.formData.model=modelString;
+      this.formData.model = modelString;
     },
     addTestCase() {
       // Push the entered test data to the tests array
@@ -728,7 +761,7 @@ export default {
   color: var(--MainColor);
   font-weight: bold;
 }
-input{
-  border:1px solid var(--MainColor)
+input {
+  border: 1px solid var(--MainColor);
 }
 </style>

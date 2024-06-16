@@ -312,6 +312,27 @@ export default {
     toggleDrawer() {
       this.isDrawerOpen = !this.isDrawerOpen;
     },
+    edit() {
+      const token = localStorage.getItem("token");
+
+      console.log(token);
+      axios
+        .post(BASE_URL + "profile/", this.info, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          // this.mesaage = response.data;
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.alertType = "error";
+          this.alertMessage =  error.message;
+          this.error = error;
+        });
+    },
     getMyProfile() {
       const token = localStorage.getItem("token");
       axios
@@ -339,6 +360,9 @@ export default {
         .catch((error) => {
           this.error = error;
         });
+    },
+    toggleEditMode(){
+      this.editMode=true;
     },
     closePasswordModal() {
       const modal = document.getElementById("passwordModal");

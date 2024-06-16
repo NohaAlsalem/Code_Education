@@ -1,7 +1,7 @@
 <template>
   <div class="screen">
     <div class="container col-md-12 text-center">
-      <div class="row d-flex justify-content-between">
+      <div class="row d-flex ">
         <div class="col-md-5 card text-start firt">
           <div class="card-header">
             <button
@@ -39,8 +39,8 @@
           <div class="card-header">
             <button
               type="button"
-              class="btn"
-              :class="{ 'custom-button': selectedButton === 2 }"
+              class="btn custom-button"
+        
               @click="selectButton(2)"
             >
               Solution

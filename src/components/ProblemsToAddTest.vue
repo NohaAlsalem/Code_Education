@@ -95,7 +95,6 @@
             <div class="col me-4">
               <div class="input-group">
                 <input
-               
                   type="text"
                   class="form-control search-input"
                   placeholder="Search questions"
@@ -258,7 +257,7 @@ export default {
           problemId: problem.id,
           title: problem.name,
           difficulty: problem.diffculty,
-          tags: problem.tags.name,
+          tags: problem.tags ? problem.tags.name : "",
           level: problem.level,
         },
       });
