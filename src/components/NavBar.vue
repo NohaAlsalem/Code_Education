@@ -79,7 +79,7 @@
               </li>
             </router-link>
 
-            <div class="dropdown">
+            <!-- <div class="dropdown">
               <button
                 class="nav-link p-2 p-lg-3 btn dropdown-toggle"
                 :class="{ active: $route.path.startsWith('/classesOfSubject') }"
@@ -108,7 +108,7 @@
                   </router-link>
                 </li>
               </ul>
-            </div>
+            </div> -->
           </ul>
 
           <font-awesome-icon

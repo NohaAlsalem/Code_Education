@@ -442,34 +442,40 @@
               </div>
             </div>
           </div>
+          <button
+            type="button"
+            class="btn mb-3 mt-2 d-flex justify-content-center align-items-center"
+            style="background: var(--MainColor); color: white"
+            @click="addTestCase"
+          >
+            Save
+          </button>
         </div>
         <div class="col-md-2" style="background: var(--WhiteColor)">
           <button
             type="button"
-            class="btn mb-3"
-            style="background: var(--MainColor); color: white"
-            @click="addTestCase"
-          >
-            Add test case
-          </button>
-          <button
-            type="button"
-            class="btn mb-3"
-            style="background: var(--MainColor); color: white"
+            class="btn mb-3 d-flex justify-content-center align-items-center"
+            :style="{
+              background: buttonClicked ? 'gray' : 'var(--MainColor)',
+              color: 'white',
+            }"
             @click="GenerateTest"
           >
             generate tests
           </button>
         </div>
 
-        <div class="col-md-6" style="background: var(--WhiteColor)">
+        <div
+          v-if="tests.length"
+          class="col-md-4"
+          style="background: var(--WhiteColor)"
+        >
           <div
-            v-if="tests.length"
             class="text-center"
             style="
               margin-top: 10px;
               margin-bottom: 10px;
-              height: 400px;
+              height: 600px;
               overflow-y: auto;
             "
           >
@@ -506,9 +512,7 @@
                         <p
                           v-if="
                             test.type === 'STRING' ||
-                            test.type === 'STRING_ARRAY' ||
-                            test.type === 'DOUBLE_ARRAY' ||
-                            test.type === 'INTEGER_ARRAY'
+                            test.type === 'STRING_ARRAY'
                           "
                         >
                           First Character Range: {{ test.FirstCharacterRange }}
@@ -563,6 +567,50 @@
             </div>
           </div>
         </div>
+
+        <!-- <p id="test-cases-container"></p> -->
+        <div
+          v-else-if="generatedTests.length"
+          class="col-md-4"
+          v-for="(test, index) in generatedTests"
+          :key="index"
+        >
+          <div
+            class="text-center"
+            style="
+              margin-top: 10px;
+              margin-bottom: 10px;
+              height: 600px;
+              overflow-y: auto;
+            "
+          >
+            <div class="card text-start">
+              <div class="card-header">Your test:</div>
+              <div class="card-body">
+                <div class="row custom-card">
+                  <p>Test Case {{ index + 1 }}:</p>
+                  <ul>
+                    <li
+                      v-for="(num, numIndex) in splitInput(test.input)"
+                      :key="numIndex"
+                    >
+                      {{ num }}
+                    </li>
+                  </ul>
+                  <p><strong>Output:</strong> {{ test.output }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div v-for="test in generatedTests" :key="test.input">
+            <p>Input:</p>
+            <ul>
+              <li v-for="num in test.input" :key="num">{{ num }}</li>
+            </ul>
+            <p>Output: {{ test.output }}</p>
+          </div> -->
       </div>
     </div>
   </div>
@@ -576,7 +624,9 @@ export default {
   data() {
     return {
       tests: [],
-      generatedTests: "",
+      test_cases: [],
+      buttonClicked: false,
+      generatedTests: [],
       formData: {
         lang: this.language,
         code: this.code,
@@ -618,10 +668,44 @@ export default {
     };
   },
   methods: {
+    sendTestsToParent() {
+      this.$emit("tests-updated", this.test_cases);
+    },
+    splitInput(input) {
+      // Trim the input and split by spaces
+      return input.trim().split(/\s+/);
+    },
     deleteTest(index) {
       console.log(index);
       this.tests.splice(index, 1);
     },
+    // GenerateTest() {
+    //   const token = localStorage.getItem("token");
+    //   console.log(token);
+    //   this.setModel();
+    //   console.log(this.formData);
+    //   console.log("model" + this.model);
+    //   console.log("model" + this.formData.model);
+    //   axios
+    //     .post(BASE_URL + "problems/generate-test-cases", this.formData, {
+    //       headers: { Authorization: `Bearer ${token}` },
+    //     })
+    //     .then((response) => {
+    //       // this.mesaage = response.data;
+    //       console.log(
+    //         "this is response of generate" + JSON.stringify(response.data.data)
+    //       );
+    //       this.generatedTests = JSON.stringify(response.data.data);
+    //       console.log("this is response of generate" + this.generatedTests);
+    //       // this.generatedTests.forEach(()=>console.log(test.input));
+
+    //       console.log(` ${this.generatedTests[0]}`);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.message);
+    //       this.error = error;
+    //     });
+    // },
     GenerateTest() {
       const token = localStorage.getItem("token");
       console.log(token);
@@ -629,23 +713,62 @@ export default {
       console.log(this.formData);
       console.log("model" + this.model);
       console.log("model" + this.formData.model);
+      this.buttonClicked = true;
       axios
         .post(BASE_URL + "problems/generate-test-cases", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          // this.mesaage = response.data;
+          this.tests = [];
           console.log(
             "this is response of generate" + JSON.stringify(response.data.data)
           );
-          this.generatedTests = JSON.stringify(response.data.data);
-          console.log("this is response of generate" + this.generatedTests);
+
+          // Parse the response data
+          this.generatedTests = response.data.data;
+          console.log(
+            "this is response of generate" + JSON.stringify(this.generatedTests)
+          );
+
+          // Iterate over each test case
+          this.generatedTests.forEach((test, index) => {
+            this.test_cases.push(test.input);
+            console.log(`Test Case ${index + 1}:`);
+            console.log(`Input: ${test.input}`);
+            console.log(`Output: ${test.output}`);
+
+            // Assuming you have some method to update the screen
+            // this.updateScreenWithTestCase(index + 1, test.input, test.output);
+          });
+
+          console.log("this is test cases" + this.test_cases);
+          this.sendTestsToParent();
+          this.buttonClicked = false;
         })
         .catch((error) => {
           console.log(error.message);
           this.error = error;
+          this.buttonClicked = false;
         });
     },
+
+    updateScreenWithTestCase(testNumber, input, output) {
+      // Implement the logic to update your screen with the test case data
+      // For example, you might append it to a list in the DOM
+
+      const testCaseElement = document.createElement("p");
+      testCaseElement.innerHTML = `
+    <p>Test Case ${testNumber}</p>
+    <p><strong>Input:</strong> ${input}</p>
+    <p><strong>Output:</strong> ${output}</p>
+  `;
+
+      // Assuming you have a container element with id 'test-cases-container'
+      document
+        .getElementById("test-cases-container")
+        .appendChild(testCaseElement);
+    },
+
     setModel() {
       let modelString = `${this.testNumber} `;
 
@@ -727,7 +850,7 @@ export default {
 <style scoped>
 .r {
   /* background: var(--WhiteColor); */
-  height: 100vh;
+  height: 100%;
 }
 .custom-card {
   border: solid 1px var(--LightGreen);

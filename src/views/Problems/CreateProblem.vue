@@ -41,6 +41,7 @@
             <div class="form-group col-md-6">
               <label for="exampleFormControlTextarea1">Description</label>
               <textarea
+                required
                 v-model="formData.description"
                 class="form-control"
                 id="exampleFormControlTextarea1"
@@ -201,6 +202,7 @@
             v-if="selectedOption === 'addManuallyTest'"
           ></AddManuallyTest>
           <Generate2
+            @tests-updated="handleTestsUpdated"
             :code="formData.teacher_code_solve"
             :language="formData.language"
             v-if="selectedOption === 'generateTest'"
@@ -374,7 +376,7 @@ export default {
         .catch((error) => {
           console.log(error.message);
           this.alertType = "error";
-          this.alertMessage =  error.message;
+          this.alertMessage = error.message;
           this.error = error;
         });
     },
@@ -385,7 +387,7 @@ export default {
     addProblem() {
       const token = localStorage.getItem("token");
       console.log(this.formData);
-      console.log(this.formData.test_cases);
+      console.log("this is testss from generate" + this.formData.test_cases);
       console.log(this.formData.hint1);
       console.log(this.formData.hint2);
       console.log(token);
