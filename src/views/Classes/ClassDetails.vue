@@ -53,24 +53,7 @@
           </router-link>
         </div>
 
-        <div class="col-md-3">
-          <router-link :to="{ name: 'takeAttendance' }" class="router-link">
-            <div
-              class="card bg-light rounded"
-              @mouseover="addAnimation"
-              @mouseout="removeAnimation"
-            >
-              <img
-                class="card-img-top"
-                src="../../assets/images/img3.jpg"
-                alt="Image"
-              />
-              <div class="card-body">
-                <p class="card-text">Check attendance</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
+        
         <div class="col-md-3">
           <router-link :to="{ name: 'studentMarks' }" class="router-link">
             <div
@@ -85,6 +68,24 @@
               />
               <div class="card-body">
                 <p class="card-text">Student marks</p>
+              </div>
+            </div>
+          </router-link>
+        </div>
+        <div class="col-md-3">
+          <router-link :to="{ name: 'exam' }" class="router-link">
+            <div
+              class="card bg-light rounded"
+              @mouseover="addAnimation"
+              @mouseout="removeAnimation"
+            >
+              <img
+                class="card-img-top"
+                src="../../assets/images/exam.jpg"
+                alt="Image"
+              />
+              <div class="card-body">
+                <p class="card-text">Exam</p>
               </div>
             </div>
           </router-link>

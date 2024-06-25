@@ -22,6 +22,8 @@ import ConfirmCreateProblem from "../views/Problems/ConfirmCreateProblem.vue";
 import Loading from "../views/Loading.vue";
 import ClassesOfSubject from "../views/Exams/ClassesOfSubject.vue";
 import StudentsInCategoryofSubject from "../views/Exams/StudentsInCategoryofSubject.vue";
+import ExamDetails from "../views/Exams/ExamDetails.vue";
+import Exam from "../views/Exams/Exam.vue"
 const routes = [
   {
     name: "topbar",
@@ -117,7 +119,7 @@ const routes = [
       title: route.query.title,
       level: route.query.level,
       difficulty: route.query.difficulty,
-      tags: route.query.tags
+      tags: route.query.tags,
     }),
   },
   { name: "modifygrades", path: "/modifygrades", component: ModifyGrades },
@@ -154,6 +156,18 @@ const routes = [
     path: "/confirmproblem",
     component: ConfirmCreateProblem,
   },
+  {
+    name: "examdatils",
+    path: "/examdeatils/:id/:student_id",
+    component: ExamDetails,
+    props: true,
+  },
+  {
+    name:"exam",
+    path:"/exam/:id",
+    component:Exam,
+    props:true
+  }
 ];
 
 const router = createRouter({

@@ -16,7 +16,9 @@
           <th scope="col">
             Tests ({{ distributedMark ? distributedMark.mark_of_ratings : "" }})
           </th>
-          <th scope="col">Exam mark ({{ distributedMark ? distributedMark.exam_mark : "" }})</th>
+          <th scope="col">
+            Exam mark ({{ distributedMark ? distributedMark.exam_mark : "" }})
+          </th>
           <th scope="col">Total mark</th>
         </tr>
       </thead>
@@ -24,10 +26,11 @@
         <tr v-for="student in students" :key="student.id">
           <th scope="row">{{ student.id }}</th>
           <td>{{ student.name }}</td>
-          <td>{{ student.attendance_mark}}</td>
+          <td>{{ student.attendance_mark }}</td>
           <td>{{ student.assessment_mark }}</td>
-          <td>{{ student.exam_mark}}</td>
-          <td>{{ student.total}}</td>
+          <td>{{ student.exam_mark }}</td>
+          <td>{{ student.total }}</td>
+        
         </tr>
       </tbody>
     </table>
@@ -76,9 +79,9 @@ export default {
         })
         .then((response) => {
           this.students = response.data.students;
-          this.distributedMark=response.data.marks;
-          console.log( this.students);
-          console.log(this.distributedMark)
+          this.distributedMark = response.data.marks;
+          console.log(this.students);
+          console.log(this.distributedMark);
         })
         .catch((error) => {
           console.log(error.message);

@@ -463,6 +463,13 @@
           >
             generate tests
           </button>
+          <button
+            type="button"
+            class="btn example-button mb-3"
+            @click="ShowExample"
+          >
+            show example
+          </button>
         </div>
 
         <div
@@ -632,6 +639,9 @@ export default {
         code: this.code,
         model: this.model,
       },
+      formDataExample: {
+        model: this.model
+      },
       model: "",
       testNumber: "",
       showInteger: false,
@@ -678,6 +688,29 @@ export default {
     deleteTest(index) {
       console.log(index);
       this.tests.splice(index, 1);
+    },
+    ShowExample() {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      this.setModel();
+      console.log(this.formData);
+      console.log("model" + this.model);
+      console.log("model" + this.formData.model);
+      console.log("this is model example"+this.formDataExample.model);
+      axios
+        .post(BASE_URL + "problems/generate-sample", this.formDataExample, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.tests = [];
+          console.log("this is response of show example" + response.data.sample);
+
+        })
+        .catch((error) => {
+          console.log(error.message);
+          this.error = error;
+          this.buttonClicked = false;
+        });
     },
     // GenerateTest() {
     //   const token = localStorage.getItem("token");
@@ -779,6 +812,7 @@ export default {
       modelString += "EXIT";
       this.model = modelString;
       this.formData.model = modelString;
+      this.formDataExample.model=modelString;
     },
     addTestCase() {
       // Push the entered test data to the tests array
@@ -851,6 +885,11 @@ export default {
 .r {
   /* background: var(--WhiteColor); */
   height: 100%;
+}
+.example-button {
+  color: var(--GreenOpacity);
+  font-weight: bold;
+  font-size: 16px;
 }
 .custom-card {
   border: solid 1px var(--LightGreen);

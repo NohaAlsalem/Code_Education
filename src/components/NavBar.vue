@@ -53,10 +53,10 @@
                     active:
                       $route.path === '/classes' ||
                       $route.path.startsWith('/showtests') ||
-                      /^\/classdetails\//.test($route.path)||
-                      $route.path.startsWith('/problemsToaddTotest')||
-                      $route.path.startsWith('/takeAttendance')
-                      
+                      /^\/classdetails\//.test($route.path) ||
+                      $route.path.startsWith('/problemsToaddTotest') ||
+                      $route.path.startsWith('/takeAttendance') ||
+                      $route.path.startsWith('/exam'),
                   }"
                 >
                   Classes
@@ -329,7 +329,7 @@ export default {
         .catch((error) => {
           console.log(error.message);
           this.alertType = "error";
-          this.alertMessage =  error.message;
+          this.alertMessage = error.message;
           this.error = error;
         });
     },
@@ -361,8 +361,8 @@ export default {
           this.error = error;
         });
     },
-    toggleEditMode(){
-      this.editMode=true;
+    toggleEditMode() {
+      this.editMode = true;
     },
     closePasswordModal() {
       const modal = document.getElementById("passwordModal");

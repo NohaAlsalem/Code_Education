@@ -42,8 +42,11 @@ export default {
 .second {
   color: var(--GreenOpacity);
 }
-.image{
+.image {
   height: 200px;
   width: 200px;
+}
+.btn-custom{
+
 }
 </style>

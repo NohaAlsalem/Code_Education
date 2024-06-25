@@ -1,7 +1,7 @@
 <template>
   <div class="screen">
     <div class="container col-md-12 text-center">
-      <div class="row d-flex ">
+      <div class="row d-flex">
         <div class="col-md-5 card text-start firt">
           <div class="card-header">
             <button
@@ -40,7 +40,6 @@
             <button
               type="button"
               class="btn custom-button"
-        
               @click="selectButton(2)"
             >
               Solution
