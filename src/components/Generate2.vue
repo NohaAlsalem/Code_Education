@@ -626,6 +626,7 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "@/assets/config";
+import $ from "jquery";
 export default {
   props: ["code", "language"],
   data() {
@@ -640,7 +641,7 @@ export default {
         model: this.model,
       },
       formDataExample: {
-        model: this.model
+        model: this.model,
       },
       model: "",
       testNumber: "",
@@ -678,6 +679,9 @@ export default {
     };
   },
   methods: {
+    setModel() {
+      // Your logic for setModel
+    },
     sendTestsToParent() {
       this.$emit("tests-updated", this.test_cases);
     },
@@ -696,15 +700,17 @@ export default {
       console.log(this.formData);
       console.log("model" + this.model);
       console.log("model" + this.formData.model);
-      console.log("this is model example"+this.formDataExample.model);
+      console.log("this is model example" + this.formDataExample.model);
+
       axios
         .post(BASE_URL + "problems/generate-sample", this.formDataExample, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          this.tests = [];
-          console.log("this is response of show example" + response.data.sample);
-
+          console.log(
+            "this is response of show example" + response.data.sample
+          );
+          this.responseText = response.data.sample;
         })
         .catch((error) => {
           console.log(error.message);
@@ -745,6 +751,7 @@ export default {
       this.setModel();
       console.log(this.formData);
       console.log("model" + this.model);
+      this.formDataExample.model = this.formData.model;
       console.log("model" + this.formData.model);
       this.buttonClicked = true;
       axios
@@ -806,13 +813,20 @@ export default {
       let modelString = `${this.testNumber} `;
 
       this.tests.forEach((test) => {
-        modelString += ` ${test.type} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue} ${test.minimumValue} ${test.maximumValue} `;
+        if (test.type === "INTEGER" || test.type === "DOUBLE") {
+          modelString += ` ${test.type} ${test.minimumValue} ${test.maximumValue} `;
+        } else if (test.type === "STRING")
+          modelString += ` ${test.type} ${test.minimumValue} ${test.maximumValue} ${test.FirstCharacterRange} ${test.LastCharacterRange} `;
+        else if (test.type === "DOUBLE_ARRAY" || test.type === "INTEGER_ARRAY")
+          modelString += ` ${test.type} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue} ${test.minimumValue} ${test.maximumValue} `;
+        else if (test.type === "STRING_ARRAY")
+          modelString += ` ${test.type} ${test.rowMinimumValue} ${test.rowMaximumValue} ${test.colMinimumValue} ${test.colMaximumValue} ${test.minimumValue} ${test.maximumValue} ${test.FirstCharacterRange} ${test.LastCharacterRange} `;
       });
 
       modelString += "EXIT";
       this.model = modelString;
       this.formData.model = modelString;
-      this.formDataExample.model=modelString;
+      this.formDataExample.model = modelString;
     },
     addTestCase() {
       // Push the entered test data to the tests array
@@ -897,6 +911,12 @@ export default {
   padding: 5px;
   border-radius: 10px;
   background: var(--WhiteColor);
+}
+#responseDialog {
+  display: none;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background: #fff;
 }
 .btn {
   height: 30px;

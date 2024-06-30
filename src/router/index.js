@@ -24,6 +24,7 @@ import ClassesOfSubject from "../views/Exams/ClassesOfSubject.vue";
 import StudentsInCategoryofSubject from "../views/Exams/StudentsInCategoryofSubject.vue";
 import ExamDetails from "../views/Exams/ExamDetails.vue";
 import Exam from "../views/Exams/Exam.vue"
+import AddExam from "../views/admin/AddExa.vue"
 const routes = [
   {
     name: "topbar",
@@ -36,10 +37,15 @@ const routes = [
   //   component: splashSc,
   // },
   {
-    name: "loading",
-    path: "/",
-    component: Loading,
+  name:"add exam",
+  path:"/",
+  component:AddExam
   },
+  // {
+  //   name: "loading",
+  //   path: "/",
+  //   component: Loading,
+  // },
   // {
   //   name: "splash",
   //   path: "/",

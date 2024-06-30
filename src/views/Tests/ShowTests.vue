@@ -1,6 +1,5 @@
 <template>
   <NavBar></NavBar>
-  <!-- <SubjectAndClass></SubjectAndClass> -->
   <div
     class="container text-center d-flex justify-content-center col-md-12 screen"
   >
@@ -22,42 +21,19 @@
           <td>
             <i
               class="fas fa-play me-2 text-success"
-              v-b-tooltip.hover
               title="Start"
               data-bs-toggle="modal"
               data-bs-target="#takeAttendance"
               ref="takeAttendanceModal"
               @click="startAttendance(test.id)"
             ></i>
-
             <i
               class="fas fa-trash-alt text-danger"
-              v-b-tooltip.hover
               title="Delete"
               @click="confirmDelete(test.id)"
               data-bs-toggle="modal"
               data-bs-target="#confirmDeleteModal"
             ></i>
-            <!-- <button
-              type="button"
-              class="btn btn-success me-2"
-              data-bs-toggle="modal"
-              data-bs-target="#takeAttendance"
-              ref="takeAttendanceModal"
-              @click="startAttendance(test.id)"
-            >
-              Start
-            </button>
-            <button
-              @click="confirmDelete(test.id)"
-              type="button"
-              class="btn btn-danger me-2"
-              data-bs-toggle="modal"
-              data-bs-target="#confirmDeleteModal"
-            >
-              Delete
-            </button>
-            <button type="button" class="btn btn-warning">End</button> -->
           </td>
           <td>
             <router-link
@@ -119,6 +95,7 @@
             Cancel
           </button>
           <button
+            data-bs-dismiss="modal"
             type="button"
             class="btn btn-success me-2"
             @click="saveAttendance()"
@@ -184,6 +161,9 @@ export default {
       alertMessage: "",
       students: [],
       selectedTestId: null,
+      formData: {
+        students: null,
+      },
     };
   },
   mounted() {
@@ -282,39 +262,43 @@ export default {
       const selectedStudents = this.students
         .filter((student) => student.checked)
         .map((student) => student.id);
-        console.log(this.selectedStudents);
-      // selectedStudents now contains the IDs of checked students
+      this.formData.students = selectedStudents;
 
-      // Make API POST request here, sending selectedStudents as form data
-      const formData = new FormData();
-      selectedStudents.forEach((studentId) => {
-        formData.append("students[]", studentId);
-      });
-      console.log(this.selectedStudents);
+      console.log(selectedStudents);
       // Example of POST request
       const token = localStorage.getItem("token");
       axios
-        .post(BASE_URL + "assessment/active/" + this.selectedTestId, formData, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .post(
+          BASE_URL + "assessment/active/" + this.selectedTestId,
+          this.formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        )
         .then((response) => {
           console.log(response.data);
-          this.closeAttendanceModal();
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
+          this.successMessage = response.data.message;
           this.$router.push({
             name: "testdetails",
             params: { id: this.selectedTestId },
           });
 
-          this.selectedStudents = [];
           this.students = this.students.map((student) => {
             return {
               ...student,
-              checked: false, // Add a checked property
+              checked: false, // Reset checked property
             };
           });
         })
         .catch((error) => {
           console.log(error.message);
+          this.alertType = "error";
+          this.alertMessage = error.message;
         });
     },
   },

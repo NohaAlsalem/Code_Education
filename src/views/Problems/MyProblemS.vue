@@ -11,7 +11,7 @@
                   <div class="btn-group">
                     <button
                       type="button"
-                      class="btn btn-danger dropdown-toggle"
+                      class="btn dropdown-toggle"
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
@@ -54,7 +54,7 @@
                   <div class="btn-group">
                     <button
                       type="button"
-                      class="btn btn-danger dropdown-toggle"
+                      class="btn dropdown-toggle"
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
@@ -77,7 +77,7 @@
                   <div class="btn-group">
                     <button
                       type="button"
-                      class="btn btn-danger dropdown-toggle"
+                      class="btn dropdown-toggle"
                       data-bs-toggle="dropdown"
                       aria-expanded="true"
                     >
@@ -174,8 +174,10 @@
                 <i
                   @click="confirmDelete(problem.id)"
                   class="fas fa-trash-alt text-danger"
-                  data-bs-toggle="tooltip"
                   title="Delete"
+                  data-bs-target="#confirmDeleteModal"
+                  data-bs-toggle="modal"
+                  ref="confirmDeleteModal"
                 ></i>
 
                 <!-- <button
@@ -442,7 +444,10 @@ export default {
   background: var(--WhiteColor);
   border: 1px solid var(--LightGreen);
 }
-
+td i,
+ul li {
+  cursor: pointer;
+}
 .input-group .form-control::placeholder {
   color: var(--LightGreen);
 }

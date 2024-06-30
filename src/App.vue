@@ -1,5 +1,4 @@
 <template>
-  
   <router-view />
 </template>
 
@@ -9,9 +8,8 @@ export default {
   name: "App",
   components: {
     Pagination,
-    
   },
-  data() {
+  data() {  
     return {
       currentPage: 1,
       fields: [

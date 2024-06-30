@@ -67,7 +67,7 @@
                 alt="Image"
               />
               <div class="card-body">
-                <p class="card-text">Student marks</p>
+                <p class="card-text">Student and Marks</p>
               </div>
             </div>
           </router-link>

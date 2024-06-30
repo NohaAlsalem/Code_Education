@@ -93,7 +93,7 @@ export default {
     signIn() {
       this.loading = true; // Set loading to true when sign-in starts
       axios
-        .post("http://127.0.0.1:8000/api/login", this.formData)
+        .post("http://192.168.225.182:8000/api/login", this.formData)
         .then((response) => {
           this.alertType = "success";
           this.alertMessage = response.data.message;

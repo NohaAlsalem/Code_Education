@@ -134,10 +134,11 @@ export default {
       const token = localStorage.getItem("token");
       const id = this.$route.params.id;
       axios
-        .get(BASE_URL + "assessment/details/" + id, {
+        .get(BASE_URL + "assessment/details/" + this.$route.params.id, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
+          console.log(response.data);
           this.testDetails = response.data;
           this.problem = response.data.problem;
           this.Students = response.data.student;
@@ -167,17 +168,20 @@ export default {
         })
         .then((response) => {
           this.alertType = "success";
-          this.alertMessage = response.data.mesage;
+          this.alertMessage = response.data.message;
           console.log(response.data.students);
           console.log("Attendance saved successfully", response.data);
-          alert("Attendance saved successfully");
+         
         })
         .catch((error) => {
           this.alertType = "error";
           this.alertMessage = "Something occuring error ";
           console.error("Error saving attendance", error);
-          alert("Error saving attendance");
         });
+    },
+    clearAlert() {
+      this.alertType = "";
+      this.alertMessage = "";
     },
   },
 };

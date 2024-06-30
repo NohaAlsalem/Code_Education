@@ -25,7 +25,9 @@
             <div class="col-md-7 text-container ms-4">
               <p><strong>Class :</strong> {{ classs.category_name }}</p>
               <p><strong>Subject :</strong> {{ classs.subject_name }}</p>
-              <p><strong>Number of students :</strong> {{ classs.student_count }}</p>
+              <p>
+                <strong>Number of students :</strong> {{ classs.student_count }}
+              </p>
             </div>
           </div>
         </router-link>
@@ -118,7 +120,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 }
 
 p {
@@ -149,11 +150,11 @@ strong {
 }
 
 .class-image {
-  margin-left:-20px;
+  margin-left: -20px;
   width: 100%;
   height: 150px; /* Make the image take the full height of the container */
   object-fit: cover; /* Ensure the image covers the entire area without distortion */
   border: 1px solid var(--MainColor);
-  border-radius:08px 0px 0px 8px ;
+  border-radius: 08px 0px 0px 8px;
 }
 </style>

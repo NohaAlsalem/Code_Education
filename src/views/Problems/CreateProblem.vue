@@ -268,6 +268,7 @@
       </div>
     </div>
   </div>
+
   <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
 </template>
 
@@ -280,6 +281,8 @@ import Generate2 from "@/components/Generate2.vue";
 import axios from "axios";
 import Alert from "../../components/Alert.vue";
 import { BASE_URL } from "@/assets/config";
+import { Modal } from "bootstrap";
+
 export default {
   components: {
     Alert,
@@ -303,6 +306,7 @@ export default {
       formDataTag: {
         name: "",
       },
+      showSample: null,
       formData: {
         name: "",
         teacher_code_solve: "",
@@ -391,6 +395,7 @@ export default {
       console.log(this.formData.hint1);
       console.log(this.formData.hint2);
       console.log(token);
+      console.log(this.formData);
       axios
         .post(BASE_URL + "problems/", this.formData, {
           headers: { Authorization: `Bearer ${token}` },
@@ -400,6 +405,7 @@ export default {
           console.log(response.data);
           this.alertType = "success";
           this.alertMessage = "Problem added successfully";
+          this.$router.push({ name: "problem" });
         })
         .catch((error) => {
           console.log(error.message);
