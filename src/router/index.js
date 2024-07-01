@@ -36,16 +36,16 @@ const routes = [
   //   path: "/",
   //   component: splashSc,
   // },
-  {
-  name:"add exam",
-  path:"/",
-  component:AddExam
-  },
   // {
-  //   name: "loading",
-  //   path: "/",
-  //   component: Loading,
+  // name:"add exam",
+  // path:"/",
+  // component:AddExam
   // },
+  {
+    name: "loading",
+    path: "/",
+    component: Loading,
+  },
   // {
   //   name: "splash",
   //   path: "/",

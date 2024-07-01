@@ -33,7 +33,11 @@
           >
           </Description>
 
-          <Tests :test_case="problem.test_case" v-else></Tests>
+          <Tests
+            :input="problem.test_case.input"
+            :output="problem.test_case.output"
+            v-else
+          ></Tests>
         </div>
         <div class="col-md-6 card text-start second">
           <div class="card-header">

@@ -1,13 +1,13 @@
 <template>
   <div class="card-body">
-    <div v-for="(test, index) in test_case" :key="index">
+    <div>
       <div class="row">
         <div class="col-md-9">
-          <p class="custom-p">Test {{ index + 1 }}:</p>
+          <p class="custom-p">Test :</p>
           <p class="out-int">Input:</p>
-          <p class="custom-card">{{ test.input }}</p>
+          <p class="custom-card">{{ input }}</p>
           <p class="out-int">Output:</p>
-          <p class="custom-card">{{ test.output }}</p>
+          <p class="custom-card">{{ output }}</p>
         </div>
       </div>
     </div>
@@ -16,11 +16,9 @@
 
 <script>
 export default {
-  props: ["test_case"],
-  data() {
-    return {
-      tests:[],
-    };
+  props: {
+    input: null,
+    output: null,
   },
 };
 </script>

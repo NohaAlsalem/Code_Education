@@ -62,7 +62,7 @@
                   <th scope="row">{{ problemId }}.{{ title }}</th>
                   <td>{{ level }}</td>
                   <td>{{ difficulty }}</td>
-                  <td>{{ tags?tags:null }}</td>
+                  <td>{{ tags ? tags : null }}</td>
                 </tr>
               </tbody>
             </table>
@@ -151,6 +151,10 @@ export default {
           this.alertMessage = response.data.message;
           console.log(response.data.message);
           this.clearFormData();
+
+          setTimeout(() => {
+            this.$router.go(-3);
+          }, 500);
         })
         .catch((error) => {
           this.alertType = "error";

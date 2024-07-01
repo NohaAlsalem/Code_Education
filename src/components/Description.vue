@@ -67,7 +67,7 @@
                 v-for="tag in tags"
                 :key="tag"
                 type="button"
-                class="custom-btn"
+                class="custom-btn me-1"
                 style="pointer-events: none"
               >
                 {{ tag.name }}

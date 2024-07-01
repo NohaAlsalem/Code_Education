@@ -81,7 +81,7 @@
           <td>{{ student.name }}</td>
 
           <td>
-            <input type="text" class="custom-input"  v-model="student.mark" />
+            <input type="text" class="custom-input" v-model="student.mark" />
           </td>
           <!-- <td>
             <button type="button" class="btn btn-success">Edit</button>
@@ -153,12 +153,11 @@ export default {
       const formData = new FormData();
       console.clear();
       this.Students.forEach((student, index) => {
-   
-        console.log(student.mark)
+        console.log(student.mark);
         formData.append(`students[${index}][id]`, student.id);
         formData.append(`students[${index}][mark]`, student.mark);
       });
-  console.log(formData);
+      console.log(formData);
       axios
         .post(`${BASE_URL}assessment/stop/${id}`, formData, {
           headers: {
@@ -167,11 +166,25 @@ export default {
           },
         })
         .then((response) => {
-          this.alertType = "success";
-          this.alertMessage = response.data.message;
-          console.log(response.data.students);
-          console.log("Attendance saved successfully", response.data);
-         
+          if (response.data.message === "the mark should less than 100") {
+            this.alertType = "error";
+            this.alertMessage = response.data.message;
+          } else if (
+            response.data.message === "this assessment is already stoped"
+          ) {
+            this.alertType = "error";
+            this.alertMessage = response.data.message;
+          } else if (
+            response.data.message === "assessment finishing successfully"
+          ) {
+            this.alertType = "success";
+            this.alertMessage = response.data.message;
+            console.log(response.data.students);
+            console.log("Attendance saved successfully", response.data);
+            setTimeout(() => {
+              this.$router.go(-3);
+            }, 500);
+          }
         })
         .catch((error) => {
           this.alertType = "error";

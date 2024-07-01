@@ -166,10 +166,12 @@
               </td>
               <td>
                 <i
-                  @click="active(problem.id)"
+                  @click="confirmActive(problem.id)"
                   class="fas fa-check-circle text-success ms-4 me-3"
-                  data-bs-toggle="tooltip"
+                  data-bs-toggle="modal"
                   title="Active"
+                  data-bs-target="#confirmActiveModal"
+                  ref="confirmActiveModal"
                 ></i>
                 <i
                   @click="confirmDelete(problem.id)"
@@ -225,6 +227,38 @@
             Cancel
           </button>
           <button
+            @click="active(confirmActive)"
+            type="button"
+            class="btn btn-danger"
+            data-bs-dismiss="modal"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="confirmActiveModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmActiveModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">Are you sure you want to active this item?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
             @click="deleteProblem(confirmId)"
             type="button"
             class="btn btn-danger"
@@ -261,6 +295,7 @@ export default {
       alertMessage: "",
       problems: [],
       confirmId: null,
+      activeId:null,
       searchText: "",
       selectedTag: "",
       selectedDifficulty: "",
@@ -337,6 +372,9 @@ export default {
     confirmDelete(id) {
       this.confirmId = id;
     },
+    confirmActive(id){
+      this.activeId=id;
+    },
     handlePageChange(page) {
       this.currentPage = page;
     },
@@ -367,12 +405,16 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.alertType = "success";
+          this.alertMessage = response.data.message;
           this.getMyProblems();
           // this.problems = response.data;
         })
         .catch((error) => {
           console.log(error);
           this.errMessage = "error not activate";
+          this.alertType = "error";
+          this.alertMessage = "Error deleting problem: " + error.message;
         });
     },
     submitDifficulty(diff) {

@@ -24,8 +24,6 @@
             )
             <i
               class="fas fa-edit me-2 icon-custom"
-              v-b-tooltip.hover
-              title="Start"
               data-bs-toggle="modal"
               data-bs-target="#UpdateModal"
               ref="UpdateModal"
@@ -36,8 +34,6 @@
             Tests ({{ distributedMark ? distributedMark.mark_of_ratings : "" }})
             <i
               class="fas fa-edit me-2 icon-custom"
-              v-b-tooltip.hover
-              title="Start"
               data-bs-toggle="modal"
               data-bs-target="#UpdateModal"
               ref="UpdateModal"
@@ -61,6 +57,55 @@
       </tbody>
     </table>
   </div>
+
+  <div
+    class="modal fade"
+    id="UpdateModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="UpdateModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="background-color: var(--WhiteColor)">
+          <div class="form-group">
+            <label>Mark of commings:</label>
+            <input
+              v-model="formDataUpdate.mark_of_commings"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>Mark of ratings:</label>
+            <input
+              v-model="formDataUpdate.mark_of_ratings"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="modal-footer" style="background-color: var(--WhiteColor)">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn"
+            style="background: var(--MainColor); color: white"
+            data-bs-dismiss="modal"
+            @click="Update"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
   <div
     class="modal fade"
     id="passwordModal"
@@ -73,12 +118,12 @@
       <div class="modal-content">
         <div class="modal-body" style="background-color: var(--WhiteColor)">
           <div class="form-group">
-            <label for="newPassword">Unversity ID:</label>
+            <label for="oldPassword">UnversityID:</label>
             <input
               v-model="formData.university_id"
-              id="newPassword"
+              id="oldPassword"
               class="form-control"
-              placeholder="Enter your new password"
+              placeholder="Enter your old password"
             />
           </div>
         </div>
@@ -95,6 +140,7 @@
             class="btn"
             style="background: var(--MainColor); color: white"
             @click="AddStudent"
+            data-bs-dismiss="modal"
           >
             Add
           </button>
@@ -102,61 +148,13 @@
       </div>
     </div>
   </div>
-  <div
-    class="modal fade"
-    id="UpdateModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="UpdateModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body" style="background-color: var(--WhiteColor)">
-          <div class="form-group">
-            <label for="newPassword">Mark of commings:</label>
-            <input
-              v-model="formDataUpdate.mark_of_commings"
-              id="newPassword"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="newPassword">Mark of ratings:</label>
-            <input
-              v-model="formDataUpdate.mark_of_ratings"
-              id="newPassword"
-              class="form-control"
-            />
-          </div>
-        </div>
-        <div class="modal-footer" style="background-color: var(--WhiteColor)">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="btn"
-            style="background: var(--MainColor); color: white"
-            @click="Update"
-          >
-            Update
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
 </template>
-
 <script>
 import axios from "axios";
 import { BASE_URL } from "@/assets/config";
 import Alert from "../components/Alert.vue";
+import { Modal } from "bootstrap";
+
 export default {
   components: { Alert },
   props: ["id"],
@@ -183,42 +181,30 @@ export default {
     // this.getDistributedMarks();
   },
   methods: {
-    // getDistributedMarks() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${BASE_URL}categories/${this.$route.params.id}/details`, {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     })
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       this.distributedMark = response.data.category;
-    //       this.exam_mark = response.data.exam_mark;
-    //       console.log(this.distributedMark);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error.message);
-    //     });
-    // },
     AddStudent() {
       const token = localStorage.getItem("token");
       axios
         .post(
-          `${BASE_URL}categories/${this.$route.params.id}/add-student`,
+          ` ${BASE_URL}categories/${this.$route.params.id}/add-student`,
           this.formData,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         )
         .then((response) => {
+          this.closePasswordModal();
           console.log(response.data.message);
           console.log(this.formData.university_id);
-          this.formData.university_id = "";
-          this.closePasswordModal();
+          this.formData.university_id = ""; // Clear the input field
+          // Close the modal
           this.alertType = "success";
           this.alertMessage = response.data.message;
+          this.getStudentsWithMarks();
         })
         .catch((error) => {
           this.error = error;
+          this.alertType = "error";
+          this.alertMessage = error.message;
           console.log(this.error.message);
         });
     },
@@ -252,19 +238,13 @@ export default {
     },
     closeUpdateModal() {
       const modal = document.getElementById("UpdateModal");
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-      modal.setAttribute("style", "display: none");
-      const modalBackdrop = document.querySelector(".modal-backdrop");
-      modalBackdrop.parentNode.removeChild(modalBackdrop);
+      const modalInstance = Modal.getInstance(modal);
+      modalInstance.hide();
     },
     closePasswordModal() {
       const modal = document.getElementById("passwordModal");
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-      modal.setAttribute("style", "display: none");
-      const modalBackdrop = document.querySelector(".modal-backdrop");
-      modalBackdrop.parentNode.removeChild(modalBackdrop);
+      const modalInstance = Modal.getInstance(modal);
+      modalInstance.hide();
     },
     getStudentsWithMarks() {
       const token = localStorage.getItem("token");
@@ -289,7 +269,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .screen {
   margin-top: 5%;

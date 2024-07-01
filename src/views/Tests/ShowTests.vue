@@ -211,18 +211,14 @@ export default {
           this.alertType = "success";
           this.alertMessage = response.data.message;
           this.getTests();
-          setTimeout(() => {
-            this.clearAlert();
-          }, 1000);
+          
         })
         .catch((error) => {
           this.errorMessage = "Error deleting test: " + error.message;
           this.alertType = "error";
           this.alertMessage = "Error deleting test: " + error.message;
           this.error = error;
-          setTimeout(() => {
-            this.clearAlert();
-          }, 1000);
+          
         });
     },
     closeAttendanceModal() {
