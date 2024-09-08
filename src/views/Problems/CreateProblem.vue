@@ -411,7 +411,7 @@ export default {
           console.log(error.message);
           this.error = error;
           this.alertType = "error";
-          this.alertMessage = "Error deleting problem: " + error.message;
+          this.alertMessage = "Error adding problem: " + error.message;
         });
     },
 

@@ -9,6 +9,7 @@
   --GrayColor: #c4c6c7; /* Replace with your gray color */
   --HoverColor: #0056b3; /* Replace with your hover background color */
   --HoverTextColor: #ffffff;
+  --GreenColor: #592E83;
 }
 body {
   height: 100%;

@@ -60,6 +60,8 @@
       </div> -->
     </div>
   </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
+
 </template>
 
 <script>
@@ -67,6 +69,7 @@ import TopBar from "@/components/TopBar.vue";
 import codeEdu from "@/components/codeEdu.vue";
 import axios from "axios";
 import Alert from "../components/Alert.vue";
+import {B_URL} from "../assets/config"
 
 export default {
   components: {
@@ -90,10 +93,14 @@ export default {
     };
   },
   methods: {
+    clearAlert() {
+      this.alertType = "";
+      this.alertMessage = "";
+    },
     signIn() {
       this.loading = true; // Set loading to true when sign-in starts
       axios
-        .post("http://127.0.0.1:8000/api/login", this.formData)
+        .post(B_URL + "login", this.formData)
         .then((response) => {
           this.alertType = "success";
           this.alertMessage = response.data.message;
@@ -105,7 +112,7 @@ export default {
         })
         .catch((error) => {
           this.alertType = "error";
-          this.alertMessage = "Error deleting problem: " + error.message;
+          this.alertMessage = "Error login: " + error.message;
           console.log(error);
           this.error = error;
         })

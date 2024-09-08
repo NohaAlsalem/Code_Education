@@ -579,8 +579,7 @@
         <div
           v-else-if="generatedTests.length"
           class="col-md-4"
-          v-for="(test, index) in generatedTests"
-          :key="index"
+          style="background: var(--WhiteColor)"
         >
           <div
             class="text-center"
@@ -591,7 +590,11 @@
               overflow-y: auto;
             "
           >
-            <div class="card text-start">
+            <div
+              class="card text-start mb-3"
+              v-for="(test, index) in generatedTests"
+              :key="index"
+            >
               <div class="card-header">Your test:</div>
               <div class="card-body">
                 <div class="row custom-card">
@@ -610,15 +613,18 @@
             </div>
           </div>
         </div>
-
-        <!-- <div v-for="test in generatedTests" :key="test.input">
+      </div>
+      <div v-if="responseText" class="col-md-2 card-custom card text-start">
+        <div class="card-header">Sample:</div>
+        <div class="card-body">{{ responseText }}</div>
+      </div>
+      <!-- <div v-for="test in generatedTests" :key="test.input">
             <p>Input:</p>
             <ul>
               <li v-for="num in test.input" :key="num">{{ num }}</li>
             </ul>
             <p>Output: {{ test.output }}</p>
           </div> -->
-      </div>
     </div>
   </div>
 </template>
@@ -626,13 +632,20 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "@/assets/config";
-import $ from "jquery";
+
+import ModalComponent from "../components/ShowSample.vue";
 export default {
+  components: {
+    ModalComponent,
+  },
   props: ["code", "language"],
   data() {
     return {
+      isModalVisible: false,
+      responseText: "",
       tests: [],
       test_cases: [],
+      example: null,
       buttonClicked: false,
       generatedTests: [],
       formData: {
@@ -710,6 +723,8 @@ export default {
           console.log(
             "this is response of show example" + response.data.sample
           );
+          this.modalContent = this.responseText;
+          this.isModalVisible = true;
           this.responseText = response.data.sample;
         })
         .catch((error) => {
@@ -896,6 +911,11 @@ export default {
 </script>
 
 <style scoped>
+.card-custom {
+  height: 220px;
+  margin-top: 10px;
+  overflow-y: auto;
+}
 .r {
   /* background: var(--WhiteColor); */
   height: 100%;

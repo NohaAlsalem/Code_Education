@@ -245,22 +245,27 @@
             class="btn"
             style="background: var(--MainColor); color: white"
             @click="changePassword"
+            data-bs-dismiss="modal"
           >
             Change
           </button>
         </div>
       </div>
     </div>
+
   </div>
+  <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
+
 </template>
 
 <script>
 import codeEdu from "@/components/codeEdu.vue";
 import { BASE_URL } from "@/assets/config";
 import axios from "axios";
+import Alert from "../components/Alert.vue";
 
 export default {
-  components: { codeEdu },
+  components: { codeEdu ,Alert},
 
   data() {
     return {
@@ -268,6 +273,10 @@ export default {
       selectedSubject: null,
       isDrawerOpen: false,
       editMode: false,
+      successMessage: "",
+      errorMessage: "",
+      alertType: "",
+      alertMessage: "",
       info: {
         name: "",
         email: "",
@@ -352,14 +361,39 @@ export default {
         .post(`${BASE_URL}profile/change-password`, this.formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
-        .then(() => {
-          this.formData.new_password = "";
-          this.formData.old_password = "";
-          this.closePasswordModal();
-        })
-        .catch((error) => {
-          this.error = error;
-        });
+        .then((response) => {
+                    this.formData.new_password = "";
+                    this.formData.old_password = "";
+                    this.successMessage = response.data.message;
+                    this.alertType = "success";
+                    this.alertMessage = response.data.message;
+                    console.log(response.data.message+'lkjkednwujk');
+                    setTimeout(() => {
+                        this.clearAlert();
+                    }, 2000);
+                    // this.approved = response.data.approved;
+                })
+                .catch((error) => {
+                    this.error = error;
+                    if (error.response) {
+                        this.errorMessage = "Error: " + error.response.data.message;
+                        this.alertType = "error";
+                        this.alertMessage = "Error: " + error.response.data.message;
+                    } 
+                    // else {
+                    //     this.errorMessage = "An unknown error occurred.";
+                    //     this.alertType = "error";
+                    //     this.alertMessage = "An unknown error occurred.";
+                    // }
+                    // setTimeout(() => {
+                    //     this.clearAlert();
+                    // }, 2000);
+                    // this.approved = error.response.data.approved;
+                });
+        },
+    clearAlert() {
+      this.alertType = "";
+      this.alertMessage = "";
     },
     toggleEditMode() {
       this.editMode = true;
@@ -388,6 +422,7 @@ export default {
   --GrayOpactiyColor: #dddddd;
   --HoverColor: #0056b3;
   --HoverTextColor: #ffffff;
+  
 }
 
 .navbar {

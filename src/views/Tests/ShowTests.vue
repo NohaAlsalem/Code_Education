@@ -279,11 +279,16 @@ export default {
           this.alertType = "success";
           this.alertMessage = response.data.message;
           this.successMessage = response.data.message;
-          this.$router.push({
+          // if(response.data.message[0] !='_')
+          // this.$router.push({
+          //   name: "testdetails",
+          //   params: { id: this.selectedTestId },
+          // });
+
+           this.$router.push({
             name: "testdetails",
             params: { id: this.selectedTestId },
           });
-
           this.students = this.students.map((student) => {
             return {
               ...student,
@@ -294,7 +299,7 @@ export default {
         .catch((error) => {
           console.log(error.message);
           this.alertType = "error";
-          this.alertMessage = error.message;
+          this.alertMessage = error.response.data.message;
         });
     },
   },

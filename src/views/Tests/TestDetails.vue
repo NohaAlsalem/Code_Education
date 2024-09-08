@@ -166,6 +166,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response.data.message);
           if (response.data.message === "the mark should less than 100") {
             this.alertType = "error";
             this.alertMessage = response.data.message;
@@ -174,9 +175,7 @@ export default {
           ) {
             this.alertType = "error";
             this.alertMessage = response.data.message;
-          } else if (
-            response.data.message === "assessment finishing successfully"
-          ) {
+          } else  {
             this.alertType = "success";
             this.alertMessage = response.data.message;
             console.log(response.data.students);

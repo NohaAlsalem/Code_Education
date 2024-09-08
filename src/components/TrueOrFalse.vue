@@ -6,11 +6,14 @@
         <p>{{ index + 1 }} {{ question.question_text }}</p>
         <div class="radios">
           <div class="form-check mt-0">
+            <!-- :checked="question.choise1 === question.correct" -->
             <input
               class="form-check-input"
               type="radio"
               :name="'flexRadioDefault' + index"
               :id="'flexRadioDefault' + index"
+              :checked="1 === question.correct"
+              disabled
             />
             <p>{{ question.choise1 }}</p>
           </div>
@@ -20,7 +23,8 @@
               type="radio"
               :name="'flexRadioDefault' + index"
               :id="'flexRadioDefault' + index"
-              checked
+              :checked="2 === question.correct"
+              disabled
             />
             <p>{{ question.choise2 }}</p>
           </div>
@@ -30,7 +34,8 @@
               type="radio"
               :name="'flexRadioDefault' + index"
               :id="'flexRadioDefault' + index"
-              checked
+              :checked="3 === question.correct"
+              disabled
             />
             <p>{{ question.choise3 }}</p>
           </div>
@@ -40,7 +45,8 @@
               type="radio"
               :name="'flexRadioDefault' + index"
               :id="'flexRadioDefault' + index"
-              checked
+              :checked="4 === question.correct"
+              disabled
             />
             <p>{{ question.choise4 }}</p>
           </div>
@@ -67,18 +73,18 @@ export default {
 
 <style scoped>
 h6 {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   font-weight: bold;
 }
 .bttn {
-  background: var(--GreenColor);
+  background: var(--MainColor);
   color: white;
   padding: 0 20px;
   border-radius: 10px;
   border: none;
 }
 p {
-  color: var(--GreenColor);
+  color: var(--MainColor);
 }
 
 .screen {
@@ -100,12 +106,18 @@ p {
 .custom-button,
 .btn:hover,
 .bttn:hover {
-  color: var(--GreenColor);
+  color: var(--MainColor);
   font-weight: bold;
 }
 
 .card-body .form-control {
   margin: 0;
   height: 100vh;
+}
+.form-check {
+  background: var(--darkwhite);
+  border: 1px solid var(--darkwhite);
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 </style>

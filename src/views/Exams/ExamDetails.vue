@@ -6,7 +6,7 @@
           <div class="card-header">Exam Details</div>
           <div class="exam-details">
             <h2>Exam Details</h2>
-            <p><strong>ID:</strong> {{ exam.id }}</p>
+
             <p><strong>Name:</strong> {{ exam.name }}</p>
             <p><strong>Time:</strong> {{ exam.time }}</p>
           </div>
@@ -30,7 +30,6 @@
             >
               Solution
             </button>
-
             |
             <button
               type="button"
@@ -77,7 +76,7 @@
           Grade
           <input
             type="text"
-            value="20%"
+            v-model="formData1.mark"
             style="
               background: white;
               border: 1.3px solid var(--MainColor);
@@ -94,6 +93,7 @@
             background: var(--MainColor);
             color: white;
             margin-left: 30px;
+            margin-bottom: 10px;
             border: 1.3px solid var(--MainColor);
           "
           @click="UpdateMark"
@@ -111,7 +111,7 @@ import axios from "axios";
 import Solution from "../../components/Solution.vue";
 import { BASE_URL } from "@/assets/config";
 import Alert from "../../components/Alert.vue";
-import "highlight.js/styles/default.css"; // Ensure this path is correct
+import "highlight.js/styles/default.css"; 
 import TrueOrFalse from "../../components/TrueOrFalse.vue";
 export default {
   components: { Solution, Alert, TrueOrFalse },
@@ -127,7 +127,7 @@ export default {
       exam: null, // Object to hold the API response data
       error: null,
       solve_code: null,
-      formData: {
+      formData1: {
         mark: null,
         student_id: null,
         exam_id: null,
@@ -199,12 +199,20 @@ export default {
       }
     },
     UpdateMark() {
+      
       const token = localStorage.getItem("token");
+      
+          this.formData1.student_id = this.$route.params.student_id;
+          this.formData1.exam_id = this.$route.params.id;
+          console.log(this.formData1.mark);
+          console.log(this.formData1.student_id);
+          console.log(this.formData1.exam_id);
       axios
-        .post(`${BASE_URL}exams/edit-student-mark`, this.formData, {
+        .post(`${BASE_URL}exams/edit-student-mark`, this.formData1, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
+          console.log(this.formData1.mark);
           console.log(response.data);
           this.alertType = "success";
           this.alertMessage = "Update successfully";
@@ -240,7 +248,11 @@ export default {
   max-width: 400px;
   overflow-y: auto;
 }
-
+p,
+h6,
+h2 {
+  color: var(--MainColor);
+}
 .custom-button,
 .btn:hover {
   color: var(--MainColor);
@@ -248,7 +260,7 @@ export default {
   border: none;
 }
 .qn {
-  color: var(--GreenOpacity);
+  color: var(--darkwhite);
   font-weight: bold;
   display: block;
 }

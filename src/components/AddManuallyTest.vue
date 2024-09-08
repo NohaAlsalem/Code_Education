@@ -14,8 +14,8 @@
         <button
           type="button"
           class="btn mb-3 col-md-2"
-          style="background: var(--MainColor); color: white"
           @click="addTest"
+          style="background-color: var(--MainColor); color: white"
         >
           Add test case
         </button>
@@ -33,7 +33,7 @@
               "
             >
               <div class="card text-start">
-                <div class="card-header">Your test:</div>
+                <div class="card-header">Output tests:</div>
                 <div class="card-body">
                   <div
                     v-for="(test, index) in test_cases"
@@ -42,20 +42,15 @@
                   >
                     <h6 class="col-md-9">
                       <div class="col-md-6">
-                        <p>{{ test }}</p>
+                        <p><strong>Input:</strong> {{ test }}</p>
+                        <p>
+                          <strong>Output:</strong> {{ output_tests[index] }}
+                        </p>
                       </div>
                     </h6>
-                    <!-- <button
-                      type="button"
-                      class="btn col-md-2 mb-3"
-                      style="background: var(--MainColor); color: white"
-                      @click="deleteTest(index)"
-                    >
-                      Delete
-                    </button> -->
                     <i
                       @click="deleteTest(index)"
-                      class="fas fa-trash-alt text-danger  col-md-2 mb-3 me-5"
+                      class="fas fa-trash-alt text-danger col-md-2 mb-3 me-5"
                       data-bs-toggle="tooltip"
                       title="Delete"
                     ></i>
@@ -68,8 +63,11 @@
         <button
           type="button"
           class="btn mb-3 col-md-2 mt-2"
-          style="background: var(--MainColor); color: white"
           @click="sendTestsToParent"
+          :style="{
+            background: buttonClicked ? 'gray' : 'var(--MainColor)',
+            color: 'white',
+          }"
         >
           submit test cases
         </button>
@@ -78,17 +76,30 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+import { BASE_URL } from "@/assets/config";
+
 export default {
+  props: ["code", "language"],
   data() {
     return {
+      buttonClicked: false,
       newTest: "",
+      generatedTests: [],
+      formData: {
+        lang: this.language,
+        code: this.code,
+        testCasess: [],
+      },
       test_cases: [],
+      output_tests: [],
     };
   },
   methods: {
     addTest() {
       if (this.newTest.trim() !== "") {
         this.test_cases.push(this.newTest.trim());
+        this.output_tests.push(""); // Initialize the corresponding output as empty
         this.newTest = "";
         console.log("Tests:", this.test_cases);
       }
@@ -96,15 +107,50 @@ export default {
     deleteTest(index) {
       console.log(index);
       this.test_cases.splice(index, 1);
+      this.output_tests.splice(index, 1); // Remove the corresponding output
     },
     sendTestsToParent() {
-      this.$emit("tests-updated", this.test_cases);
+      this.buttonClicked = true;
+      const token = localStorage.getItem("token");
+
+      // Change button color to gray
+
+      const data = {
+        language: this.language,
+        code: this.code,
+        testCasess: this.test_cases,
+      };
+
+      console.log("Sending data as JSON:", data);
+
+      axios
+        .post(BASE_URL + "problems/generateOutputs", data, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.generatedTests = response.data.testCasess;
+          console.log("Generated tests:", this.generatedTests);
+
+          // Update the output_tests array with the outputs
+          this.generatedTests.forEach((test, index) => {
+            this.output_tests[index] = test.output;
+          });
+
+          // Notify parent component
+          this.$emit("tests-updated", this.test_cases);
+          this.buttonClicked = false;
+          // Change button color back to main color
+        })
+        .catch((error) => {
+          console.error(
+            "Error:",
+            error.response ? error.response.data : error.message
+          );
+          this.error = error;
+          this.buttonClicked = false;
+          // Revert the button color even if the request fails
+        });
     },
   },
 };
 </script>
-<style scoped>
-input {
-  border: 1px solid var(--MainColor);
-}
-</style>
