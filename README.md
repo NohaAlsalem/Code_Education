@@ -1,4 +1,7 @@
-# web-form
+# Code Education
+
+Note: Each branch represents a role in the project (student, teacher, admin)
+master represents student_app
 
 ## Project setup
 ```
