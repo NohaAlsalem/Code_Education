@@ -4,54 +4,48 @@
   outline: none;
   "> -->
 
-            <div class="container mt-4">
-                <div class="row">
-                    <div class="col-8"> <!-- start Card -->
-                        <div class="container d-flex mt-4 p-4">
-                            <div class="card">
-                                <!-- <div class="card mb-3" style="max-width:540px;">  -->
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="../../assets/images/C.png"
-                                            class="img-fluid rounded" alt="...">
-                                    </div>
-                                    <div class="col-md-8 ps-3">
-                                        <h5>
-                                            {{ exam.id }}
-                                            {{ exam.subject }}
-                                        </h5>
-                                        <div class="pt-2 d-flex">
-                                            <p>
-                                                date exam:</p>
-                                            <h6 class="text-black pt-1 ps-1">
-                                                {{ exam.exam_date }}
-                                            </h6>
-                                        </div>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-8"> <!-- start Card -->
+                    <div class="container d-flex mt-4 p-4">
+                        <div class="card">
+                            <!-- <div class="card mb-3" style="max-width:540px;">  -->
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="../../assets/images/C.png" class="img-fluid rounded" alt="...">
+                                </div>
+                                <div class="col-md-8 ps-3">
+                                    <h5>
+                                        {{ exam.id }}
+                                        {{ exam.subject }}
+                                    </h5>
+                                    <div class="pt-2 d-flex">
+                                        <p>
+                                            date exam:</p>
+                                        <h6 class="text-black pt-1 ps-1">
+                                            {{ exam.exam_date }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 container  mt-4 p-4 pt-0">
-                    
-                    <div class="pt-0 d-flex"  @click="toggleCollapse(exam.id)" >
+                </div>
+                <div class="col-4 container  mt-4 p-4 pt-0">
 
-                        <button type="button" class="btn btn-success ms-5 mt-5" 
-                    aria-expanded="false" :aria-controls="'modal' + exam.id"
-                        
-                        :data-bs-toggle="'modal'"
-                            :data-bs-target="'#cardModal'+exam.id" @click="passcontestid(exam.id)">
+                    <div class="pt-0 d-flex" @click="toggleCollapse(exam.id)">
+
+                        <button type="button" class="btn btn-success ms-5 mt-5" aria-expanded="false"
+                            :aria-controls="'modal' + exam.id" :data-bs-toggle="'modal'"
+                            :data-bs-target="'#cardModal' + exam.id" @click="passcontestid(exam.id)">
                             join
                         </button>
                     </div>
                 </div>
-<!-- 
+                <!-- 
                 id="cardModal" -->
-                <div class="modal fade" 
-                :class="['cardModal', { show: isActive(exam.id) }]"
-                :id="'cardModal' + exam.id"
-                 tabindex="-1" aria-labelledby="cardModalLabel"
-                    aria-hidden="true">
+                <div class="modal fade" :class="['cardModal', { show: isActive(exam.id) }]" :id="'cardModal' + exam.id"
+                    tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-body">
@@ -79,9 +73,9 @@
                         </div>
                     </div>
                 </div>
-                </div>
-                <div class="Divider"></div>
             </div>
+            <div class="Divider"></div>
+        </div>
         <!-- </router-link> -->
         <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
     </div>
@@ -146,14 +140,16 @@ export default {
     data() {
         return {
             successMessage: "",
-      errorMessage: "",
-      alertType: "",
-      alertMessage: "",
+            errorMessage: "",
+            alertType: "",
+            alertMessage: "",
+            approved: '',
+
             NameExam: 'exam ',
             date: '25/5/2024',
             time: '2h',
             nameTeacher: 'Noha',
-            formData:{
+            formData: {
                 password: '',
             }
 
@@ -161,14 +157,14 @@ export default {
     },
     methods: {
         toggleCollapse(solutionId) {
-      this.activeSolutionId = this.activeSolutionId === solutionId ? null : solutionId;
-    },
-    isActive(solutionId) {
-      return this.activeSolutionId === solutionId;
-    },
+            this.activeSolutionId = this.activeSolutionId === solutionId ? null : solutionId;
+        },
+        isActive(solutionId) {
+            return this.activeSolutionId === solutionId;
+        },
         passcontestid(id) {
-      this.confirmId = id;
-    },
+            this.confirmId = id;
+        },
         joinExam(examId) {
             axios.post(BASE_URL + `exams/${examId}/join`, this.formData, {
                 headers: {
@@ -179,24 +175,37 @@ export default {
                     console.log(response);
                     this.$router.push({ name: 'detailExam', params: { examId: examId } });
                     this.successMessage = response.data.message;
-          this.alertType = "success";
-          this.alertMessage = response.data.message;
-        
+                    this.alertType = "success";
+                    this.alertMessage = response.data.message;
+                    setTimeout(() => {
+            this.clearAlert();
+          }, 2000);
                     // <router-link to="/home"></router-link>
                 })
                 .catch((error) => {
                     console.log(error);
+                    if (error.response) {
+    this.errorMessage = "Error: " + error.response.data.error;
+    this.alertType = "error";
+    this.alertMessage = "Error: " + error.response.data.error;
+  } else {
+    this.errorMessage = "An unknown error occurred.";
+    this.alertType = "error";
+    this.alertMessage = "An unknown error occurred.";
+  }
+                    setTimeout(() => {
+            this.clearAlert();
+          }, 2000);
+                    //             this.errorMessage = "Error on join: " + error.message;
+                    //   this.alertType = "error";
+                    //   this.alertMessage = "Error on join: " + error.message;
                     this.error = error;
-                    this.errorMessage = "Error on join: " + error.message;
-          this.alertType = "error";
-          this.alertMessage = "Error on join: " + error.message;
-          this.error = error;
                 });
         },
         clearAlert() {
-      this.alertType = "";
-      this.alertMessage = "";
-    },
+            this.alertType = "";
+            this.alertMessage = "";
+        },
     }
 }
 </script>
@@ -208,9 +217,11 @@ export default {
 p {
     color: var(--GreenOpacity);
 }
-.btn{
+
+.btn {
     background: var(--GreenColor);
 }
+
 .card .img-fluid {
     height: 5rem;
     width: 10rem;
@@ -240,15 +251,16 @@ p {
 .font-c {
     color: var(--GreenColor);
 }
+
 .modal-footer {
     border: none;
 }
 
 .cardModal {
-  display: none;
+    display: none;
 }
 
 .cardModal.show {
-  display: block;
+    display: block;
 }
 </style>

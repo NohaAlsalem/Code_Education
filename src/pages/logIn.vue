@@ -29,13 +29,13 @@
             </div>
 
           </form>
-            <div class="txt d-flex ">
+            <!-- <div class="txt d-flex ">
               <p class="pt-2">Forgot Password?</p>
               <routerLink to="/signup" class="txt-h pt-2 ms-auto">
                 <h5>Sign Up</h5>
               </routerLink>
 
-            </div>
+            </div> -->
 
      
 
@@ -143,10 +143,15 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.errorMessage = "Error deleting test: " + error.message;
-          this.alertType = "error";
-          this.alertMessage = "Error deleting test: " + error.message;
-          this.error = error;
+          if (error.response) {
+    this.errorMessage = "Error: " + error.response.data.error;
+    this.alertType = "error";
+    this.alertMessage = "Error: " + error.response.data.error;
+  } else {
+    this.errorMessage = "An unknown error occurred.";
+    this.alertType = "error";
+    this.alertMessage = "An unknown error occurred.";
+  }
           setTimeout(() => {
             this.clearAlert();
           }, 1000);

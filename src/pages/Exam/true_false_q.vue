@@ -98,6 +98,8 @@ export default {
           this.successMessage = response.data.message;
           this.alertType = "success";
           this.alertMessage = response.data.message;
+          
+        this.approved=response.data.approved;
           this.$router.push('/exams');
           setTimeout(() => {
             this.clearAlert();
@@ -106,12 +108,12 @@ export default {
         .catch((error) => {
           console.log(error);
           this.error = error;
-          this.errorMessage = "Error submit test: " + error.message;
           this.alertType = "error";
-          this.alertMessage = "Error submit test: " + error.message;
+          this.alertMessage =  error.response.data.message;
+   this.approved=error.response.data.approved;
           setTimeout(() => {
             this.clearAlert();
-          }, 1000);
+          }, 2000);
         });
     },
     clearAlert() {

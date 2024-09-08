@@ -1,6 +1,9 @@
 <template>
     <NavBar></NavBar>
+   
+
     <div>
+     
         <div class="ms-5">
             <div class="container-fluid">
                 <form>
@@ -131,6 +134,7 @@ export default {
             selectedDifficulty: "",
             selectedSort: "",
             tags: [],
+           
             formData: {
                 diffculty: this.selectedDifficulty,
                 sort: this.selectedSort,
@@ -154,7 +158,7 @@ export default {
         this.getTags();
     },
     methods: {
-
+    
         handlePageChange(page) {
             this.currentPage = page
             // Fetch data for the new page
@@ -287,4 +291,5 @@ p {
     color: var(--GreenColor);
     background: var(--LightGreen);
 }
+
 </style>

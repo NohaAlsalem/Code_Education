@@ -3,7 +3,7 @@
 <!-- <form>
     <input type="text" v-model="QRValue">
 </form> -->
-<qrcode-vue  :value="QRValue" :size="300" level="H"/>
+<qrcode-vue  :value="namee" :size="300" level="H"/>
     </div>
 </template>
 <script>
@@ -16,6 +16,7 @@ props:{
     namee:'',
 },
 mounted(){
+    console.log(this.namee);
     this.QRValue=this.namee;
 },
 data(){

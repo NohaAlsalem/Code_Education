@@ -148,7 +148,7 @@
                 <tr v-for="student in selectedStudents" :key="student.id">
 
                     <td>
-                        {{ student.first_name }} {{ student.last_name }}
+                        {{ student.student_name }}
                     </td>
                     <td> <router-link to="/students" style="text-decoration: none; color: inherit;">
                             <p> + Add
@@ -311,11 +311,15 @@ export default {
                 }
             })
                 .then((response) => {
-                    this.$router.push('/problems');
+                    
                     this.successMessage = response.data.message;
                     this.alertType = "success";
                     this.alertMessage = response.data.message;
                     this.message = response.data.message;
+                    setTimeout(() => {
+            this.clearAlert();
+          }, 2000);
+          this.$router.push('/contests');
                 })
                 .catch((error) => {
                     this.errorMessage = "Error not creat contest: " + error.message;

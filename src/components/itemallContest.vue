@@ -152,11 +152,14 @@ export default {
                     // <router-link to="/home"></router-link>
                 })
                 .catch((error) => {
-                    this.errorMessage = "Error on join: " + error.message;
+                    this.errorMessage = "Error on join: " + error.response.data.message;
           this.alertType = "error";
-          this.alertMessage = "Error on join: " + error.message;
+          this.alertMessage = "Error on join: " + error.response.data.message;
                     console.log(error);
                     this.error = error;
+                    setTimeout(() => {
+            this.clearAlert();
+          }, 2000);
                 });
         },
         clearAlert() {

@@ -31,7 +31,7 @@
         
         
       </div>
-      <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" style="align-content: center;"/>
+      <!-- <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" style="align-content: center;"/> -->
     </div>
   </template>
   

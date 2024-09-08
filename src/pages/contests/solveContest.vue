@@ -9,14 +9,24 @@
                 </select>
         </div>
         <div class="card-body">
-          <textarea class="form-control" id="javaCode" rows="10" v-model="formData.code" @input="highlightCode"></textarea>
-          <pre v-html="highlightedCode"></pre>
+          <textarea class="form-control" id="javaCode" rows="20" v-model="formData.code" @input="highlightCode"></textarea>
+          <!-- <pre v-html="highlightedCode"></pre> -->
+          <p>terminal</p>
+          <div class="bckg">
+            <span v-if="this.approved">approved:{{ this.approved }}</span>
+          <span v-if="this.alertMessage"> message:{{ this.alertMessage }}</span>
+       
+         </div>
+      
         </div>
+
+    
+
         <div class="card-footer text-muted " style="justify-content: end;display: flex;">
-          <button class="bttn m-1 mr-4" style="background: var( --WhiteColor); color: var(--GreenColor); padding: 1px 20px;" @click="run">Run</button>
+          <!-- <button class="bttn m-1 mr-4" style="background: var( --WhiteColor); color: var(--GreenColor); padding: 1px 20px;" @click="run">Run</button> -->
           <button class="bttn m-1" @click="Solve(this.contestId,this.problemId)">Submit</button>
         </div>
-        <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" />
+        <!-- <Alert :type="alertType" :message="alertMessage" @clear="clearAlert" /> -->
         
       </div>
 
@@ -70,25 +80,28 @@
                  }})
         .then((response) => {
       
-        this.successMessage = response.data.message;
+          this.successMessage = response.data.message;
           this.alertType = "success";
           this.alertMessage = response.data.message;
-        
-          setTimeout(() => {
-            this.clearAlert();
-          }, 1000);
+        this.approved=response.data.approved;
+          // setTimeout(() => {
+          //   this.clearAlert();
+          // }, 1000);
           // <router-link to="/home"></router-link>
         })
         .catch((error) => {
           console.log(error);
           this.error = error;
-          this.errorMessage = "Error submit test: " + error.message;
           this.alertType = "error";
-          this.alertMessage = "Error submit test: " + error.message;
+          this.alertMessage =  error.response.data.message;
+   this.approved=error.response.data.approved;
+          // this.errorMessage = "Error submit test: " + error.message;
+          // this.alertType = "error";
+          // this.alertMessage = "Error submit test: " + error.message;
           this.error = error;
-          setTimeout(() => {
-            this.clearAlert();
-          }, 1000);
+          // setTimeout(() => {
+          //   this.clearAlert();
+          // }, 1000);
         });
     },
     clearAlert() {
@@ -102,6 +115,11 @@
   <style scoped>
   .card{
     border: 1px solid var(--GreenOpacity);
+  }
+  .bckg{
+     background: #e7dff9;
+     max-height: max-content;
+     /* height:4rem; */
   }
   .drop{
     background: #e7dff9;

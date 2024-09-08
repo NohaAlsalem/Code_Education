@@ -114,7 +114,7 @@ export default {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             }).then((response) => {
-                this.solution = response.data.solve;
+                this.solution = response.data;
                 this.answers=response.data.solve.answers;
             }).catch((error) => {
                 console.log(error)

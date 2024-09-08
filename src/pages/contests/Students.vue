@@ -10,12 +10,13 @@
                             <div class="container mt-4">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search..."
-                                        v-model="searchQuery">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-search"></i>
+                                        v-model="searchkey"  @input="onSearchInput">
+                                        <!-- <div class="input-group-append"> -->
+                                        <span class="input-group-text" @click="search">
+                                            <font-awesome-icon icon="fa-solid fa-search" class="i" />
                                         </span>
-                                    </div>
+                                    <!-- </div> -->
+                         
                                 </div>
                             </div>
                         </div>
@@ -47,12 +48,9 @@
                         <tbody>
                             <tr v-for="student in students" :key="student.id">
                                 <td style="max-width: 10%;">{{ student.id }}</td>
-                                <td>{{ student.first_name }} {{ student.last_name }}</td>
-                                <td v-if="!isSelected(student.id)" style="width: 10%;" @click="selectStudent(student)">
-                                    <font-awesome-icon :icon="['far', 'square-check']" />
-                                </td>
-                                <td v-if="isSelected(student.id)" style="width: 10%;" @click="deselectStudent(student)">
-                                    <font-awesome-icon :icon="['fas', 'square-check']" />
+                                <td>{{ student.student_name }}</td>
+                                <td style="width: 10%;" @click="toggleStudentSelection(student)">
+                                    <font-awesome-icon :icon="isSelected(student.id) ? ['fas', 'square-check'] : ['far', 'square-check']" />
                                 </td>
                             </tr>
                         </tbody>
@@ -66,8 +64,9 @@
 
 <script>
 import TopBar from '@/components/TopBar.vue';
-import { BASE_URL } from "@/assets/config";
+import { BASE_URL, B_URL } from "@/assets/config";
 import axios from 'axios';
+
 export default {
     components: {
         TopBar,
@@ -76,49 +75,40 @@ export default {
         return {
             searchQuery: '',
             students: [],
-            selectedStudents: []
-        }
+            selectedStudents: [], // Ensure this is initialized as an array
+            searchkey: '',
+            searchResults: {},
+        };
     },
     mounted() {
         this.getStudents();
-        this.loadFormData();
-    },
-    computed: {
-        formData: {
-            get() {
-                const savedFormData = localStorage.getItem("students");
-                return savedFormData ? JSON.parse(savedFormData) : [];
-            },
-            set(newFormData) {
-                localStorage.setItem("students", JSON.stringify(newFormData));
-            }
-        }
-    },
-    watch: {
-        selectedStudents: {
-            handler(newFormData) {
-                this.formData = newFormData;
-            },
-            deep: true,
-        },
+        this.loadSelectedStudents();
     },
     methods: {
-        loadFormData() {
-            this.selectedStudents = this.formData;
+        loadSelectedStudents() {
+            const savedSelectedStudents = localStorage.getItem("selectedStudents");
+            this.selectedStudents = savedSelectedStudents ? JSON.parse(savedSelectedStudents) : []; // Ensure it's an array
+        },
+        toggleStudentSelection(student) {
+            if (this.isSelected(student.id)) {
+                this.deselectStudent(student); // Deselect if already selected
+            } else {
+                this.selectStudent(student); // Select if not selected
+            }
         },
         selectStudent(student) {
-            if (!this.isSelected(student.id)) {
-                this.selectedStudents.push(student);
-            }
-            if (this.selectedStudents.length > 1) {
-                console.log('Selected student ID:', this.selectedStudents[1]?.id);
-            }
+            this.selectedStudents.push(student); // Add student to selectedStudents
+            this.saveSelectedStudents(); // Save to local storage
         },
         deselectStudent(student) {
-            this.selectedStudents = this.selectedStudents.filter(s => s.id !== student.id);
+            this.selectedStudents = this.selectedStudents.filter(s => s.id !== student.id); // Remove student from selectedStudents
+            this.saveSelectedStudents(); // Save to local storage
         },
         isSelected(studentId) {
-            return this.selectedStudents.some(student => student.id === studentId);
+            return this.selectedStudents.some(student => student.id === studentId); // Check if student is selected
+        },
+        saveSelectedStudents() {
+            localStorage.setItem("selectedStudents", JSON.stringify(this.selectedStudents)); // Save selected students to local storage
         },
         getStudents() {
             axios.get(BASE_URL + 'contests/allStudents', {
@@ -126,14 +116,40 @@ export default {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             }).then((response) => {
-                this.students = response.data.data;
+                this.students = response.data.data; // Set students from API response
                 console.log(response.data);
             }).catch((error) => {
-                console.log(error)
-                this.errMessage = 'error retrieving data'
-            })
+                console.log(error);
+                this.errMessage = 'Error retrieving data';
+            });
         },
-    }
+        onSearchInput(event) {
+            this.searchkey = event.target.value;
+            this.search();
+        },
+        search() {
+            this.formData={   
+                   key:this.searchkey},
+            axios.post(B_URL+'search', this.formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
+            })
+                .then((response) => {
+                    this.students = response.data;
+                    console.log(response.data.data.id+'897777777777777777777'),
+                    
+                    // this.searchResults = response.data;
+                    console.log(response.data)
+                    // <router-link to="/home"></router-link>
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.error = error;
+                });
+        },
+
+    },
 }
 </script>
 
@@ -146,6 +162,7 @@ export default {
 .screen {
     padding: 40px 80px;
     background: #e7dff9;
+    min-height: 100vh;
     height: 100%;
     max-height: fit-content;
     justify-content: center;
@@ -163,7 +180,7 @@ p {
 }
 
 .table td {
-    color: var(--GreenOpacity)
+    color: var(--GreenOpacity);
 }
 
 .table {
